@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatequydinh'">
+            <form method="post" th:action="${action}" th:object="${qd}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="khoangCach" class="form-control" name="khoangCach" th:value="*{khoangCach}" placeholder="Nhập khoảng cách"/>
+                    <label for="khoangCach">Khoảng cách</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá"/>
+                    <label for="price">Giá</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
+                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                    </select>
+                    <label for="idChiNhanh">Chi nhánh</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${qd.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${qd.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatehoadonchitiet'">
+            <form method="post" th:action="${action}" th:object="${hd}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="soLuongMua" class="form-control" name="soLuongMua" th:value="*{soLuongMua}" placeholder="Nhập số lượng mua"/>
+                    <label for="soLuongMua">Số lượng mua</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="giaVanChuyen" class="form-control" name="giaVanChuyen" th:value="*{giaVanChuyen}" placeholder="Nhập giá vận chuyển"/>
+                    <label for="giaVanChuyen">Giá vận chuyển</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="tongTien" class="form-control" name="tongTien" th:value="*{tongTien}" placeholder="Nhập tổng tiền"/>
+                    <label for="tongTien">Tổng tiền</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idThucAn" name="idThucAn" th:field="*{idThucAn}" class="form-select">
+                        <option th:each="ta : ${tas}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                    </select>
+                    <label for="idNguoiDung">Thức ăn</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${hd.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

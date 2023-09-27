@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatenguoidung'">
+            <form method="post" th:action="${action}" th:object="${nd}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan != null}">
+                    <input type="hidden" name="taiKhoan" th:value="*{taiKhoan}"/>
+                </div>
+                <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan == null}">
+                    <input type="text" id="taiKhoan" class="form-control" name="taiKhoan" th:value="*{taiKhoan}" placeholder="Nhập tài khoản"/>
+                    <label for="taiKhoan">Tài khoản</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="lastName" class="form-control" name="lastName" th:value="*{lastName}" placeholder="Nhập họ"/>
+                    <label for="lastName">Họ</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="firstName" class="form-control" name="firstName" th:value="*{firstName}" placeholder="Nhập tên"/>
+                    <label for="firstName">Tên</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="password" id="matKhau" class="form-control" name="matKhau" th:value="*{matKhau}" placeholder="Nhập mật khẩu"/>
+                    <label for="matKhau">Mật khẩu</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="email" id="email" class="form-control" name="email" th:value="*{email}" placeholder="Nhập email"/>
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="phone" class="form-control" name="phone" th:value="*{phone}" placeholder="Nhập số điện thoại"/>
+                    <label for="phone">Số điện thoại</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="vaiTro" name="vaiTro" th:field="*{vaiTro}" class="form-select">
+                        <option value="Admin" th:if="${nd.vaiTro != 'Admin'}">Admin</option>
+                        <option value="Admin" th:if="${nd.vaiTro == 'Admin'}" selected>Admin</option>
+                        <option value="Owner" th:if="${nd.vaiTro != 'Owner'}">Owner</option>
+                        <option value="Owner" th:if="${nd.vaiTro == 'Owner'}" selected>Owner</option>
+                        <option value="Customer" th:if="${nd.vaiTro != 'Customer'}">Customer</option>
+                        <option value="Customer" th:if="${nd.vaiTro == 'Customer'}" selected>Customer</option>
+                    </select>
+                    <label for="vaiTro">Vai Trò</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="avatar" class="form-control" name="avatar" th:value="*{avatar}" placeholder="Nhập ảnh"/>
+                    <label for="avatar">Ảnh</label>
+                </div>
+                
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${nd.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${nd.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

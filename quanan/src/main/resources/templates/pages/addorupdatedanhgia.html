@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatedanhgia'">
+            <form method="post" th:action="${action}" th:object="${dg}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="noiDung" class="form-control" name="noiDung" th:value="*{noiDung}" placeholder="Nhập nội dung"/>
+                    <label for="noiDung">Nội dung</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="danhGia" class="form-control" name="danhGia" th:value="*{danhGia}" placeholder="Nhập đánh giá"/>
+                    <label for="danhGia">Đánh giá</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idNguoiDung" name="idNguoiDung" th:field="*{idNguoiDung}" class="form-select">
+                        <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                    </select>
+                    <label for="idNguoiDung">Người đánh giá</label>
+                </div>
+                 <div class="form-floating mb-3 mt-3">
+                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
+                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                    </select>
+                    <label for="idChiNhanh">Chi nhánh</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${dg.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${dg.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

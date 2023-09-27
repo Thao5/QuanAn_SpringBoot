@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdatechinhanh}" title="Thêm chi nhánh" class="btn btn-outline-success">+</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày tạo</th>
+                        <th>Chủ cửa hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="s : ${stores}">
+
+
+                    <tr th:with="updateStore=('/quanan/admin/addorupdatechinhanh/' + ${s.id}), del=('/quanan/admin/deletechinhanh/' + ${s.id} + '/')">
+                        <td><img th:src="${s.image}" th:alt="${s.image}" width="120"/></td>
+                        <td th:text="${s.id}"></td>
+                        <td th:text="${s.diaChi}"></td>
+                        <td th:text="${s.createdDate}"></td>
+                        
+                        <td th:text="${s.idNguoiDung.lastName + ' ' + s.idNguoiDung.firstName}"></td>
+                        <td>
+                            <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
+                            <button th:data-id="${s.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

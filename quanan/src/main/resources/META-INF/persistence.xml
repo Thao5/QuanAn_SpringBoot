@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.thao_quanan_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.thao.pojo.NguoiDung</class>
+    <class>com.thao.pojo.ChiNhanh</class>
+    <class>com.thao.pojo.Ban</class>
+    <class>com.thao.pojo.ThucAn</class>
+    <class>com.thao.pojo.HoaDon</class>
+    <class>com.thao.pojo.Category</class>
+    <class>com.thao.pojo.HoaDonChiTiet</class>
+    <class>com.thao.pojo.DanhGia</class>
+    <class>com.thao.pojo.QuyDinhVanChuyen</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/quanan?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="123456"/>
+    </properties>
+  </persistence-unit>
+</persistence>

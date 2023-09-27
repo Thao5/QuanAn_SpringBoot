@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatecate'">
+            <form method="post" th:action="${action}" th:object="${cate}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên loại"/>
+                    <label for="name">Tên loại</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${cate.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${cate.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

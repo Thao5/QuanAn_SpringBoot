@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Address</th>
+                        <th>Loai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="s : ${stores}">
+
+
+                    <tr th:with="searchStore='/quanan/stores/', del=('/quanan/admin/deletechinhanh/' + ${s.id} + '/')">
+                        <td>
+
+                        </td>
+                        <td th:text="${s.id}"></td>
+                        <td th:text="${s.diaChi}"></td>
+                        <td>
+                    <a th:href="@{${searchStore} + ${s.id}}" class="btn btn-success" >Xem Chi Tiet</a>
+                    <a href="#" class="btn btn-success" >Cập nhật</a>
+                    <button th:data-id="${s.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                    </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+            <!--    <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Số Lượng</th>
+                            <th>Giá</th>
+                            <th>Loại</th>
+                            <th>Cửa hàng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <c:forEach items="${foods}" var="f">
+                <c:url value="/stores" var="searchStore">
+                    <c:param name="storeId" value="${f.id}" /> 
+                </c:url>
+        
+                <tr>
+                    <td>
+        
+                    </td>
+                    <td>${f.id}</td>
+                    <td>${f.name}</td>
+                    <td>${f.soLuong}</td>
+                    <td>${f.price}</td>
+                    <td>${f.idLoai}</td>
+                    <td>${f.idCuaHang}</td>
+        
+                    <td>
+                        <a href="${searchStore}" class="btn btn-success" >Xem Chi Tiet</a>
+                                                <button class="btn btn-danger">Xóa</button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+        </table>-->
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+    
+</html>

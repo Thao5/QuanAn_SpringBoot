@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdatecate}" title="Thêm loại" class="btn btn-outline-success">+</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên loại</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="c : ${cates}">
+
+
+                    <tr th:with="updateStore=('/quanan/admin/addorupdatecate/' + ${c.id}), del=('/quanan/admin/deletecate/' + ${c.id} + '/')">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.name}"></td>
+                        <td>
+                            <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
+                            <button th:data-id="${c.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

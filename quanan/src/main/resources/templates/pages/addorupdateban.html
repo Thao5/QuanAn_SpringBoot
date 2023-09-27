@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdateban'">
+            <form method="post" th:action="${action}" th:object="${ban}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="moTa" class="form-control" name="moTa" th:value="*{moTa}" placeholder="Nhập mô tả"/>
+                    <label for="moTa">Mô tả</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
+                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                    </select>
+                    <label for="idChiNhanh">Chi nhánh</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${ban.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${ban.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

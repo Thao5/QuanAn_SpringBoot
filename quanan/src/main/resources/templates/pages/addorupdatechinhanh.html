@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatechinhanh'">
+            <form method="post" th:action="${action}" th:object="${cns}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="diaChi" class="form-control" name="diaChi" th:value="*{diaChi}" placeholder="Nhập địa chỉ"/>
+                    <label for="diaChi">Địa chỉ</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" id="image" class="form-control" name="image" th:value="*{image}" placeholder="Nhập ảnh"/>
+                    <label for="image">Ảnh</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idNguoiDung" name="idNguoiDung" th:field="*{idNguoiDung}" class="form-select">
+                        <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                    </select>
+                    <label for="idNguoiDung">Chủ cửa hàng</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${cns.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${cns.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

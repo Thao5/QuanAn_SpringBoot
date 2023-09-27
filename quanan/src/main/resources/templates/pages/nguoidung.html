@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdatenguoidung}" title="Thêm người dùng" class="btn btn-outline-success">+</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Họ</th>
+                        <th>Tên</th>
+                        <th>Tài khoản</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Đang hoạt dộng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="nd : ${nds}">
+
+
+                    <tr th:with="update=('/quanan/admin/addorupdatenguoidung/' + ${nd.id}), del=('/quanan/admin/deletenguoidung/' + ${nd.id} + '/')">
+                        <td><img th:src="${nd.avatar}" th:alt="${nd.avatar}" width="120"/></td>
+                        <td th:text="${nd.id}"></td>
+                        <td th:text="${nd.lastName}"></td>
+                        <td th:text="${nd.firstName}"></td>
+                        <td th:text="${nd.taiKhoan}"></td>
+                        <td th:text="${nd.email}"></td>
+                        <td th:text="${nd.phone}"></td>
+                        <td th:text="${nd.vaiTro}"></td>
+                        <td th:text="${nd.active}"></td>
+                        <td>
+                            <a th:href="${update}" class="btn btn-success" >Cập nhật</a>
+                            <button th:data-id="${nd.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>
