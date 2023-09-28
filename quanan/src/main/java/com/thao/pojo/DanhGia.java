@@ -19,6 +19,9 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -42,17 +45,23 @@ public class DanhGia implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 255)
+    @NotEmpty(message = "Thiếu nội dung")
+    @NotBlank(message = "Thiếu nội dung")
     @Column(name = "noi_dung")
     private String noiDung;
+    @NotEmpty(message = "Thiếu đánh giá")
+    @NotBlank(message = "Thiếu đánh giá")
     @Column(name = "danh_gia")
     private Integer danhGia;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
+    @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")
+    @NotNull(message = "Thiếu người đánh giá")
     @ManyToOne
     private NguoiDung idNguoiDung;
 

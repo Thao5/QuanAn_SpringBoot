@@ -17,26 +17,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan == null}">
                     <input type="text" id="taiKhoan" class="form-control" name="taiKhoan" th:value="*{taiKhoan}" placeholder="Nhập tài khoản"/>
                     <label for="taiKhoan">Tài khoản</label>
+                    <p th:if="${#fields.hasErrors('taiKhoan')}" th:errorclass="text-danger" th:errors="*{taiKhoan}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="lastName" class="form-control" name="lastName" th:value="*{lastName}" placeholder="Nhập họ"/>
                     <label for="lastName">Họ</label>
+                    <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="text-danger" th:errors="*{lastName}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="firstName" class="form-control" name="firstName" th:value="*{firstName}" placeholder="Nhập tên"/>
                     <label for="firstName">Tên</label>
+                    <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="text-danger" th:errors="*{firstName}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="password" id="matKhau" class="form-control" name="matKhau" th:value="*{matKhau}" placeholder="Nhập mật khẩu"/>
                     <label for="matKhau">Mật khẩu</label>
+                    <p th:if="${#fields.hasErrors('matKhau')}" th:errorclass="text-danger" th:errors="*{matKhau}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="email" id="email" class="form-control" name="email" th:value="*{email}" placeholder="Nhập email"/>
                     <label for="email">Email</label>
+                    <p th:if="${#fields.hasErrors('email')}" th:errorclass="text-danger" th:errors="*{email}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="phone" class="form-control" name="phone" th:value="*{phone}" placeholder="Nhập số điện thoại"/>
                     <label for="phone">Số điện thoại</label>
+                    <p th:if="${#fields.hasErrors('phone')}" th:errorclass="text-danger" th:errors="*{phone}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="vaiTro" name="vaiTro" th:field="*{vaiTro}" class="form-select">
@@ -48,10 +54,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <option value="Customer" th:if="${nd.vaiTro == 'Customer'}" selected>Customer</option>
                     </select>
                     <label for="vaiTro">Vai Trò</label>
+                    <p th:if="${#fields.hasErrors('vaiTro')}" th:errorclass="text-danger" th:errors="*{vaiTro}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="avatar" class="form-control" name="avatar" th:value="*{avatar}" placeholder="Nhập ảnh"/>
                     <label for="avatar">Ảnh</label>
+                    <p th:if="${#fields.hasErrors('avatar')}" th:errorclass="text-danger" th:errors="*{avatar}" />
                 </div>
                 
                 <div class="form-floating mb-3 mt-3">

@@ -7,11 +7,14 @@ package com.thao.Controllers;
 import com.thao.pojo.ChiNhanh;
 import com.thao.service.ChiNhanhService;
 import com.thao.service.NguoiDungService;
+import jakarta.validation.Valid;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,10 +58,14 @@ public class ChiNhanhController {
     }
     
     @PostMapping("/addorupdatechinhanh")
-    public String addOrUpdate(@ModelAttribute(value="cns") ChiNhanh cn){
-        if(cn.getId() == null) cn.setCreatedDate(new Date());
-        this.storeService.save(cn);
-        return "redirect:/admin/chinhanh";
+    public String addOrUpdate(Model model, @ModelAttribute(value="cns") @Valid ChiNhanh cn, BindingResult rs){
+        if(!rs.hasErrors()){
+            if(cn.getId() == null) cn.setCreatedDate(new Date());
+            this.storeService.save(cn);
+            return "redirect:/admin/chinhanh";
+        }
+        model.addAttribute("nds", this.ndSer.getNDs());
+        return "addorupdatechinhanh";
     }
     
     @CrossOrigin

@@ -21,6 +21,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -47,6 +48,7 @@ public class HoaDon implements Serializable {
     private Set<HoaDonChiTiet> hoaDonChiTietSet;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu người đặt món")
     private NguoiDung idNguoiDung;
 
     public HoaDon() {

@@ -16,7 +16,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -38,15 +39,18 @@ public class QuyDinhVanChuyen implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "Thiếu khoảng cách")
+    @NotBlank(message = "Thiếu khoảng cách")
     @Column(name = "khoang_cach")
     private double khoangCach;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "Thiếu giá")
+    @NotBlank(message = "Thiếu giá")
     @Column(name = "price")
     private long price;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu chi nhánh")
     private ChiNhanh idChiNhanh;
 
     public QuyDinhVanChuyen() {

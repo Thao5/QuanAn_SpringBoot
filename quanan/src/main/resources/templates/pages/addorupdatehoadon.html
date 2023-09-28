@@ -17,6 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
                     </select>
                     <label for="idNguoiDung">Người đặt món</label>
+                    <p th:if="${#fields.hasErrors('idNguoiDung')}" th:errorclass="text-danger" th:errors="*{idNguoiDung}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>

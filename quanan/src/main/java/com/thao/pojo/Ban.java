@@ -17,6 +17,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -41,6 +43,8 @@ public class Ban implements Serializable {
     @Column(name = "id")
     private String id;
     @Size(max = 255)
+    @NotEmpty(message = "Thiếu mô tả")
+    @NotBlank(message = "Thiếu mô tả")
     @Column(name = "mo_ta")
     private String moTa;
     @Column(name = "created_date")
@@ -48,6 +52,7 @@ public class Ban implements Serializable {
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
     @ManyToOne
+    @jakarta.validation.constraints.NotNull(message = "Thiếu chi nhánh")
     private ChiNhanh idChiNhanh;
 
     public Ban() {

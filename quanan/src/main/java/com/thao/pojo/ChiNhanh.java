@@ -22,6 +22,9 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,6 +51,8 @@ public class ChiNhanh implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 255)
+    @NotEmpty(message = "Thiếu địa chỉ")
+    @NotBlank(message = "Thiếu địa chỉ")
     @Column(name = "dia_chi")
     private String diaChi;
     @Column(name = "created_date")
@@ -55,6 +60,7 @@ public class ChiNhanh implements Serializable {
     @DateTimeFormat(iso=ISO.DATE)
     private Date createdDate;
     @Size(max = 255)
+    @NotEmpty(message = "Thiếu ảnh")
     @Column(name = "image")
     private String image;
     @OneToMany(mappedBy = "idChiNhanh")
@@ -63,6 +69,7 @@ public class ChiNhanh implements Serializable {
     private Set<DanhGia> danhGiaSet;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu chủ chi nhánh")
     private NguoiDung idNguoiDung;
     @OneToMany(mappedBy = "idChiNhanh")
     private Set<Ban> banSet;

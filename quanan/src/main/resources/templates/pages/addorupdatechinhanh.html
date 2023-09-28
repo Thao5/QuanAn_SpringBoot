@@ -15,16 +15,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="diaChi" class="form-control" name="diaChi" th:value="*{diaChi}" placeholder="Nhập địa chỉ"/>
                     <label for="diaChi">Địa chỉ</label>
+                    <p th:if="${#fields.hasErrors('diaChi')}" th:errorclass="text-danger" th:errors="*{diaChi}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="image" class="form-control" name="image" th:value="*{image}" placeholder="Nhập ảnh"/>
                     <label for="image">Ảnh</label>
+                    <p th:if="${#fields.hasErrors('image')}" th:errorclass="text-danger" th:errors="*{image}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idNguoiDung" name="idNguoiDung" th:field="*{idNguoiDung}" class="form-select">
                         <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
                     </select>
                     <label for="idNguoiDung">Chủ cửa hàng</label>
+                    <p th:if="${#fields.hasErrors('idNguoiDung')}" th:errorclass="text-danger" th:errors="*{idNguoiDung}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${cns.id != null}"> Cập nhật</button>

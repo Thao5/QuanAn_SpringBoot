@@ -15,20 +15,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-floating mb-3 mt-3">
                     <input type="number" id="soLuongMua" class="form-control" name="soLuongMua" th:value="*{soLuongMua}" placeholder="Nhập số lượng mua"/>
                     <label for="soLuongMua">Số lượng mua</label>
+                    <p th:if="${#fields.hasErrors('soLuongMua')}" th:errorclass="text-danger" th:errors="*{soLuongMua}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="number" id="giaVanChuyen" class="form-control" name="giaVanChuyen" th:value="*{giaVanChuyen}" placeholder="Nhập giá vận chuyển"/>
                     <label for="giaVanChuyen">Giá vận chuyển</label>
+                    <p th:if="${#fields.hasErrors('giaVanChuyen')}" th:errorclass="text-danger" th:errors="*{giaVanChuyen}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="number" id="tongTien" class="form-control" name="tongTien" th:value="*{tongTien}" placeholder="Nhập tổng tiền"/>
                     <label for="tongTien">Tổng tiền</label>
+                    <p th:if="${#fields.hasErrors('tongTien')}" th:errorclass="text-danger" th:errors="*{tongTien}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idThucAn" name="idThucAn" th:field="*{idThucAn}" class="form-select">
                         <option th:each="ta : ${tas}" th:value="${ta.id}" th:text="${ta.name}"></option>
                     </select>
                     <label for="idNguoiDung">Thức ăn</label>
+                    <p th:if="${#fields.hasErrors('idThucAn')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>

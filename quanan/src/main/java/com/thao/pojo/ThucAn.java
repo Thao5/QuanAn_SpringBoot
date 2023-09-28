@@ -22,6 +22,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,22 +50,32 @@ public class ThucAn implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 45)
+    @NotNull(message = "Thiếu tên thức ăn")
+    @NotBlank(message = "Thiếu tên thức ăn")
     @Column(name = "name")
     private String name;
+    @NotNull(message = "Thiếu số lượng")
+    @NotBlank(message = "Thiếu số lượng")
     @Column(name = "so_luong")
     private Integer soLuong;
     @Column(name = "price")
+    @NotNull(message = "Thiếu giá")
+    @NotBlank(message = "Thiếu giá")
     private Long price;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Size(max = 255)
+    @NotNull(message = "Thiếu ảnh")
+    @NotBlank(message = "Thiếu ảnh")
     @Column(name = "image")
     private String image;
     @JoinColumn(name = "id_loai", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu loại")
     private Category idLoai;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
+    @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
     @OneToMany(mappedBy = "idThucAn")

@@ -15,30 +15,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn"/>
                     <label for="name">Tên món ăn</label>
+                    <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="number" id="soLuong" class="form-control" name="soLuong" th:value="*{soLuong}" placeholder="Nhập số lượng"/>
                     <label for="soLuong">Số lượng</label>
+                    <p th:if="${#fields.hasErrors('soLuong')}" th:errorclass="text-danger" th:errors="*{soLuong}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá"/>
                     <label for="price">Giá</label>
+                    <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
                         <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
+                    <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idLoai" name="idLoai" th:field="*{idLoai}" class="form-select">
                         <option th:each="c : ${cates}" th:value="${c.id}" th:text="${c.name}"></option>
                     </select>
                     <label for="idLoai">Loại đồ ăn</label>
+                    <p th:if="${#fields.hasErrors('idLoai')}" th:errorclass="text-danger" th:errors="*{idLoai}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="image" class="form-control" name="image" th:value="*{image}" placeholder="Nhập ảnh"/>
                     <label for="image">Ảnh</label>
+                    <p th:if="${#fields.hasErrors('image')}" th:errorclass="text-danger" th:errors="*{image}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${cns.id != null}"> Cập nhật</button>

@@ -19,6 +19,9 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -41,10 +44,16 @@ public class HoaDonChiTiet implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @NotEmpty(message = "Thiếu số lượng mua")
+    @NotBlank(message = "Thiếu số lượng mua")
     @Column(name = "so_luong_mua")
     private Integer soLuongMua;
+    @NotEmpty(message = "Thiếu giá vận chuyển")
+    @NotBlank(message = "Thiếu giá vận chuyển")
     @Column(name = "gia_van_chuyen")
     private Long giaVanChuyen;
+    @NotEmpty(message = "Thiếu tổng tiền")
+    @NotBlank(message = "Thiếu tổng tiền")
     @Column(name = "tong_tien")
     private Long tongTien;
     @Column(name = "created_date")
@@ -52,9 +61,11 @@ public class HoaDonChiTiet implements Serializable {
     private Date createdDate;
     @JoinColumn(name = "id_hoa_don", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu hóa đơn")
     private HoaDon idHoaDon;
     @JoinColumn(name = "id_thuc_an", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu thức ăn")
     private ThucAn idThucAn;
 
     public HoaDonChiTiet() {

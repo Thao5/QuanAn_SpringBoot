@@ -7,11 +7,13 @@ package com.thao.Controllers;
 import com.thao.pojo.Ban;
 import com.thao.service.BanService;
 import com.thao.service.ChiNhanhService;
+import jakarta.validation.Valid;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,28 +28,35 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping("/admin")
 public class BanController {
+
     @Autowired
     private BanService banSer;
     @Autowired
     private ChiNhanhService cnSer;
-    
+
     @GetMapping("/addorupdateban/{id}")
-    public String update(Model model, @PathVariable("id") Long id){
+    public String update(Model model, @PathVariable("id") Long id) {
         model.addAttribute("ban", this.banSer.getBanById(id));
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
         return "addorupdateban";
     }
-    
+
     @PostMapping("/addorupdateban")
-    public String addOrUpdate(@ModelAttribute(value = "ban") Ban ban){
-        if(ban.getId() == null) ban.setCreatedDate(new Date());
-        this.banSer.save(ban);
-        return "redirect:/";
+    public String addOrUpdate(Model model, @ModelAttribute(value = "ban") @Valid Ban ban, BindingResult rs) {
+        if (!rs.hasErrors()) {
+            if (ban.getId() == null) {
+                ban.setCreatedDate(new Date());
+            }
+            this.banSer.save(ban);
+            return "redirect:/";
+        }
+        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+        return "addorupdateban";
     }
-    
+
     @RequestMapping("/deleteban/{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id) {
         this.banSer.delete(id);
     }
 }

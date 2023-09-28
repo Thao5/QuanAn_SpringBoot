@@ -6,10 +6,12 @@ package com.thao.Controllers;
 
 import com.thao.pojo.Category;
 import com.thao.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,36 +26,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping("/admin")
 public class CategoryController {
+
     @Autowired
     private CategoryService cateSer;
-    
+
     @RequestMapping("/cate")
-    public String list(Model model){
+    public String list(Model model) {
         model.addAttribute("cates", this.cateSer.getCates());
         return "cate";
     }
-    
+
     @GetMapping("/addorupdatecate")
-    public String add(Model model){
+    public String add(Model model) {
         model.addAttribute("cate", new Category());
         return "addorupdatecate";
     }
-    
+
     @GetMapping("/addorupdatecate/{id}")
-    public String update(Model model, @PathVariable("id") Long id){
+    public String update(Model model, @PathVariable("id") Long id) {
         model.addAttribute("cate", this.cateSer.getCateById(id));
         return "addorupdatecate";
     }
-    
+
     @PostMapping("/addorupdatecate")
-    public String addOrUpdate(@ModelAttribute(value = "cate") Category cate){
-        this.cateSer.save(cate);
-        return "redirect:/admin/cate";
+    public String addOrUpdate(@ModelAttribute(value = "cate") @Valid Category cate, BindingResult rs) {
+        if (!rs.hasErrors()) {
+            this.cateSer.save(cate);
+            return "redirect:/admin/cate";
+        }
+        return "addorupdatecate";
     }
-    
+
     @RequestMapping("/deletecate/{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id) {
         this.cateSer.delete(id);
     }
 }

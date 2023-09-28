@@ -16,6 +16,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
@@ -37,6 +39,8 @@ public class Category implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 45)
+    @NotEmpty(message = "Thiếu tên loại")
+    @NotBlank(message = "Thiếu tên loại")
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "idLoai")

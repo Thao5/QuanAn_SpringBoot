@@ -6,12 +6,13 @@ package com.thao.service;
 
 import com.thao.pojo.NguoiDung;
 import java.util.List;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  *
  * @author Chung Vu
  */
-public interface NguoiDungService {
+public interface NguoiDungService extends UserDetailsService{
     List<NguoiDung> getNDs();
     void save(NguoiDung nd);
     void delete(Long id);
