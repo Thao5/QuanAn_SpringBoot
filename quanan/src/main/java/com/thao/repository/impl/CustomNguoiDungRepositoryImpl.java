@@ -15,6 +15,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -43,4 +44,12 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         return (NguoiDung) query.getSingleResult();
     }
 
+    @Override
+    public boolean authNguoiDung(String taiKhoan, String matKhau, BCryptPasswordEncoder passEncoder) {
+        NguoiDung nd = this.getNDByUsername(taiKhoan);
+        if (nd != null) {
+            return passEncoder.matches(matKhau, nd.getMatKhau());
+        }
+        return false;
+    }
 }

@@ -5,6 +5,7 @@
 package com.thao.repository;
 
 import com.thao.pojo.NguoiDung;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -12,4 +13,5 @@ import com.thao.pojo.NguoiDung;
  */
 public interface CustomNguoiDungRepository {
     NguoiDung getNDByUsername(String username);
+    boolean authNguoiDung(String taiKhoan, String matKhau, BCryptPasswordEncoder passEncoder);
 }

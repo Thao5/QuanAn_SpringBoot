@@ -4,6 +4,9 @@
  */
 package com.thao.configs;
 
+import com.thao.filters.CustomAccessDeniedHandler;
+import com.thao.filters.JwtAuthenticationTokenFilter;
+import com.thao.filters.RestAuthenticationEntryPoint;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyAuthority;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,6 +35,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -46,10 +51,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @ComponentScan({
     "com.thao.repository.impl",
     "com.thao.service",
-    "com.thao.Controllers",})
+    "com.thao.Controllers",
+    "com.thao.components"})
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-@Order(2)
+//@Order(2)
 public class SpringSecurityConfig {
 
     @Autowired
@@ -145,7 +151,6 @@ public class SpringSecurityConfig {
 //            
 //        return http.build();
 //    }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

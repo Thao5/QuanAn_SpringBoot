@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.thao.repository.impl",
     "com.thao.service",
     "com.thao.Controllers",})
-@SpringBootApplication
-@Import({SpringSecurityConfig.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@Import({SpringSecurityConfig.class, JwtSecurityConfig.class})
 public class QuananApplication {
 
     public static void main(String[] args) {

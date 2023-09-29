@@ -7,6 +7,7 @@ package com.thao.service;
 import com.thao.pojo.NguoiDung;
 import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -18,4 +19,5 @@ public interface NguoiDungService extends UserDetailsService{
     void delete(Long id);
     NguoiDung getNguoiDungById(Long id);
     NguoiDung getNguoiDungByUsername(String username);
+    boolean authNguoiDung(String taiKhoan, String matKhau);
 }

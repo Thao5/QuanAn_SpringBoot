@@ -49,7 +49,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.thao.components"
 })
 @EnableMethodSecurity(securedEnabled = true)
-@Order(1)
 public class JwtSecurityConfig {
 
     @Autowired
@@ -108,23 +107,33 @@ public class JwtSecurityConfig {
         // Disable crsf cho đường dẫn /rest/**
         
         http.userDetailsService(userDetailsService)
+            .authorizeHttpRequests(rmr->{
+            try {
+                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+                        .and()
+                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
+                                .successForwardUrl("/"))
+                        .logout(lo -> lo.permitAll()
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+            } catch (Exception ex) {
+                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).csrf(csrf -> csrf.disable());
+        
+        http.authorizeHttpRequests(rmr->rmr.requestMatchers(new AntPathRequestMatcher("/api/login/")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/api/thucan/")).permitAll());
+        http.userDetailsService(userDetailsService)
                 .authorizeHttpRequests(rmr -> {
                     try {
-                        rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                                .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
-                                .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-                                .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/login/")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/thucan/")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).permitAll()
+                        rmr.requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                                .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                                .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                                 .and()
-                                .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                                .successForwardUrl("/"))
-                                .logout(lo -> lo.permitAll()
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")).httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-                                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
+//                                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                                 .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()));
                     } catch (Exception ex) {
@@ -135,5 +144,6 @@ public class JwtSecurityConfig {
         
         return http.build();
     }
+    
     //hasAuthority khac voi hasRole do hasRole se tu dong them ROLE_ vao dang truoc truong` role con hasAuthority thi khong
 }

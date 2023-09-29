@@ -73,6 +73,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     public NguoiDung getNguoiDungByUsername(String username) {
         return this.cndRepo.getNDByUsername(username);
     }
+
+    @Override
+    public boolean authNguoiDung(String taiKhoan, String matKhau) {
+        return this.cndRepo.authNguoiDung(taiKhoan, matKhau, passwordEncoder);
+    }
     
     
 }
