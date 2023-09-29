@@ -68,6 +68,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
         return new org.springframework.security.core.userdetails.User(
                 nd.getTaiKhoan(), nd.getMatKhau(), authorities);
     }
+
+    @Override
+    public NguoiDung getNguoiDungByUsername(String username) {
+        return this.cndRepo.getNDByUsername(username);
+    }
     
     
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,7 +30,7 @@ public class ApiThucAnController {
     
     @CrossOrigin
     @GetMapping("/thucan/")
-    public ResponseEntity<List<ThucAn>> list(@RequestBody Map<String,String> params){
+    public ResponseEntity<List<ThucAn>> list(@RequestParam Map<String,String> params){
         return new ResponseEntity<>(this.foodSer.getThucAnByChiNhanh(Integer.parseInt(params.get("cnId"))), HttpStatus.OK);
     }
 }

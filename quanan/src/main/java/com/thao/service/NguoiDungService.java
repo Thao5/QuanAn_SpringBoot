@@ -17,4 +17,5 @@ public interface NguoiDungService extends UserDetailsService{
     void save(NguoiDung nd);
     void delete(Long id);
     NguoiDung getNguoiDungById(Long id);
+    NguoiDung getNguoiDungByUsername(String username);
 }

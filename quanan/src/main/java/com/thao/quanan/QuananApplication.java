@@ -1,5 +1,6 @@
 package com.thao.quanan;
 
+import com.thao.configs.JwtSecurityConfig;
 import com.thao.configs.SpringSecurityConfig;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;

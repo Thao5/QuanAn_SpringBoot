@@ -33,7 +33,7 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         Root root = q.from(ThucAn.class);
         q.select(root);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(b.equal(root.get("idChiNhanh"), cnId));
+        predicates.add(b.equal(root.get("idChiNhanh").get("id"), cnId));
         q.where(predicates.toArray(Predicate[]::new));
 
         Query query = entityManager.createQuery(q);

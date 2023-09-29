@@ -268,6 +268,11 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
             <!-- Temporary explicit version to fix Thymeleaf bug -->
         </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>9.31</version>
+        </dependency>
     </dependencies>
     
 
