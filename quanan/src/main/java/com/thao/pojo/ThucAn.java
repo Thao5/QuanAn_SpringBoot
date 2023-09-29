@@ -4,6 +4,7 @@
  */
 package com.thao.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -78,6 +79,7 @@ public class ThucAn implements Serializable {
     @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
+    @JsonIgnore
     @OneToMany(mappedBy = "idThucAn")
     private Set<HoaDonChiTiet> hoaDonChiTietSet;
     @Transient

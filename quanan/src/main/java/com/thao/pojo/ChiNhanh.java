@@ -4,6 +4,7 @@
  */
 package com.thao.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -63,16 +64,20 @@ public class ChiNhanh implements Serializable {
     @NotEmpty(message = "Thiếu ảnh")
     @Column(name = "image")
     private String image;
+    @JsonIgnore
     @OneToMany(mappedBy = "idChiNhanh")
     private Set<ThucAn> thucAnSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "idChiNhanh")
     private Set<DanhGia> danhGiaSet;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")
     @ManyToOne
     @NotNull(message = "Thiếu chủ chi nhánh")
     private NguoiDung idNguoiDung;
+    @JsonIgnore
     @OneToMany(mappedBy = "idChiNhanh")
     private Set<Ban> banSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "idChiNhanh")
     private Set<QuyDinhVanChuyen> quyDinhVanChuyenSet;
     @Transient

@@ -4,6 +4,7 @@
  */
 package com.thao.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import jakarta.persistence.Basic;
@@ -95,10 +96,13 @@ public class NguoiDung implements Serializable {
     private String vaiTro;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
     @OneToMany(mappedBy = "idNguoiDung")
     private Set<DanhGia> danhGiaSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "idNguoiDung")
     private Set<HoaDon> hoaDonSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "idNguoiDung")
     private Set<ChiNhanh> chiNhanhSet;
     @Transient

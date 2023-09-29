@@ -121,11 +121,14 @@ public class SpringSecurityConfig {
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        
         http.userDetailsService(userDetailsService)
             .authorizeHttpRequests(rmr->{
             try {
-                rmr.anyRequest()
-                        .permitAll()
+                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
                         .and()
                         .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
                                 .successForwardUrl("/"))
@@ -134,7 +137,7 @@ public class SpringSecurityConfig {
             } catch (Exception ex) {
                 Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        }).csrf(csrf -> csrf.disable());
             
             
             

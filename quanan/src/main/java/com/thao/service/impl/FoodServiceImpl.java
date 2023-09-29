@@ -7,6 +7,7 @@ package com.thao.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.thao.pojo.ThucAn;
+import com.thao.repository.CustomThucAnRepository;
 import com.thao.repository.FoodRepository;
 import com.thao.service.ChiNhanhService;
 import com.thao.service.FoodService;
@@ -34,7 +35,7 @@ public class FoodServiceImpl implements FoodService{
 //    @Autowired
 //    private Cloudinary cloudinary;
     @Autowired
-    private ChiNhanhService storeService;
+    private CustomThucAnRepository cfoodRepo;
     
     @Override
     public List<ThucAn> getThucAns() {
@@ -116,6 +117,11 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public ThucAn getThucAnById(Long id) {
         return this.foodRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<ThucAn> getThucAnByChiNhanh(int cnId) {
+        return this.cfoodRepo.getThucAnByChiNhanh(cnId);
     }
     
     

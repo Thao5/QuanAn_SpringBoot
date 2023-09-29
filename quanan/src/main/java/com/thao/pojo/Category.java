@@ -4,6 +4,7 @@
  */
 package com.thao.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import jakarta.persistence.Basic;
@@ -43,6 +44,7 @@ public class Category implements Serializable {
     @NotBlank(message = "Thiếu tên loại")
     @Column(name = "name")
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "idLoai")
     private Set<ThucAn> thucAnSet;
 

@@ -4,6 +4,7 @@
  */
 package com.thao.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -44,6 +45,7 @@ public class HoaDon implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @JsonIgnore
     @OneToMany(mappedBy = "idHoaDon")
     private Set<HoaDonChiTiet> hoaDonChiTietSet;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")
