@@ -5,13 +5,16 @@
 package com.thao.Controllers;
 
 import com.thao.pojo.ChiNhanh;
+import com.thao.pojo.NguoiDung;
 import com.thao.service.ChiNhanhService;
+import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,11 +34,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping("/admin")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@EnableAsync
 public class ChiNhanhController {
     @Autowired
     private ChiNhanhService storeService;
     @Autowired
     private NguoiDungService ndSer;
+    @Autowired
+    private EmailService emailSer;
     
     @RequestMapping("/chinhanh")
     public String list(Model model){
@@ -60,8 +66,15 @@ public class ChiNhanhController {
     @PostMapping("/addorupdatechinhanh")
     public String addOrUpdate(Model model, @ModelAttribute(value="cns") @Valid ChiNhanh cn, BindingResult rs){
         if(!rs.hasErrors()){
-            if(cn.getId() == null) cn.setCreatedDate(new Date());
+            if(cn.getId() == null){
+                cn.setCreatedDate(new Date());
+                for(NguoiDung nd : this.ndSer.getNDs()){
+                    this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao chi nhanh moi cua quan an", String.format("Quan an da mo chi nhanh moi tai %s", cn.getDiaChi()));
+                }
+            }
             this.storeService.save(cn);
+            
+
             return "redirect:/admin/chinhanh";
         }
         model.addAttribute("nds", this.ndSer.getNDs());
