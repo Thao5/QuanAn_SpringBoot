@@ -113,6 +113,7 @@ public class JwtSecurityConfig {
                         .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
                         .and()
                         .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
                                 .successForwardUrl("/"))

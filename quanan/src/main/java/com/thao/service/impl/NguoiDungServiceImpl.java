@@ -10,6 +10,7 @@ import com.thao.repository.NguoiDungRepository;
 import com.thao.service.NguoiDungService;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -77,6 +78,11 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     @Override
     public boolean authNguoiDung(String taiKhoan, String matKhau) {
         return this.cndRepo.authNguoiDung(taiKhoan, matKhau, passwordEncoder);
+    }
+
+    @Override
+    public List<NguoiDung> getNDCus(Map<String, String> params) {
+        return this.cndRepo.getNDCus(params);
     }
     
     

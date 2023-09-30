@@ -18,6 +18,7 @@ public interface ChiNhanhService {
     void save(ChiNhanh cn);
     void delete(Long id);
     ChiNhanh getChiNhanhById(Long id);
+    List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id);
 //    ChiNhanh getChiNhanhById(int id);
 //    boolean deleteStore(int id);
 //    ChiNhanh getChiNhanhByUser(String username);

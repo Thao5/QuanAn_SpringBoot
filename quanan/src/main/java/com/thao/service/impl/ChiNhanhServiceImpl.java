@@ -6,6 +6,7 @@ package com.thao.service.impl;
 
 import com.thao.pojo.ChiNhanh;
 import com.thao.repository.ChiNhanhRepository;
+import com.thao.repository.CustomChiNhanhRepository;
 import com.thao.service.ChiNhanhService;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class ChiNhanhServiceImpl implements ChiNhanhService{
     @Autowired
     private ChiNhanhRepository storeRepo;
+    @Autowired
+    private CustomChiNhanhRepository cusStoreRepo;
     
     @Override
     public List<ChiNhanh> getChiNhanhs() {
@@ -57,6 +60,11 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
     @Override
     public ChiNhanh getChiNhanhById(Long id) {
         return this.storeRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id) {
+        return this.cusStoreRepo.getChiNhanhTheoChuChiNhanh(id);
     }
     
     

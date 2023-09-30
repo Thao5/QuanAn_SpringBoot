@@ -6,6 +6,7 @@ package com.thao.service.impl;
 
 import com.thao.pojo.Ban;
 import com.thao.repository.BanRepository;
+import com.thao.repository.CustomBanRepository;
 import com.thao.service.BanService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class BanServiceImpl implements BanService{
     @Autowired
     private BanRepository banRepo;
+    @Autowired
+    private CustomBanRepository cBanRepo;
 
     @Override
     public List<Ban> getBans() {
@@ -39,6 +42,11 @@ public class BanServiceImpl implements BanService{
     @Override
     public Ban getBanById(Long id) {
         return this.banRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<Ban> getBanTheoChiNhanh(int cnId) {
+        return this.cBanRepo.getBanTheoChiNhanh(cnId);
     }
     
     

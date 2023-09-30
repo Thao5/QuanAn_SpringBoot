@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,32 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
             return passEncoder.matches(matKhau, nd.getMatKhau());
         }
         return false;
+    }
+
+    @Override
+    public List<NguoiDung> getNDCus(Map<String, String> params) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
+        Root root = q.from(NguoiDung.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(b.isTrue(root.<Boolean>get("active")));
+        
+        if (params != null) {
+            
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                predicates.add(b.like(root.get("firstName"), String.format("%%%s%%", kw)));
+            }
+            String role = params.get("vaiTro");
+            if (role != null && !role.isEmpty()) {
+                predicates.add(b.equal(root.get("vaiTro"), role));
+            }
+            q.where(predicates.toArray(Predicate[]::new));
+        }
+
+        Query query = entityManager.createQuery(q);
+        
+        return query.getResultList();
     }
 }

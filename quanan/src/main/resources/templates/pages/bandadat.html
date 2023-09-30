@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan'">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Food App</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${action}">Trang chu</a>
+                        </li>
+                        
+                        <div class="me-auto">
+
+                            <div th:each="cn : ${listCN}">
+                                <a th:href="@{'/bandatchinhanh/' + ${cn.id}}" th:text="${cn.diaChi}"></a>
+                            </div>
+                            
+                            <div th:if="${#authentication.principal.username != null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
+                                </li>
+                            </div>
+                            <div th:if="${#authentication.principal.username == null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+                                </li>
+
+                            </div>
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="container">
+            <table class="table table-hover"  th:if="${listBan != null}">
+                <thead>
+                    <tr>
+                        <th>Mô tả bàn</th>
+                        <th>Ngày đặt</th>
+                        <th>Ngày nhận</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ban : ${listBan}">
+
+
+                    <tr th:with="comf=('/quanan/bandatchinhanh/xacnhanbandat/' + ${ban.idBan} + '/'),del=('/quanan/bandatchinhanh/deletebandat/' + ${ban.idBan} + '/')">
+                        <td th:text="${ban.moTa}"></td>
+                        <td th:text="${ban.ngayDat}"></td>
+                        <td th:text="${ban.ngayNhan}"></td>
+
+                        <td>
+                            <button th:data-id="${ban.id}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
+                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+                
+            </table>
+            <h1 th:if="${listBan == null}">Không có ai đặt bàn</h1>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

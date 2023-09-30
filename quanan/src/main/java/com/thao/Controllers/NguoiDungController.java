@@ -7,6 +7,7 @@ package com.thao.Controllers;
 import com.thao.pojo.NguoiDung;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -32,8 +34,8 @@ public class NguoiDungController {
     private NguoiDungService ndSer;
 
     @RequestMapping("/nguoidung")
-    public String list(Model model) {
-        model.addAttribute("nds", this.ndSer.getNDs());
+    public String list(Model model, @RequestParam Map<String,String> params) {
+        model.addAttribute("nds", this.ndSer.getNDCus(params));
         return "nguoidung";
     }
 
