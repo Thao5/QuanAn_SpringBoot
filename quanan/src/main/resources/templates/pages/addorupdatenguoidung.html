@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container" th:with="action='/quanan/admin/addorupdatenguoidung'">
-            <form method="post" th:action="${action}" th:object="${nd}">
+            <form method="post" th:action="${action}" th:object="${nd}" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan != null}">
                     <input type="hidden" name="taiKhoan" th:value="*{taiKhoan}"/>
@@ -46,20 +46,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="vaiTro" name="vaiTro" th:field="*{vaiTro}" class="form-select">
-                        <option value="Admin" th:if="${nd.vaiTro != 'Admin'}">Admin</option>
-                        <option value="Admin" th:if="${nd.vaiTro == 'Admin'}" selected>Admin</option>
-                        <option value="Owner" th:if="${nd.vaiTro != 'Owner'}">Owner</option>
-                        <option value="Owner" th:if="${nd.vaiTro == 'Owner'}" selected>Owner</option>
-                        <option value="Customer" th:if="${nd.vaiTro != 'Customer'}">Customer</option>
-                        <option value="Customer" th:if="${nd.vaiTro == 'Customer'}" selected>Customer</option>
+                        <option value="ADMIN" th:if="${nd.vaiTro != 'ADMIN'}">Admin</option>
+                        <option value="ADMIN" th:if="${nd.vaiTro == 'ADMIN'}" selected>Admin</option>
+                        <option value="OWNER" th:if="${nd.vaiTro != 'ONWER'}">Owner</option>
+                        <option value="OWNER" th:if="${nd.vaiTro == 'ONWER'}" selected>Owner</option>
+                        <option value="CUSTOMER" th:if="${nd.vaiTro != 'CUSTOMER'}">Customer</option>
+                        <option value="CUSTOMER" th:if="${nd.vaiTro == 'CUSTOMER'}" selected>Customer</option>
                     </select>
                     <label for="vaiTro">Vai Trò</label>
                     <p th:if="${#fields.hasErrors('vaiTro')}" th:errorclass="text-danger" th:errors="*{vaiTro}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="avatar" class="form-control" name="avatar" th:value="*{avatar}" placeholder="Nhập ảnh"/>
-                    <label for="avatar">Ảnh</label>
-                    <p th:if="${#fields.hasErrors('avatar')}" th:errorclass="text-danger" th:errors="*{avatar}" />
+                    <input type="file" id="file" class="form-control" name="file" th:value="*{file}" placeholder="Nhập ảnh"/>
+                    <label for="file">Ảnh</label>
+                    <img th:if="${nd.avatar != null}" th:src="${nd.avatar}" width="120" />
                 </div>
                 
                 <div class="form-floating mb-3 mt-3">

@@ -4,14 +4,19 @@
  */
 package com.thao.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.thao.pojo.NguoiDung;
 import com.thao.repository.CustomNguoiDungRepository;
 import com.thao.repository.NguoiDungRepository;
 import com.thao.service.NguoiDungService;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,14 +31,16 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Chung Vu
  */
 @Service("userDetailsService")
-public class NguoiDungServiceImpl implements NguoiDungService{
-    
+public class NguoiDungServiceImpl implements NguoiDungService {
+
     @Autowired
     private NguoiDungRepository ndRepo;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private CustomNguoiDungRepository cndRepo;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Override
     public List<NguoiDung> getNDs() {
@@ -42,8 +49,21 @@ public class NguoiDungServiceImpl implements NguoiDungService{
 
     @Override
     public void save(NguoiDung nd) {
-        if(!nd.getMatKhau().equals(this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau())){
-            nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
+        if (nd.getId() != null) {
+            if (!nd.getMatKhau().equals(this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau())) {
+                nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
+            }
+        }
+
+        if (!nd.getFile().isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(nd.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                nd.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.ndRepo.save(nd);
     }
@@ -96,10 +116,19 @@ public class NguoiDungServiceImpl implements NguoiDungService{
         u.setTaiKhoan(params.get("username"));
         u.setMatKhau(this.passwordEncoder.encode(params.get("password")));
         u.setVaiTro("CUSTOMER");
-        u.setAvatar("https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png");
+        if (!avatar.isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                u.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
         this.ndRepo.save(u);
         return u;
     }
-    
-    
+
 }

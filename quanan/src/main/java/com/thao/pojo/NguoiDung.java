@@ -85,8 +85,8 @@ public class NguoiDung implements Serializable {
     @Column(name = "phone")
     private String phone;
     @Size(max = 255)
-    @NotNull(message = "Thiếu ảnh")
-    @NotBlank(message = "Thiếu ảnh")
+//    @NotNull(message = "Thiếu ảnh")
+//    @NotBlank(message = "Thiếu ảnh")
     @Column(name = "avatar")
     private String avatar;
     @Size(max = 10)

@@ -4,19 +4,24 @@
  */
 package com.thao.configs;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.thao.filters.CustomAccessDeniedHandler;
 import com.thao.filters.JwtAuthenticationTokenFilter;
 import com.thao.filters.RestAuthenticationEntryPoint;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ProviderManager;
@@ -55,15 +60,30 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
     "com.thao.components"})
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
+@PropertySource("classpath:configs.properties")
 //@Order(2)
 public class SpringSecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Resource
+    private Environment env;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary
+                = new Cloudinary(ObjectUtils.asMap(
+                        "cloud_name", this.env.getProperty("cloudinary.cloud_name"),
+                        "api_key", this.env.getProperty("cloudinary.api_key"),
+                        "api_secret", this.env.getProperty("cloudinary.api_secret"),
+                        "secure", true));
+        return cloudinary;
     }
 
 //    @Bean

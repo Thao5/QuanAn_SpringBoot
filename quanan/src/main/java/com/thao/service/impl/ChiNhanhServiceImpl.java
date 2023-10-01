@@ -4,14 +4,19 @@
  */
 package com.thao.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.thao.pojo.ChiNhanh;
 import com.thao.repository.ChiNhanhRepository;
 import com.thao.repository.CustomChiNhanhRepository;
 import com.thao.service.ChiNhanhService;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,8 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
     private ChiNhanhRepository storeRepo;
     @Autowired
     private CustomChiNhanhRepository cusStoreRepo;
+    @Autowired
+    private Cloudinary cloudinary;
     
     @Override
     public List<ChiNhanh> getChiNhanhs() {
@@ -48,6 +55,16 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
 
     @Override
     public void save(ChiNhanh cn) {
+        if (!cn.getFile().isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(cn.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                cn.setImage(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(ChiNhanhServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         this.storeRepo.save(cn);
     }
 

@@ -32,8 +32,8 @@ public class FoodServiceImpl implements FoodService{
 
     @Autowired
     private FoodRepository foodRepo;
-//    @Autowired
-//    private Cloudinary cloudinary;
+    @Autowired
+    private Cloudinary cloudinary;
     @Autowired
     private CustomThucAnRepository cfoodRepo;
     
@@ -105,6 +105,16 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public void save(ThucAn ta) {
+        if (!ta.getFile().isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(ta.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                ta.setImage(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(FoodServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         this.foodRepo.save(ta);
     }
 

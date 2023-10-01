@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container" th:with="action='/quanan/admin/addorupdatefood'">
-            <form method="post" th:action="${action}" th:object="${food}">
+            <form method="post" th:action="${action}" th:object="${food}" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <div class="form-floating mb-3 mt-3">
@@ -42,9 +42,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <p th:if="${#fields.hasErrors('idLoai')}" th:errorclass="text-danger" th:errors="*{idLoai}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="image" class="form-control" name="image" th:value="*{image}" placeholder="Nhập ảnh"/>
-                    <label for="image">Ảnh</label>
-                    <p th:if="${#fields.hasErrors('image')}" th:errorclass="text-danger" th:errors="*{image}" />
+                    <input type="file" id="file" class="form-control" name="file" th:value="*{file}" placeholder="Nhập ảnh"/>
+                    <label for="file">Ảnh</label>
+                    <img th:if="${food.image != null}" th:src="${food.image}" width="120" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${cns.id != null}"> Cập nhật</button>

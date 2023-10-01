@@ -61,7 +61,7 @@ public class ChiNhanh implements Serializable {
     @DateTimeFormat(iso=ISO.DATE)
     private Date createdDate;
     @Size(max = 255)
-    @NotEmpty(message = "Thiếu ảnh")
+//    @NotEmpty(message = "Thiếu ảnh")
     @Column(name = "image")
     private String image;
     @JsonIgnore

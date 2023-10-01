@@ -67,8 +67,8 @@ public class ThucAn implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Size(max = 255)
-    @NotNull(message = "Thiếu ảnh")
-    @NotBlank(message = "Thiếu ảnh")
+//    @NotNull(message = "Thiếu ảnh")
+//    @NotBlank(message = "Thiếu ảnh")
     @Column(name = "image")
     private String image;
     @JoinColumn(name = "id_loai", referencedColumnName = "id")
