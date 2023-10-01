@@ -8,6 +8,7 @@ import com.thao.pojo.NguoiDung;
 import java.util.List;
 import java.util.Map;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface CustomNguoiDungRepository {
     NguoiDung getNDByUsername(String username);
     boolean authNguoiDung(String taiKhoan, String matKhau, BCryptPasswordEncoder passEncoder);
     List<NguoiDung> getNDCus(Map<String, String> params);
+    
 }

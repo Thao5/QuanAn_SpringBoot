@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -22,4 +23,5 @@ public interface NguoiDungService extends UserDetailsService{
     NguoiDung getNguoiDungByUsername(String username);
     boolean authNguoiDung(String taiKhoan, String matKhau);
     List<NguoiDung> getNDCus(Map<String, String> params);
+    NguoiDung addUser(Map<String, String> params, MultipartFile avatar);
 }

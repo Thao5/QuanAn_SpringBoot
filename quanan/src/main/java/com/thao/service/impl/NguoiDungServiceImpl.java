@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -83,6 +84,21 @@ public class NguoiDungServiceImpl implements NguoiDungService{
     @Override
     public List<NguoiDung> getNDCus(Map<String, String> params) {
         return this.cndRepo.getNDCus(params);
+    }
+
+    @Override
+    public NguoiDung addUser(Map<String, String> params, MultipartFile avatar) {
+        NguoiDung u = new NguoiDung();
+        u.setFirstName(params.get("firstName"));
+        u.setLastName(params.get("lastName"));
+        u.setPhone(params.get("phone"));
+        u.setEmail(params.get("email"));
+        u.setTaiKhoan(params.get("username"));
+        u.setMatKhau(this.passwordEncoder.encode(params.get("password")));
+        u.setVaiTro("CUSTOMER");
+        u.setAvatar("https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png");
+        this.ndRepo.save(u);
+        return u;
     }
     
     

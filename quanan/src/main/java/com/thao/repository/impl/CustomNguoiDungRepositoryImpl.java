@@ -18,6 +18,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -80,4 +81,5 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         
         return query.getResultList();
     }
+
 }

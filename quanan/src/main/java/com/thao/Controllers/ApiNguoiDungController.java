@@ -8,6 +8,7 @@ import com.thao.components.JwtService;
 import com.thao.pojo.NguoiDung;
 import com.thao.service.NguoiDungService;
 import java.security.Principal;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -48,5 +52,14 @@ public class ApiNguoiDungController {
     public ResponseEntity<NguoiDung> details(Principal user) {
         NguoiDung u = this.ndSer.getNguoiDungByUsername(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+    
+    @PostMapping(path = "/dangky/", 
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, 
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @CrossOrigin
+    public ResponseEntity<NguoiDung> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+        NguoiDung user = this.ndSer.addUser(params, avatar);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 }
