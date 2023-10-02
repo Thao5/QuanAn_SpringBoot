@@ -8,6 +8,7 @@ import com.thao.pojo.Ban;
 import com.thao.repository.BanRepository;
 import com.thao.repository.CustomBanRepository;
 import com.thao.service.BanService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class BanServiceImpl implements BanService{
 
     @Override
     public void save(Ban b) {
+        if(b.getId() == null) b.setCreatedDate(new Date());
         this.banRepo.save(b);
     }
 

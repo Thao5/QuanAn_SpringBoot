@@ -7,9 +7,12 @@ package com.thao.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.thao.pojo.ChiNhanh;
+import com.thao.pojo.NguoiDung;
 import com.thao.repository.ChiNhanhRepository;
 import com.thao.repository.CustomChiNhanhRepository;
 import com.thao.service.ChiNhanhService;
+import com.thao.service.EmailService;
+import com.thao.service.NguoiDungService;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -25,14 +28,19 @@ import org.springframework.stereotype.Service;
  * @author Thao
  */
 @Service
-public class ChiNhanhServiceImpl implements ChiNhanhService{
+public class ChiNhanhServiceImpl implements ChiNhanhService {
+
     @Autowired
     private ChiNhanhRepository storeRepo;
     @Autowired
     private CustomChiNhanhRepository cusStoreRepo;
     @Autowired
     private Cloudinary cloudinary;
-    
+    @Autowired
+    private EmailService emailSer;
+    @Autowired
+    private NguoiDungService ndSer;
+
     @Override
     public List<ChiNhanh> getChiNhanhs() {
         return storeRepo.findAll();
@@ -52,7 +60,6 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
 //    public ChiNhanh getChiNhanhByUser(String username) {
 //        return this.storeRepo.getChiNhanhByUser(username);
 //    }
-
     @Override
     public void save(ChiNhanh cn) {
         if (!cn.getFile().isEmpty()) {
@@ -71,6 +78,9 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
     @Override
     public void delete(Long id) {
         ChiNhanh cn = this.storeRepo.getReferenceById(id);
+        for (NguoiDung nd : this.ndSer.getNDs()) {
+            this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao dong cua chi nhanh cua quan an", String.format("Quan an da dong cua chi nhanh %s", cn.getDiaChi()));
+        }
         this.storeRepo.delete(cn);
     }
 
@@ -83,6 +93,5 @@ public class ChiNhanhServiceImpl implements ChiNhanhService{
     public List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id) {
         return this.cusStoreRepo.getChiNhanhTheoChuChiNhanh(id);
     }
-    
-    
+
 }

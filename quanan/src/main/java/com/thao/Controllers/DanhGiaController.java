@@ -36,6 +36,14 @@ public class DanhGiaController {
     private NguoiDungService ndSer;
     @Autowired
     private ChiNhanhService cnSer;
+    
+    @GetMapping("/addorupdatedanhgia")
+    public String update(Model model) {
+        model.addAttribute("dg", new DanhGia());
+        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+        model.addAttribute("nds", this.ndSer.getNDs());
+        return "addorupdatedanhgia";
+    }
 
     @GetMapping("/addorupdatedanhgia/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
@@ -52,7 +60,7 @@ public class DanhGiaController {
                 dg.setCreatedDate(new Date());
             }
             this.dgSer.save(dg);
-            return "redirect:/";
+            return "redirect:/admin/chinhanh";
         }
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
         model.addAttribute("nds", this.ndSer.getNDs());

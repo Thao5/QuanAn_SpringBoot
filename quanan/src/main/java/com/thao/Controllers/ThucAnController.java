@@ -62,7 +62,7 @@ public class ThucAnController {
     public String addOrUpdate(Model model, @ModelAttribute(value = "food") @Valid ThucAn food, BindingResult rs) {
         if (!rs.hasErrors()) {
             this.foodService.save(food);
-            return "redirect:/";
+            return "redirect:/admin/chinhanh";
         }
         model.addAttribute("cates", this.cateSer.getCates());
         model.addAttribute("cns", this.cnSer.getChiNhanhs());

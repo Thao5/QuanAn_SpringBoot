@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -49,11 +50,11 @@ public class DanhGia implements Serializable {
     @NotBlank(message = "Thiếu nội dung")
     @Column(name = "noi_dung")
     private String noiDung;
-    @NotEmpty(message = "Thiếu đánh giá")
-    @NotBlank(message = "Thiếu đánh giá")
+    @NotNull(message = "Thiếu đánh giá")
     @Column(name = "danh_gia")
     private Integer danhGia;
     @Column(name = "created_date")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")

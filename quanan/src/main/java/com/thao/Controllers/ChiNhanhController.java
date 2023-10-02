@@ -6,8 +6,11 @@ package com.thao.Controllers;
 
 import com.thao.pojo.ChiNhanh;
 import com.thao.pojo.NguoiDung;
+import com.thao.service.BanService;
 import com.thao.service.ChiNhanhService;
+import com.thao.service.DanhGiaService;
 import com.thao.service.EmailService;
+import com.thao.service.FoodService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
@@ -41,11 +44,20 @@ public class ChiNhanhController {
     @Autowired
     private NguoiDungService ndSer;
     @Autowired
+    private FoodService foodSer;
+    @Autowired
     private EmailService emailSer;
+    @Autowired
+    private BanService banSer;
+    @Autowired
+    private DanhGiaService dgSer;
     
     @RequestMapping("/chinhanh")
     public String list(Model model){
         model.addAttribute("stores", this.storeService.getChiNhanhs());
+        model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("bans", this.banSer.getBans());
+        model.addAttribute("dgs", this.dgSer.getDanhGias());
         return "chinhanh";
     }
     
@@ -53,6 +65,7 @@ public class ChiNhanhController {
     public String add(Model model){
         model.addAttribute("cns", new ChiNhanh());
         model.addAttribute("nds", this.ndSer.getNDs());
+        
         return "addorupdatechinhanh";
     }
     

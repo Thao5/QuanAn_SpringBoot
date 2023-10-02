@@ -26,6 +26,7 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -56,14 +57,15 @@ public class ThucAn implements Serializable {
     @Column(name = "name")
     private String name;
     @NotNull(message = "Thiếu số lượng")
-    @NotBlank(message = "Thiếu số lượng")
+//    @NotBlank(message = "Thiếu số lượng")
     @Column(name = "so_luong")
     private Integer soLuong;
     @Column(name = "price")
     @NotNull(message = "Thiếu giá")
-    @NotBlank(message = "Thiếu giá")
+//    @NotBlank(message = "Thiếu giá")
     private Long price;
     @Column(name = "created_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Size(max = 255)
@@ -202,5 +204,5 @@ public class ThucAn implements Serializable {
     public void setFile(MultipartFile file) {
         this.file = file;
     }
-    
+
 }

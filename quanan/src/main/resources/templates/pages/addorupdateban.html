@@ -19,7 +19,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
-                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                        <th:block th:each="cn : ${cns}">
+                            <option th:if="${ban.idChiNhanh != null && cn.id == ban.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                            <option th:if="${ban.idChiNhanh != null && cn.id != ban.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                            <option th:if="${ban.idChiNhanh == null}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                        </th:block>
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
                     <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />

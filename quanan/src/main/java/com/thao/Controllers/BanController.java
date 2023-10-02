@@ -33,6 +33,13 @@ public class BanController {
     private BanService banSer;
     @Autowired
     private ChiNhanhService cnSer;
+    
+    @GetMapping("/addorupdateban")
+    public String update(Model model) {
+        model.addAttribute("ban", new Ban());
+        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+        return "addorupdateban";
+    }
 
     @GetMapping("/addorupdateban/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
@@ -48,7 +55,7 @@ public class BanController {
                 ban.setCreatedDate(new Date());
             }
             this.banSer.save(ban);
-            return "redirect:/";
+            return "redirect:/admin/chinhanh";
         }
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
         return "addorupdateban";

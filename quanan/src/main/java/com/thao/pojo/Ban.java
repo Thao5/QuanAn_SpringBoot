@@ -9,6 +9,8 @@ import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -37,17 +40,18 @@ public class Ban implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 6)
     @Column(name = "id")
-    private String id;
+    private Integer id;
     @Size(max = 255)
     @NotEmpty(message = "Thiếu mô tả")
     @NotBlank(message = "Thiếu mô tả")
     @Column(name = "mo_ta")
     private String moTa;
     @Column(name = "created_date")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
@@ -58,15 +62,15 @@ public class Ban implements Serializable {
     public Ban() {
     }
 
-    public Ban(String id) {
+    public Ban(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

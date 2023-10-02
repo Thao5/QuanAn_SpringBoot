@@ -12,6 +12,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <form method="post" th:action="${action}" th:object="${food}" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <input type="hidden" name="image" th:value="*{image}"/>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn"/>
                     <label for="name">Tên món ăn</label>
@@ -29,14 +30,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
-                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                        <th:block th:each="cn : ${cns}">
+                            <option th:if="${food.idChiNhanh != null && cn.id == food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" selected></option>
+                            <option th:if="${food.idChiNhanh != null && cn.id != food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" ></option>
+                            <option th:if="${food.idChiNhanh == null}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                        </th:block>
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
                     <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idLoai" name="idLoai" th:field="*{idLoai}" class="form-select">
-                        <option th:each="c : ${cates}" th:value="${c.id}" th:text="${c.name}"></option>
+                        <th:block th:each="c : ${cates}">
+                            <option th:if="${food.idLoai != null && c.id == food.idLoai.id}" th:value="${c.id}" th:text="${c.name}" selected></option>
+                            <option th:if="${food.idLoai != null && c.id != food.idLoai.id}" th:value="${c.id}" th:text="${c.name}" ></option>
+                            <option th:if="${food.idLoai == null}" th:value="${c.id}" th:text="${c.name}"></option>
+                        </th:block>
                     </select>
                     <label for="idLoai">Loại đồ ăn</label>
                     <p th:if="${#fields.hasErrors('idLoai')}" th:errorclass="text-danger" th:errors="*{idLoai}" />
@@ -47,8 +56,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <img th:if="${food.image != null}" th:src="${food.image}" width="120" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <button type="submit" class="btn btn-info" th:if="${cns.id != null}"> Cập nhật</button>
-                    <button type="submit" class="btn btn-info" th:if="${cns.id == null}"> Thêm</button>
+                    <button type="submit" class="btn btn-info" th:if="${food.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${food.id == null}"> Thêm</button>
                 </div>
             </form>
         </section>
