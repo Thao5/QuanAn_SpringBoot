@@ -33,4 +33,10 @@ public class ApiThucAnController {
     public ResponseEntity<List<ThucAn>> list(@RequestParam Map<String,String> params){
         return new ResponseEntity<>(this.foodSer.getThucAnByChiNhanh(Integer.parseInt(params.get("cnId"))), HttpStatus.OK);
     }
+    
+    @CrossOrigin
+    @GetMapping("/food/")
+    public ResponseEntity<List<ThucAn>> list(){
+        return new ResponseEntity<>(this.foodSer.getThucAns(), HttpStatus.OK);
+    }
 }
