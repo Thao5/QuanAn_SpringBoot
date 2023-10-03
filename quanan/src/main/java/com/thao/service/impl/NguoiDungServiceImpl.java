@@ -53,6 +53,8 @@ public class NguoiDungServiceImpl implements NguoiDungService {
             if (!nd.getMatKhau().equals(this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau())) {
                 nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
             }
+        } else{
+            nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
         }
 
         if (!nd.getFile().isEmpty()) {

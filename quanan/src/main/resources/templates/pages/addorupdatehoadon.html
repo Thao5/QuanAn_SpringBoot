@@ -14,7 +14,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idNguoiDung" name="idNguoiDung" th:field="*{idNguoiDung}" class="form-select">
-                        <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                        <th:block th:each="nd : ${nds}">
+                            <option th:if="${hd.idNguoiDung != null && nd.id == hd.idNguoiDung.id}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}" selected></option>
+                            <option th:if="${hd.idNguoiDung != null && nd.id != hd.idNguoiDung.id}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                            <option th:if="${hd.idNguoiDung == null}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                        </th:block>
                     </select>
                     <label for="idNguoiDung">Người đặt món</label>
                     <p th:if="${#fields.hasErrors('idNguoiDung')}" th:errorclass="text-danger" th:errors="*{idNguoiDung}" />

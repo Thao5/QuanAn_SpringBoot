@@ -7,6 +7,7 @@ package com.thao.service.impl;
 import com.thao.pojo.HoaDon;
 import com.thao.repository.HoaDonRepository;
 import com.thao.service.HoaDonService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class HoaDonServiceImpl implements HoaDonService{
 
     @Override
     public void save(HoaDon hd) {
+        if(hd.getId() == null){
+            hd.setCreatedDate(new Date());
+        }
         this.hdRepo.save(hd);
     }
 

@@ -7,6 +7,7 @@ package com.thao.Controllers;
 import com.thao.pojo.HoaDonChiTiet;
 import com.thao.service.FoodService;
 import com.thao.service.HoaDonChiTietService;
+import com.thao.service.HoaDonService;
 import jakarta.validation.Valid;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,22 @@ public class HoaDonChiTietController {
     private HoaDonChiTietService hdSer;
     @Autowired
     private FoodService foodSer;
+    @Autowired
+    private HoaDonService hSer;
+    
+    @GetMapping("/addorupdatehoadonchitiet")
+    public String add(Model model) {
+        model.addAttribute("hd", new HoaDonChiTiet());
+        model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("hs", this.hSer.getHoaDons());
+        return "addorupdatehoadonchitiet";
+    }
 
     @GetMapping("/addorupdatehoadonchitiet/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
         model.addAttribute("hd", this.hdSer.getHoaDonChiTietById(id));
         model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("hs", this.hSer.getHoaDons());
         return "addorupdatehoadonchitiet";
     }
 
@@ -48,9 +60,10 @@ public class HoaDonChiTietController {
                 hd.setCreatedDate(new Date());
             }
             this.hdSer.save(hd);
-            return "redirect:/";
+            return "redirect:/admin/hoadon";
         }
         model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("hs", this.hSer.getHoaDons());
         return "addorupdatehoadonchitiet";
     }
 

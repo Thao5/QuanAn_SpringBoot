@@ -23,6 +23,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -43,6 +44,7 @@ public class HoaDon implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "created_date")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JsonIgnore

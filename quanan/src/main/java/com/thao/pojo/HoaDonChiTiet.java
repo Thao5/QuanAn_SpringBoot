@@ -22,6 +22,7 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -44,19 +45,20 @@ public class HoaDonChiTiet implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @NotEmpty(message = "Thiếu số lượng mua")
-    @NotBlank(message = "Thiếu số lượng mua")
+    @NotNull(message = "Thiếu số lượng mua")
+//    @NotBlank(message = "Thiếu số lượng mua")
     @Column(name = "so_luong_mua")
     private Integer soLuongMua;
-    @NotEmpty(message = "Thiếu giá vận chuyển")
-    @NotBlank(message = "Thiếu giá vận chuyển")
+    @NotNull(message = "Thiếu giá vận chuyển")
+//    @NotBlank(message = "Thiếu giá vận chuyển")
     @Column(name = "gia_van_chuyen")
     private Long giaVanChuyen;
-    @NotEmpty(message = "Thiếu tổng tiền")
-    @NotBlank(message = "Thiếu tổng tiền")
+    @NotNull(message = "Thiếu tổng tiền")
+//    @NotBlank(message = "Thiếu tổng tiền")
     @Column(name = "tong_tien")
     private Long tongTien;
     @Column(name = "created_date")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JoinColumn(name = "id_hoa_don", referencedColumnName = "id")

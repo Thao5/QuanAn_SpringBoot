@@ -5,6 +5,7 @@
 package com.thao.Controllers;
 
 import com.thao.pojo.HoaDon;
+import com.thao.service.HoaDonChiTietService;
 import com.thao.service.HoaDonService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
@@ -33,10 +34,13 @@ public class HoaDonController {
     private HoaDonService hdSer;
     @Autowired
     private NguoiDungService ndSer;
+    @Autowired
+    private HoaDonChiTietService hdctSer;
 
     @RequestMapping("/hoadon")
     public String list(Model model) {
         model.addAttribute("hds", this.hdSer.getHoaDons());
+        model.addAttribute("hdcts", this.hdctSer.getHDs());
         return "hoadon";
     }
 
@@ -61,7 +65,7 @@ public class HoaDonController {
                 hd.setCreatedDate(new Date());
             }
             this.hdSer.save(hd);
-            return "redirect:/";
+            return "redirect:/admin/hoadon";
         }
         
         model.addAttribute("nds", this.ndSer.getNDs());

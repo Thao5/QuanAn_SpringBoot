@@ -7,6 +7,7 @@ package com.thao.service.impl;
 import com.thao.pojo.HoaDonChiTiet;
 import com.thao.repository.HoaDonChiTietRepository;
 import com.thao.service.HoaDonChiTietService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService{
 
     @Override
     public void save(HoaDonChiTiet hd) {
+        if(hd.getId() == null){
+            hd.setCreatedDate(new Date());
+        }
         this.hdRepo.save(hd);
     }
 

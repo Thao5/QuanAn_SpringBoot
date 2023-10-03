@@ -142,7 +142,7 @@ CREATE TABLE `hoa_don` (
   PRIMARY KEY (`id`),
   KEY `id_nguoi_dung` (`id_nguoi_dung`),
   CONSTRAINT `hoa_don_ibfk_1` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,6 +151,7 @@ CREATE TABLE `hoa_don` (
 
 LOCK TABLES `hoa_don` WRITE;
 /*!40000 ALTER TABLE `hoa_don` DISABLE KEYS */;
+INSERT INTO `hoa_don` VALUES (2,'2023-10-03 07:00:00',3);
 /*!40000 ALTER TABLE `hoa_don` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +175,7 @@ CREATE TABLE `hoa_don_chi_tiet` (
   KEY `id_thuc_an` (`id_thuc_an`),
   CONSTRAINT `hoa_don_chi_tiet_ibfk_1` FOREIGN KEY (`id_hoa_don`) REFERENCES `hoa_don` (`id`),
   CONSTRAINT `hoa_don_chi_tiet_ibfk_2` FOREIGN KEY (`id_thuc_an`) REFERENCES `thuc_an` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,6 +184,7 @@ CREATE TABLE `hoa_don_chi_tiet` (
 
 LOCK TABLES `hoa_don_chi_tiet` WRITE;
 /*!40000 ALTER TABLE `hoa_don_chi_tiet` DISABLE KEYS */;
+INSERT INTO `hoa_don_chi_tiet` VALUES (2,3,0,30000,'2023-10-03 15:55:02',2,1);
 /*!40000 ALTER TABLE `hoa_don_chi_tiet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,4 +290,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-03  2:58:19
+-- Dump completed on 2023-10-03 16:05:00

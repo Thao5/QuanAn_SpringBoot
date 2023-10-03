@@ -29,10 +29,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idThucAn" name="idThucAn" th:field="*{idThucAn}" class="form-select">
-                        <option th:each="ta : ${tas}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                        <th:block th:each="ta : ${tas}">
+                            <option th:if="${hd.idThucAn != null && ta.id == hd.idThucAn.id}" th:value="${ta.id}" th:text="${ta.name}" selected></option>
+                            <option th:if="${hd.idThucAn != null && ta.id != hd.idThucAn.id}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                            <option th:if="${hd.idThucAn == null}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                        </th:block>
                     </select>
-                    <label for="idNguoiDung">Thức ăn</label>
+                    <label for="idThucAn">Thức ăn</label>
                     <p th:if="${#fields.hasErrors('idThucAn')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idHoaDon" name="idHoaDon" th:field="*{idHoaDon}" class="form-select">
+                        <th:block th:each="h : ${hs}">
+                            <option th:if="${hd.idHoaDon != null && h.id == hd.idHoaDon.id}" th:value="${h.id}" th:text="${h.id}" selected></option>
+                            <option th:if="${hd.idHoaDon != null && h.id != hd.idHoaDon.id}" th:value="${h.id}" th:text="${h.id}"></option>
+                            <option th:if="${hd.idHoaDon == null}" th:value="${h.id}" th:text="${h.id}"></option>
+                        </th:block>
+                    </select>
+                    <label for="idHoaDon">Hóa đơn</label>
+                    <p th:if="${#fields.hasErrors('idHoaDon')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>
