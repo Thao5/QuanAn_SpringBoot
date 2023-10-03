@@ -11,6 +11,13 @@
     <class>com.thao.pojo.HoaDonChiTiet</class>
     <class>com.thao.pojo.DanhGia</class>
     <class>com.thao.pojo.QuyDinhVanChuyen</class>
+    <class>com.thao.pojo.ChiNhanh_1</class>
+    <class>com.thao.pojo.NguoiDung_1</class>
+    <class>com.thao.pojo.ThucAn_1</class>
+    <class>com.thao.pojo.Ban_1</class>
+    <class>com.thao.pojo.HoaDonChiTietTaiCho</class>
+    <class>com.thao.pojo.Category_1</class>
+    <class>com.thao.pojo.HoaDonTaiCho</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/quanan?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

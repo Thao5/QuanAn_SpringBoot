@@ -5,6 +5,7 @@
 package com.thao.repository;
 
 import com.thao.pojo.MonDat;
+import com.thao.pojo.MonDatTaiCho;
 import java.util.Map;
 
 /**
@@ -12,5 +13,6 @@ import java.util.Map;
  * @author Chung Vu
  */
 public interface ReceiptRepository {
-    public boolean addReceipt(Map<String, MonDat> carts);
+    boolean addReceipt(Map<String, MonDat> carts);
+//    boolean addReceiptOff(Map<String, MonDatTaiCho> carts);
 }

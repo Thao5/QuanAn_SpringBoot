@@ -80,7 +80,7 @@ create table danh_gia
 
 create table ban
 (
-	id nvarchar(6) primary key,
+	id int primary key auto_increment,
     mo_ta nvarchar(255),
     created_date datetime default now(),
     id_chi_nhanh int,
@@ -94,6 +94,26 @@ create table quy_dinh_van_chuyen
     price decimal not null,
     id_chi_nhanh int,
     foreign key(id_chi_nhanh) references chi_nhanh(id)
+);
+
+create table hoa_don_tai_cho
+(
+	id int primary key auto_increment,
+    created_date datetime default now(),
+    id_ban int,
+    foreign key (id_ban) references ban(id)
+);
+
+create table hoa_don_chi_tiet_tai_cho
+(
+	id int primary key auto_increment,
+    so_luong_mua int,
+    tong_tien decimal,
+    created_date datetime default now(),
+    id_hoa_don int,
+    foreign key(id_hoa_don) references hoa_don_tai_cho(id),
+    id_thuc_an int,
+    foreign key(id_thuc_an) references thuc_an(id)
 );
 
 drop table danh_gia;

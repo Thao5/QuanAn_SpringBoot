@@ -12,6 +12,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <form method="post" th:action="${action}" th:object="${cns}" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <input type="hidden" name="image" th:value="*{image}"/>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="diaChi" class="form-control" name="diaChi" th:value="*{diaChi}" placeholder="Nhập địa chỉ"/>
                     <label for="diaChi">Địa chỉ</label>

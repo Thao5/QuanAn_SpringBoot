@@ -92,7 +92,7 @@ CREATE TABLE `chi_nhanh` (
 
 LOCK TABLES `chi_nhanh` WRITE;
 /*!40000 ALTER TABLE `chi_nhanh` DISABLE KEYS */;
-INSERT INTO `chi_nhanh` VALUES (4,'123/asdas','2023-09-27 07:00:00','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(6,'123/asdasad','2023-09-29 22:57:41','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',2),(7,'sadasdasd','2023-09-29 23:05:24','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(8,'asdasdasdas','2023-09-29 23:12:15','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(9,'sadasd','2023-09-30 00:04:59','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(10,'asdasdsa','2023-09-30 00:09:26','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(11,'sadasdsad','2023-10-02 02:15:04','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1696187706/wkp4cghymt3q9xclxstk.png',1);
+INSERT INTO `chi_nhanh` VALUES (4,'123/asdas','2023-09-27 07:00:00','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1696363678/gly3bnsfhkepqe4ggzfr.jpg',1),(6,'123/asdasad','2023-09-29 22:57:41','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',2),(7,'sadasdasd','2023-09-29 23:05:24','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(8,'asdasdasdas','2023-09-29 23:12:15','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(9,'sadasd','2023-09-30 00:04:59','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(10,'asdasdsa','2023-09-30 00:09:26','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1691990852/uyaxwbdtxbrrefc3qt7j.png',1),(11,'sadasdsad','2023-10-02 02:15:04','https://res.cloudinary.com/dtlqyvkvu/image/upload/v1696187706/wkp4cghymt3q9xclxstk.png',1);
 /*!40000 ALTER TABLE `chi_nhanh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,6 +186,63 @@ LOCK TABLES `hoa_don_chi_tiet` WRITE;
 /*!40000 ALTER TABLE `hoa_don_chi_tiet` DISABLE KEYS */;
 INSERT INTO `hoa_don_chi_tiet` VALUES (2,3,0,30000,'2023-10-03 15:55:02',2,1);
 /*!40000 ALTER TABLE `hoa_don_chi_tiet` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hoa_don_chi_tiet_tai_cho`
+--
+
+DROP TABLE IF EXISTS `hoa_don_chi_tiet_tai_cho`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hoa_don_chi_tiet_tai_cho` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `so_luong_mua` int DEFAULT NULL,
+  `tong_tien` decimal(10,0) DEFAULT NULL,
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id_hoa_don` int DEFAULT NULL,
+  `id_thuc_an` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_hoa_don` (`id_hoa_don`),
+  KEY `id_thuc_an` (`id_thuc_an`),
+  CONSTRAINT `hoa_don_chi_tiet_tai_cho_ibfk_1` FOREIGN KEY (`id_hoa_don`) REFERENCES `hoa_don_tai_cho` (`id`),
+  CONSTRAINT `hoa_don_chi_tiet_tai_cho_ibfk_2` FOREIGN KEY (`id_thuc_an`) REFERENCES `thuc_an` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hoa_don_chi_tiet_tai_cho`
+--
+
+LOCK TABLES `hoa_don_chi_tiet_tai_cho` WRITE;
+/*!40000 ALTER TABLE `hoa_don_chi_tiet_tai_cho` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hoa_don_chi_tiet_tai_cho` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hoa_don_tai_cho`
+--
+
+DROP TABLE IF EXISTS `hoa_don_tai_cho`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hoa_don_tai_cho` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id_ban` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_ban` (`id_ban`),
+  CONSTRAINT `hoa_don_tai_cho_ibfk_1` FOREIGN KEY (`id_ban`) REFERENCES `ban` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hoa_don_tai_cho`
+--
+
+LOCK TABLES `hoa_don_tai_cho` WRITE;
+/*!40000 ALTER TABLE `hoa_don_tai_cho` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hoa_don_tai_cho` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -290,4 +347,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-03 16:05:00
+-- Dump completed on 2023-10-04  3:13:26

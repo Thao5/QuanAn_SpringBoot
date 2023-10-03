@@ -7,6 +7,7 @@ package com.thao.repository.impl;
 import com.thao.pojo.HoaDon;
 import com.thao.pojo.HoaDonChiTiet;
 import com.thao.pojo.MonDat;
+import com.thao.pojo.MonDatTaiCho;
 import com.thao.pojo.NguoiDung;
 import com.thao.pojo.ThucAn;
 import com.thao.repository.CustomNguoiDungRepository;
@@ -67,4 +68,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
             return false;
         }
     }
+
+//    @Override
+//    public boolean addReceiptOff(Map<String, MonDatTaiCho> carts) {
+//        
+//    }
 }
