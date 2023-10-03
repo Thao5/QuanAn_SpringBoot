@@ -26,10 +26,10 @@ public class ApiDatMonTaiChoController {
     @Autowired
     private ReceiptService receiptService;
     
-//    @PostMapping("/payoffline/")
-//    @ResponseStatus(HttpStatus.OK)
-//    @CrossOrigin
-//    public void add(@RequestBody Map<String, MonDatTaiCho> carts) {
-//        this.receiptService.addReceipt(carts);
-//    }
+    @PostMapping("/payoffline/")
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin
+    public void add(@RequestBody Map<String, MonDatTaiCho> carts) {
+        this.receiptService.addReceiptOff(carts);
+    }
 }

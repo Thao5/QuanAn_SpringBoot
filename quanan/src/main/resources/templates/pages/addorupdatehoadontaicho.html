@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatehoadontaicho'">
+            <form method="post" th:action="${action}" th:object="${hd}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idBan" name="idBan" th:field="*{idBan}" class="form-select">
+                        <th:block th:each="ban : ${bans}">
+                            <option th:if="${hd.idBan != null && ban.id == hd.idBan.id}" th:value="${ban.id}" th:text="${ban.moTa}" selected></option>
+                            <option th:if="${hd.idBan != null && ban.id != hd.idBan.id}" th:value="${ban.id}" th:text="${ban.moTa}"></option>
+                            <option th:if="${hd.idBan == null}" th:value="${ban.id}" th:text="${ban.moTa}"></option>
+                        </th:block>
+                    </select>
+                    <label for="idBan">Bàn</label>
+                    <p th:if="${#fields.hasErrors('idBan')}" th:errorclass="text-danger" th:errors="*{idBan}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${hd.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

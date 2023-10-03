@@ -7,22 +7,22 @@ package com.thao.pojo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -31,7 +31,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "hoa_don_tai_cho")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HoaDonTaiCho.findAll", query = "SELECT h FROM HoaDonTaiCho h"),
     @NamedQuery(name = "HoaDonTaiCho.findById", query = "SELECT h FROM HoaDonTaiCho h WHERE h.id = :id"),

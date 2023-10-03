@@ -4,15 +4,16 @@
  */
 package com.thao.service;
 
-import com.thao.pojo.MonDat;
-import com.thao.pojo.MonDatTaiCho;
-import java.util.Map;
+import com.thao.pojo.HoaDonTaiCho;
+import java.util.List;
 
 /**
  *
  * @author Chung Vu
  */
-public interface ReceiptService {
-    boolean addReceipt(Map<String, MonDat> carts);
-    boolean addReceiptOff(Map<String, MonDatTaiCho> carts);
+public interface HoaDonTaiChoService {
+    List<HoaDonTaiCho> getHoaDons();
+    void save(HoaDonTaiCho hd);
+    void delete(Long id);
+    HoaDonTaiCho getHoaDonById(Long id);
 }

@@ -5,6 +5,7 @@
 package com.thao.service.impl;
 
 import com.thao.pojo.MonDat;
+import com.thao.pojo.MonDatTaiCho;
 import com.thao.repository.ReceiptRepository;
 import com.thao.service.ReceiptService;
 import java.util.Map;
@@ -24,6 +25,11 @@ public class ReceiptServiceImpl implements ReceiptService{
     @Override
     public boolean addReceipt(Map<String, MonDat> carts) {
         return this.reRepo.addReceipt(carts);
+    }
+
+    @Override
+    public boolean addReceiptOff(Map<String, MonDatTaiCho> carts) {
+        return this.reRepo.addReceiptOff(carts);
     }
     
 }

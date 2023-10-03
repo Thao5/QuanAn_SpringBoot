@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdatehoadontaicho}" title="Thêm người dùng" class="btn btn-outline-success">+</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID bàn</th>
+                        <th>Ngày tạo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="hd : ${hds}">
+
+
+                    <tr th:with="update=('/quanan/admin/addorupdatehoadontaicho/' + ${hd.id}), del=('/quanan/admin/deletehoadontaicho/' + ${hd.id} + '/')">
+                        <td th:text="${hd.id}"></td>
+                        <td th:text="${hd.idBan.id}"></td>
+                        <td th:text="${hd.createdDate}"></td>
+                        <td>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-hd' + hd.id}">
+                                Xem thông tin hóa đơn chi tiết
+                            </button>
+
+                            <!-- The Modal -->
+                            <div class="modal fade" th:id="${'myModal-hd' + hd.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                            <a th:href="@{/admin/addorupdatehoadonchitiettaicho}" title="Thêm hóa đơn chi tiết" class="btn btn-outline-success">+</a>
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" th:text="${'Thông tin hóa đơn chí tiết của bàn' + hd.idBan.id}"></h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <td>#</td>
+                                                    <td>Số lượng mua</td>
+                                                    <td>Tổng tiền</td>
+                                                    <td>Ngày tạo</td>
+                                                    <td>ID hóa đơn</td>
+                                                    <td>Tên món ăn</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                    <tr th:each="hdct : ${hdcts}" th:if="${hdct.idHoaDon.id == hd.id}">
+                                                        <td th:text="${hdct.id}"></td>
+                                                        <td th:text="${hdct.soLuongMua}"></td>
+                                                        <td th:text="${hdct.tongTien}"></td>
+                                                        <td th:text="${hdct.createdDate}"></td>
+                                                        <td th:text="${hdct.idHoaDon.id}"></td>
+                                                        <td th:text="${hdct.idThucAn.name}"></td>
+                                                        <td>
+                                                            <a th:href="${'/quanan/admin/addorupdatehoadonchitiettaicho/'+hdct.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                            <i class="fa-solid fa-wrench"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td th:with="delFood=('/quanan/admin/deletehoadonchitiettaicho/' + ${hdct.id} + '/')">
+                                                            <button th:data-id="${hdct.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                        </td>
+                                                    </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="${update}" class="btn btn-success" >Cập nhật</a>
+                            <button th:data-id="${hd.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

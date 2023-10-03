@@ -4,15 +4,13 @@
  */
 package com.thao.repository;
 
-import com.thao.pojo.MonDat;
-import com.thao.pojo.MonDatTaiCho;
-import java.util.Map;
+import com.thao.pojo.HoaDonTaiCho;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Chung Vu
  */
-public interface ReceiptRepository {
-    boolean addReceipt(Map<String, MonDat> carts);
-    boolean addReceiptOff(Map<String, MonDatTaiCho> carts);
+public interface HoaDonTaiChoRepository extends JpaRepository<HoaDonTaiCho, Long>{
+    
 }

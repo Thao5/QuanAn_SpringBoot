@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container" th:with="action='/quanan/admin/addorupdatehoadonchitiettaicho'">
+            <form method="post" th:action="${action}" th:object="${hd}">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="soLuongMua" class="form-control" name="soLuongMua" th:value="*{soLuongMua}" placeholder="Nhập số lượng mua"/>
+                    <label for="soLuongMua">Số lượng mua</label>
+                    <p th:if="${#fields.hasErrors('soLuongMua')}" th:errorclass="text-danger" th:errors="*{soLuongMua}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" id="tongTien" class="form-control" name="tongTien" th:value="*{tongTien}" placeholder="Nhập tổng tiền"/>
+                    <label for="tongTien">Tổng tiền</label>
+                    <p th:if="${#fields.hasErrors('tongTien')}" th:errorclass="text-danger" th:errors="*{tongTien}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idThucAn" name="idThucAn" th:field="*{idThucAn}" class="form-select">
+                        <th:block th:each="ta : ${tas}">
+                            <option th:if="${hd.idThucAn != null && ta.id == hd.idThucAn.id}" th:value="${ta.id}" th:text="${ta.name}" selected></option>
+                            <option th:if="${hd.idThucAn != null && ta.id != hd.idThucAn.id}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                            <option th:if="${hd.idThucAn == null}" th:value="${ta.id}" th:text="${ta.name}"></option>
+                        </th:block>
+                    </select>
+                    <label for="idThucAn">Thức ăn</label>
+                    <p th:if="${#fields.hasErrors('idThucAn')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idHoaDon" name="idHoaDon" th:field="*{idHoaDon}" class="form-select">
+                        <th:block th:each="h : ${hs}">
+                            <option th:if="${hd.idHoaDon != null && h.id == hd.idHoaDon.id}" th:value="${h.id}" th:text="${h.id}" selected></option>
+                            <option th:if="${hd.idHoaDon != null && h.id != hd.idHoaDon.id}" th:value="${h.id}" th:text="${h.id}"></option>
+                            <option th:if="${hd.idHoaDon == null}" th:value="${h.id}" th:text="${h.id}"></option>
+                        </th:block>
+                    </select>
+                    <label for="idHoaDon">Hóa đơn</label>
+                    <p th:if="${#fields.hasErrors('idHoaDon')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>
+                    <button type="submit" class="btn btn-info" th:if="${hd.id == null}"> Thêm</button>
+                </div>
+            </form>
+        </section>
+
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

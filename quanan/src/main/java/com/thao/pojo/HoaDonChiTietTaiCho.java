@@ -4,22 +4,23 @@
  */
 package com.thao.pojo;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -28,7 +29,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "hoa_don_chi_tiet_tai_cho")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HoaDonChiTietTaiCho.findAll", query = "SELECT h FROM HoaDonChiTietTaiCho h"),
     @NamedQuery(name = "HoaDonChiTietTaiCho.findById", query = "SELECT h FROM HoaDonChiTietTaiCho h WHERE h.id = :id"),
@@ -44,8 +44,10 @@ public class HoaDonChiTietTaiCho implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "so_luong_mua")
+    @NotNull(message = "Thiếu số lượng mua")
     private Integer soLuongMua;
     @Column(name = "tong_tien")
+    @NotNull(message = "Thiếu tổng tiền")
     private Long tongTien;
     @Column(name = "created_date")
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
@@ -53,9 +55,11 @@ public class HoaDonChiTietTaiCho implements Serializable {
     private Date createdDate;
     @JoinColumn(name = "id_hoa_don", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu hóa đơn")
     private HoaDonTaiCho idHoaDon;
     @JoinColumn(name = "id_thuc_an", referencedColumnName = "id")
     @ManyToOne
+    @NotNull(message = "Thiếu thức ăn")
     private ThucAn idThucAn;
 
     public HoaDonChiTietTaiCho() {
