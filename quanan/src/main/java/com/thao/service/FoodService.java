@@ -25,4 +25,5 @@ public interface FoodService {
     void delete(Long id);
     ThucAn getThucAnById(Long id);
     List<ThucAn> getThucAnByChiNhanh(int cnId);
+    List<ThucAn> getThucAns(Map<String, String> params);
 }

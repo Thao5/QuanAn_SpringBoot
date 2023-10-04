@@ -6,6 +6,7 @@ package com.thao.repository;
 
 import com.thao.pojo.ThucAn;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +14,5 @@ import java.util.List;
  */
 public interface CustomThucAnRepository {
     List<ThucAn> getThucAnByChiNhanh(int cnId);
+    List<ThucAn> getThucAns(Map<String, String> params);
 }

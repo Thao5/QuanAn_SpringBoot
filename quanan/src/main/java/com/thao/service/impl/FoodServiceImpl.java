@@ -133,6 +133,11 @@ public class FoodServiceImpl implements FoodService{
     public List<ThucAn> getThucAnByChiNhanh(int cnId) {
         return this.cfoodRepo.getThucAnByChiNhanh(cnId);
     }
+
+    @Override
+    public List<ThucAn> getThucAns(Map<String, String> params) {
+        return this.cfoodRepo.getThucAns(params);
+    }
     
     
     
