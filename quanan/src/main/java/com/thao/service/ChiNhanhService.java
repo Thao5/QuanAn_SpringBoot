@@ -16,7 +16,7 @@ public interface ChiNhanhService {
 
     List<ChiNhanh> getChiNhanhs();
     void save(ChiNhanh cn);
-    void delete(Long id);
+    void delete(ChiNhanh cn);
     ChiNhanh getChiNhanhById(Long id);
     List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id);
 //    ChiNhanh getChiNhanhById(int id);

@@ -10,7 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container" th:with="action='/quanan/admin/addorupdatecate'">
             <form method="post" th:action="${action}" th:object="${cate}">
-                <input type="hidden" name="id" th:value="*{id}"/>
+                <input type="hidden" name="id" th:value="*{id}" required/>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên loại"/>
                     <label for="name">Tên loại</label>

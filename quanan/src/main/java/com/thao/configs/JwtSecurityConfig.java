@@ -25,6 +25,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -105,29 +106,33 @@ public class JwtSecurityConfig {
 //            .access("hasRole('ROLE_ADMIN')");
 //        http.csrf().disable();
         // Disable crsf cho đường dẫn /rest/**
-        
-        http.userDetailsService(userDetailsService)
-            .authorizeHttpRequests(rmr->{
-            try {
-                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
-                        .and()
-                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                                .successForwardUrl("/"))
-                        .logout(lo -> lo.permitAll()
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
-            } catch (Exception ex) {
-                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }).csrf(csrf -> csrf.disable());
-        
-        http.authorizeHttpRequests(rmr->rmr.requestMatchers(new AntPathRequestMatcher("/api/login/")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/thucan/")).permitAll());
-        http.userDetailsService(userDetailsService)
-                .authorizeHttpRequests(rmr -> {
+        http.csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
+
+        http.authorizeHttpRequests(rmr -> rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"), new AntPathRequestMatcher("/api/food/"), new AntPathRequestMatcher("/api/cates/")).permitAll());
+
+//        http.securityMatcher(new AntPathRequestMatcher("/api/**"))
+//                .httpBasic(b -> {
+//            try {
+//                b.authenticationEntryPoint(restServicesEntryPoint()).and()
+//                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//            } catch (Exception ex) {
+//                Logger.getLogger(JwtSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        })
+//                .authorizeHttpRequests(r -> r.requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+//                                .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+//                                .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER"))
+//                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling(e -> {
+//                
+//                    try {
+//                        e.accessDeniedHandler(customAccessDeniedHandler());
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(JwtSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                );
+        http.authorizeHttpRequests(rmr -> {
                     try {
                         rmr.requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                                 .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
@@ -140,11 +145,31 @@ public class JwtSecurityConfig {
                     } catch (Exception ex) {
                         Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }).csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
-
+                });
         
+
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr->{
+            try {
+                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
+                        .and()
+                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
+                                .successForwardUrl("/"))
+                        .logout(lo -> lo.permitAll()
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+            } catch (Exception ex) {
+                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).csrf(csrf -> csrf.disable());
+//        
+//        
+//        
+//
+//        
         return http.build();
     }
-    
+
     //hasAuthority khac voi hasRole do hasRole se tu dong them ROLE_ vao dang truoc truong` role con hasAuthority thi khong
 }

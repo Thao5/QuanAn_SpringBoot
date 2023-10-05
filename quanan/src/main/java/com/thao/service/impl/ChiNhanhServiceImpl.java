@@ -36,11 +36,6 @@ public class ChiNhanhServiceImpl implements ChiNhanhService {
     private CustomChiNhanhRepository cusStoreRepo;
     @Autowired
     private Cloudinary cloudinary;
-    @Autowired
-    private EmailService emailSer;
-    @Autowired
-    private NguoiDungService ndSer;
-
     @Override
     public List<ChiNhanh> getChiNhanhs() {
         return storeRepo.findAll();
@@ -76,11 +71,7 @@ public class ChiNhanhServiceImpl implements ChiNhanhService {
     }
 
     @Override
-    public void delete(Long id) {
-        ChiNhanh cn = this.storeRepo.getReferenceById(id);
-        for (NguoiDung nd : this.ndSer.getNDs()) {
-            this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao dong cua chi nhanh cua quan an", String.format("Quan an da dong cua chi nhanh %s", cn.getDiaChi()));
-        }
+    public void delete(ChiNhanh cn) {
         this.storeRepo.delete(cn);
     }
 

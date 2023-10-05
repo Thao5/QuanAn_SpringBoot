@@ -13,12 +13,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="noiDung" class="form-control" name="noiDung" th:value="*{noiDung}" placeholder="Nhập nội dung"/>
+                    <input type="text" id="noiDung" class="form-control" name="noiDung" th:value="*{noiDung}" placeholder="Nhập nội dung" required/>
                     <label for="noiDung">Nội dung</label>
                     <p th:if="${#fields.hasErrors('noiDung')}" th:errorclass="text-danger" th:errors="*{noiDung}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="danhGia" class="form-control" name="danhGia" th:value="*{danhGia}" placeholder="Nhập đánh giá"/>
+                    <input type="number" id="danhGia" class="form-control" name="danhGia" th:value="*{danhGia}" placeholder="Nhập đánh giá" required/>
                     <label for="danhGia">Đánh giá</label>
                     <p th:if="${#fields.hasErrors('danhGia')}" th:errorclass="text-danger" th:errors="*{danhGia}" />
                 </div>

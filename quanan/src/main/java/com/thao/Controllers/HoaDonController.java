@@ -10,6 +10,8 @@ import com.thao.service.HoaDonService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -46,15 +48,19 @@ public class HoaDonController {
 
     @GetMapping("/addorupdatehoadon")
     public String add(Model model) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("hd", new HoaDon());
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatehoadon";
     }
 
     @GetMapping("/addorupdatehoadon/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("hd", this.hdSer.getHoaDonById(id));
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatehoadon";
     }
 
@@ -67,8 +73,9 @@ public class HoaDonController {
             this.hdSer.save(hd);
             return "redirect:/admin/hoadon";
         }
-        
-        model.addAttribute("nds", this.ndSer.getNDs());
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatehoadon";
     }
 

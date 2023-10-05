@@ -12,12 +12,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <form method="post" th:action="${action}" th:object="${qd}">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="khoangCach" class="form-control" name="khoangCach" th:value="*{khoangCach}" placeholder="Nhập khoảng cách"/>
+                    <input type="number" id="khoangCach" class="form-control" name="khoangCach" th:value="*{khoangCach}" placeholder="Nhập khoảng cách" required/>
                     <label for="khoangCach">Khoảng cách</label>
                     <p th:if="${#fields.hasErrors('khoangCach')}" th:errorclass="text-danger" th:errors="*{khoangCach}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá"/>
+                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá" required/>
                     <label for="price">Giá</label>
                     <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
                 </div>

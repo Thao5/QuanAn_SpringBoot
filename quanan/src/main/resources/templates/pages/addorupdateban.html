@@ -13,7 +13,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="moTa" class="form-control" name="moTa" th:value="*{moTa}" placeholder="Nhập mô tả"/>
+                    <input type="text" id="moTa" class="form-control" name="moTa" th:value="*{moTa}" placeholder="Nhập mô tả" required/>
                     <label for="moTa">Mô tả</label>
                     <p th:if="${#fields.hasErrors('moTa')}" th:errorclass="text-danger" th:errors="*{moTa}" />
                 </div>

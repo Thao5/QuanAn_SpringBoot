@@ -4,11 +4,16 @@
  */
 package com.thao.Controllers;
 
+import com.thao.pojo.NguoiDung;
 import com.thao.pojo.ThucAn;
 import com.thao.service.CategoryService;
 import com.thao.service.ChiNhanhService;
+import com.thao.service.EmailService;
 import com.thao.service.FoodService;
+import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -35,6 +40,10 @@ public class ThucAnController {
     private ChiNhanhService cnSer;
     @Autowired
     private CategoryService cateSer;
+    @Autowired
+    private EmailService emailSer;
+    @Autowired
+    private NguoiDungService ndSer;
 
     @RequestMapping("/food")
     public String list(Model model) {
@@ -61,6 +70,11 @@ public class ThucAnController {
     @PostMapping("/addorupdatefood")
     public String addOrUpdate(Model model, @ModelAttribute(value = "food") @Valid ThucAn food, BindingResult rs) {
         if (!rs.hasErrors()) {
+            Map<String, String> tmp = new HashMap<>();
+            tmp.put("vaiTro", "CUSTOMER");
+            for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
+                this.emailSer.sendSimpleMessage(nd.getEmail(), "Thông báo quán ăn thêm món mới", String.format("Chi nhánh %s đã thêm món %s vào menu", food.getIdChiNhanh().getDiaChi(), food.getName()));
+            }
             this.foodService.save(food);
             return "redirect:/admin/chinhanh";
         }

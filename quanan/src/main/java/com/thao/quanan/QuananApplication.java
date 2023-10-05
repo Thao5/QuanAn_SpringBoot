@@ -18,7 +18,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableAutoConfiguration
+//@EnableAutoConfiguration(exclude = {
+//        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class}
+//        )
 @EnableTransactionManagement
 @EntityScan("com.thao.pojo")
 @EnableJpaRepositories("com.thao.repository")
@@ -26,7 +28,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.thao.repository.impl",
     "com.thao.service",
     "com.thao.Controllers",})
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class}
+        )
 @Import({SpringSecurityConfig.class, JwtSecurityConfig.class})
 public class QuananApplication {
 

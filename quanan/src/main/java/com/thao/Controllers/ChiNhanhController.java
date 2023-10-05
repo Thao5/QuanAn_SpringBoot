@@ -14,6 +14,8 @@ import com.thao.service.FoodService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @EnableAsync
 public class ChiNhanhController {
+
     @Autowired
     private ChiNhanhService storeService;
     @Autowired
@@ -51,53 +54,73 @@ public class ChiNhanhController {
     private BanService banSer;
     @Autowired
     private DanhGiaService dgSer;
-    
+
     @RequestMapping("/chinhanh")
-    public String list(Model model){
+    public String list(Model model) {
         model.addAttribute("stores", this.storeService.getChiNhanhs());
         model.addAttribute("tas", this.foodSer.getThucAns());
         model.addAttribute("bans", this.banSer.getBans());
         model.addAttribute("dgs", this.dgSer.getDanhGias());
         return "chinhanh";
     }
-    
+
     @GetMapping("/addorupdatechinhanh")
-    public String add(Model model){
+    public String add(Model model) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "OWNER");
         model.addAttribute("cns", new ChiNhanh());
-        model.addAttribute("nds", this.ndSer.getNDs());
-        
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
+
         return "addorupdatechinhanh";
     }
-    
+
     @GetMapping("/addorupdatechinhanh/{id}")
-    public String update(Model model, @PathVariable("id") Long id){
+    public String update(Model model, @PathVariable("id") Long id) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "OWNER");
         model.addAttribute("cns", this.storeService.getChiNhanhById(id));
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatechinhanh";
     }
-    
+
     @PostMapping("/addorupdatechinhanh")
-    public String addOrUpdate(Model model, @ModelAttribute(value="cns") @Valid ChiNhanh cn, BindingResult rs){
-        if(!rs.hasErrors()){
-            if(cn.getId() == null){
+    public String addOrUpdate(Model model, @ModelAttribute(value = "cns") @Valid ChiNhanh cn, BindingResult rs) {
+        Map<String, String> tmp = new HashMap<>();
+        if (!rs.hasErrors()) {
+            if (cn.getId() == null) {
                 cn.setCreatedDate(new Date());
-                for(NguoiDung nd : this.ndSer.getNDs()){
+                tmp.put("vaiTro", "CUSTOMER");
+                for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
                     this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao chi nhanh moi cua quan an", String.format("Quan an da mo chi nhanh moi tai %s", cn.getDiaChi()));
                 }
             }
+            if (cn.getId() != null) {
+                ChiNhanh cn2 = this.storeService.getChiNhanhById(Long.parseLong(Integer.toString(cn.getId())));
+                if (!cn.getDiaChi().equals(cn2.getDiaChi())) {
+                    tmp.put("vaiTro", "CUSTOMER");
+                    for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
+                        this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao doi chi nhanh cua quan an", String.format("chi nhanh tai %s da doi chi nhanh toi %s", cn2.getDiaChi(), cn.getDiaChi()));
+                    }
+                }
+            }
             this.storeService.save(cn);
-            
 
             return "redirect:/admin/chinhanh";
         }
-        model.addAttribute("nds", this.ndSer.getNDs());
+        tmp.put("vaiTro", "OWNER");
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatechinhanh";
     }
-    
-    @CrossOrigin
+
     @RequestMapping("/deletechinhanh/{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id){
-        this.storeService.delete(id);
+    public void delete(@PathVariable("id") Long id) {
+        ChiNhanh cn = this.storeService.getChiNhanhById(id);
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
+        for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
+            this.emailSer.sendSimpleMessage(nd.getEmail(), "Thong bao dong cua chi nhanh cua quan an", String.format("Quan an da dong cua chi nhanh %s", cn.getDiaChi()));
+        }
+        this.storeService.delete(cn);
     }
 }

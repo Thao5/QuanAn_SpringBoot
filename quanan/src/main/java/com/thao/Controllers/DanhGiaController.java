@@ -10,6 +10,8 @@ import com.thao.service.DanhGiaService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -39,17 +41,21 @@ public class DanhGiaController {
     
     @GetMapping("/addorupdatedanhgia")
     public String update(Model model) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", new DanhGia());
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
 
     @GetMapping("/addorupdatedanhgia/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", this.dgSer.getDanhGiaById(id));
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
 
@@ -62,8 +68,10 @@ public class DanhGiaController {
             this.dgSer.save(dg);
             return "redirect:/admin/chinhanh";
         }
+        Map<String, String> tmp = new HashMap<>();
+        tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("cns", this.cnSer.getChiNhanhs());
-        model.addAttribute("nds", this.ndSer.getNDs());
+        model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
 

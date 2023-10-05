@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -33,7 +34,7 @@ public class IndexController {
 
     @Autowired
     private FoodService foodService;
-    
+
     @ModelAttribute
     public void commonAttr(Model model, @RequestParam Map<String, String> params) {
 //        model.addAttribute("catestores", this.catestoreService.getLoaiChiNhanhs());
@@ -44,12 +45,12 @@ public class IndexController {
     public String index(Model model, @RequestParam Map<String, String> params) {
 
         model.addAttribute("foods", this.foodService.getThucAns());
-        
+
         return "index";
     }
-    
-    @GetMapping("/login")
-    public String login(){
+
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    public String login() {
         return "login";
     }
 }

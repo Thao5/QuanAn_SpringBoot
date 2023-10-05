@@ -147,30 +147,29 @@ public class SpringSecurityConfig {
 //        return http.build();
 //    }
     
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        
-//        http.userDetailsService(userDetailsService)
-//            .authorizeHttpRequests(rmr->{
-//            try {
-//                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-//                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
-//                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-//                        .and()
-//                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-//                                .successForwardUrl("/"))
-//                        .logout(lo -> lo.permitAll()
-//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
-//            } catch (Exception ex) {
-//                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }).csrf(csrf -> csrf.disable());
-//            
-//            
-//            
-//        return http.build();
-//    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        
+        http.userDetailsService(userDetailsService)
+            .authorizeHttpRequests(rmr->{
+            try {
+                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+                        .and()
+                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
+                                .successForwardUrl("/"))
+                        .logout(lo -> lo.permitAll()
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+            } catch (Exception ex) {
+                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).csrf(csrf -> csrf.disable());
+            
+            
+            
+        return http.build();
+    }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

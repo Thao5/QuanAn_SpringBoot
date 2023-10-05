@@ -14,7 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <input type="hidden" name="image" th:value="*{image}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="diaChi" class="form-control" name="diaChi" th:value="*{diaChi}" placeholder="Nhập địa chỉ"/>
+                    <input type="text" id="diaChi" class="form-control" name="diaChi" th:value="*{diaChi}" placeholder="Nhập địa chỉ" required/>
                     <label for="diaChi">Địa chỉ</label>
                     <p th:if="${#fields.hasErrors('diaChi')}" th:errorclass="text-danger" th:errors="*{diaChi}" />
                 </div>

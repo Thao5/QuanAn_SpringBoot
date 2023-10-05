@@ -14,17 +14,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <input type="hidden" name="image" th:value="*{image}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn"/>
+                    <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn" required/>
                     <label for="name">Tên món ăn</label>
                     <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="soLuong" class="form-control" name="soLuong" th:value="*{soLuong}" placeholder="Nhập số lượng"/>
+                    <input type="number" id="soLuong" class="form-control" name="soLuong" th:value="*{soLuong}" placeholder="Nhập số lượng" required/>
                     <label for="soLuong">Số lượng</label>
                     <p th:if="${#fields.hasErrors('soLuong')}" th:errorclass="text-danger" th:errors="*{soLuong}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá"/>
+                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá" required/>
                     <label for="price">Giá</label>
                     <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
                 </div>
