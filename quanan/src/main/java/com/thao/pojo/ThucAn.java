@@ -5,6 +5,7 @@
 package com.thao.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thao.validation.FoodDistinct;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -43,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "ThucAn.findByPrice", query = "SELECT t FROM ThucAn t WHERE t.price = :price"),
     @NamedQuery(name = "ThucAn.findByCreatedDate", query = "SELECT t FROM ThucAn t WHERE t.createdDate = :createdDate"),
     @NamedQuery(name = "ThucAn.findByImage", query = "SELECT t FROM ThucAn t WHERE t.image = :image")})
+@FoodDistinct(message = "Chi nhánh đã có món này rồi")
 public class ThucAn implements Serializable {
 
     private static final long serialVersionUID = 1L;

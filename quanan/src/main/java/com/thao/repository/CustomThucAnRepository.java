@@ -15,4 +15,5 @@ import java.util.Map;
 public interface CustomThucAnRepository {
     List<ThucAn> getThucAnByChiNhanh(int cnId);
     List<ThucAn> getThucAns(Map<String, String> params);
+    Boolean isAlreadyHaveFoodCN(ThucAn ta);
 }

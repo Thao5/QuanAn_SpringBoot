@@ -7,6 +7,7 @@ package com.thao.repository.impl;
 import com.thao.pojo.ThucAn;
 import com.thao.repository.CustomThucAnRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -74,5 +75,26 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         Query query = entityManager.createQuery(q);
 
         return query.getResultList();
+    }
+
+    @Override
+    public Boolean isAlreadyHaveFoodCN(ThucAn ta) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ThucAn> q = b.createQuery(ThucAn.class);
+        Root root = q.from(ThucAn.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(b.equal(root.get("idChiNhanh").get("id"), ta.getIdChiNhanh().getId()));
+        predicates.add(b.equal(root.get("name"), ta.getName()));
+        q.where(predicates.toArray(Predicate[]::new));
+
+        Query query = entityManager.createQuery(q);
+
+        try{
+            ThucAn t = (ThucAn) query.getSingleResult();
+            return true;
+        } catch(NoResultException ex){
+            return false;
+        }
     }
 }

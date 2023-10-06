@@ -47,7 +47,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.thao.repository.impl",
     "com.thao.service",
     "com.thao.Controllers",
-    "com.thao.components"
+    "com.thao.components",
+    "com.thao.validation"
 })
 @EnableMethodSecurity(securedEnabled = true)
 public class JwtSecurityConfig {

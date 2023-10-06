@@ -12,6 +12,7 @@ import com.thao.service.EmailService;
 import com.thao.service.FoodService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +71,13 @@ public class ThucAnController {
     @PostMapping("/addorupdatefood")
     public String addOrUpdate(Model model, @ModelAttribute(value = "food") @Valid ThucAn food, BindingResult rs) {
         if (!rs.hasErrors()) {
-            Map<String, String> tmp = new HashMap<>();
-            tmp.put("vaiTro", "CUSTOMER");
-            for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
-                this.emailSer.sendSimpleMessage(nd.getEmail(), "Thông báo quán ăn thêm món mới", String.format("Chi nhánh %s đã thêm món %s vào menu", food.getIdChiNhanh().getDiaChi(), food.getName()));
+            if (food.getId() == null) {
+                food.setCreatedDate(new Date());
+                Map<String, String> tmp = new HashMap<>();
+                tmp.put("vaiTro", "CUSTOMER");
+                for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
+                    this.emailSer.sendSimpleMessage(nd.getEmail(), "Thông báo quán ăn thêm món mới", String.format("Chi nhánh %s đã thêm món %s vào menu", food.getIdChiNhanh().getDiaChi(), food.getName()));
+                }
             }
             this.foodService.save(food);
             return "redirect:/admin/chinhanh";

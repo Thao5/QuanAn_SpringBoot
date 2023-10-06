@@ -13,7 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jakarta.annotation.Resource;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +49,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
@@ -57,7 +65,8 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
     "com.thao.repository.impl",
     "com.thao.service",
     "com.thao.Controllers",
-    "com.thao.components"})
+    "com.thao.components",
+    "com.thao.validation"})
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 @PropertySource("classpath:configs.properties")
@@ -66,7 +75,10 @@ public class SpringSecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
-    
+
+//    @Autowired
+//    private AutowireCapableBeanFactory autowireCapableBeanFactory;
+
     @Resource
     private Environment env;
 
@@ -74,7 +86,7 @@ public class SpringSecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public Cloudinary cloudinary() {
         Cloudinary cloudinary
@@ -146,30 +158,55 @@ public class SpringSecurityConfig {
 //
 //        return http.build();
 //    }
-    
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        
+//        http.userDetailsService(userDetailsService)
+//            .authorizeHttpRequests(rmr->{
+//            try {
+//                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+//                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+//                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+//                        .and()
+//                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
+//                                .successForwardUrl("/"))
+//                        .logout(lo -> lo.permitAll()
+//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+//            } catch (Exception ex) {
+//                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }).csrf(csrf -> csrf.disable());
+//            
+//            
+//            
+//        return http.build();
+//    }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        
-        http.userDetailsService(userDetailsService)
-            .authorizeHttpRequests(rmr->{
-            try {
-                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-                        .and()
-                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                                .successForwardUrl("/"))
-                        .logout(lo -> lo.permitAll()
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
-            } catch (Exception ex) {
-                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }).csrf(csrf -> csrf.disable());
-            
-            
-            
-        return http.build();
+    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
+                .buildValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+
+        return validator;
     }
+
+//    public AutowireCapableBeanFactory getAutowireCapableBeanFactory() {
+//        return autowireCapableBeanFactory;
+//    }
+//
+//    public void setAutowireCapableBeanFactory(AutowireCapableBeanFactory autowireCapableBeanFactory) {
+//        this.autowireCapableBeanFactory = autowireCapableBeanFactory;
+//    }
+
+//    @Bean
+//    public MethodValidationPostProcessor methodValidationPostProcessor(Validator validator) {
+//        MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
+//        methodValidationPostProcessor.setValidator(validator);
+//        return methodValidationPostProcessor;
+//    }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
