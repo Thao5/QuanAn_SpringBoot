@@ -50,6 +50,7 @@ create table thuc_an
     foreign key(id_loai) references category(id),
     id_chi_nhanh int,
     foreign key(id_chi_nhanh) references chi_nhanh(id)
+    active bit(1)
 );
 
 
