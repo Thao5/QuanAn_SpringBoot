@@ -6,6 +6,7 @@ package com.thao.repository;
 
 import com.thao.pojo.ChiNhanh;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +14,5 @@ import java.util.List;
  */
 public interface CustomChiNhanhRepository {
     List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id);
+    List<ChiNhanh> getChiNhanhs(Map<String,String> params);
 }

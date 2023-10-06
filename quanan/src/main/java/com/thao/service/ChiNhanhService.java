@@ -19,6 +19,7 @@ public interface ChiNhanhService {
     void delete(ChiNhanh cn);
     ChiNhanh getChiNhanhById(Long id);
     List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id);
+    List<ChiNhanh> getChiNhanhs(Map<String,String> params);
 //    ChiNhanh getChiNhanhById(int id);
 //    boolean deleteStore(int id);
 //    ChiNhanh getChiNhanhByUser(String username);

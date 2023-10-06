@@ -105,7 +105,7 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public void save(ThucAn ta) {
-        if (!ta.getFile().isEmpty()) {
+        if (ta.getFile() != null && !ta.getFile().isEmpty()) {
             Map res;
             try {
                 res = this.cloudinary.uploader().upload(ta.getFile().getBytes(),

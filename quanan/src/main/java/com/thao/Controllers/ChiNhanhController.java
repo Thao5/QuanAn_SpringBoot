@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -56,9 +57,9 @@ public class ChiNhanhController {
     private DanhGiaService dgSer;
 
     @RequestMapping("/chinhanh")
-    public String list(Model model) {
-        model.addAttribute("stores", this.storeService.getChiNhanhs());
-        model.addAttribute("tas", this.foodSer.getThucAns());
+    public String list(Model model, @RequestParam Map<String,String> params) {
+        model.addAttribute("stores", this.storeService.getChiNhanhs(params));
+        model.addAttribute("tas", this.foodSer.getThucAns(params));
         model.addAttribute("bans", this.banSer.getBans());
         model.addAttribute("dgs", this.dgSer.getDanhGias());
         return "chinhanh";

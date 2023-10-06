@@ -85,4 +85,9 @@ public class ChiNhanhServiceImpl implements ChiNhanhService {
         return this.cusStoreRepo.getChiNhanhTheoChuChiNhanh(id);
     }
 
+    @Override
+    public List<ChiNhanh> getChiNhanhs(Map<String, String> params) {
+        return this.cusStoreRepo.getChiNhanhs(params);
+    }
+
 }

@@ -83,6 +83,8 @@ public class ThucAn implements Serializable {
     @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
+    @Column(name = "active")
+    private Boolean active;
     @JsonIgnore
     @OneToMany(mappedBy = "idThucAn")
     private Set<HoaDonChiTiet> hoaDonChiTietSet;
@@ -205,6 +207,20 @@ public class ThucAn implements Serializable {
      */
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    /**
+     * @return the active
+     */
+    public Boolean getActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
 }

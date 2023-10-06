@@ -51,9 +51,10 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         q.select(root);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(b.greaterThan(root.<Integer>get("soLuong"), 0));
+        predicates.add(b.isTrue(root.<Boolean>get("active")));
         if (params != null) {
             
-            String kw = params.get("kw");
+            String kw = params.get("tenMon");
             if (kw != null && !kw.isEmpty()) {
                 predicates.add(b.like(root.get("name"), String.format("%%%s%%", kw)));
             }
@@ -86,6 +87,7 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(b.equal(root.get("idChiNhanh").get("id"), ta.getIdChiNhanh().getId()));
         predicates.add(b.equal(root.get("name"), ta.getName()));
+        predicates.add(b.isTrue(root.<Boolean>get("active")));
         q.where(predicates.toArray(Predicate[]::new));
 
         Query query = entityManager.createQuery(q);

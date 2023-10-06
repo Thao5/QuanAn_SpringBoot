@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,8 @@ import org.springframework.stereotype.Repository;
  * @author Chung Vu
  */
 @Repository
-public class CustomChiNhanhRepositoryImpl implements CustomChiNhanhRepository{
+public class CustomChiNhanhRepositoryImpl implements CustomChiNhanhRepository {
+
     @Autowired
     private EntityManager entityManager;
 
@@ -40,6 +42,26 @@ public class CustomChiNhanhRepositoryImpl implements CustomChiNhanhRepository{
 
         return query.getResultList();
     }
-    
-    
+
+    @Override
+    public List<ChiNhanh> getChiNhanhs(Map<String, String> params) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ChiNhanh> q = b.createQuery(ChiNhanh.class);
+        Root root = q.from(ChiNhanh.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        if (params != null) {
+
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                predicates.add(b.like(root.get("diaChi"), String.format("%%%s%%", kw)));
+            }
+            q.where(predicates.toArray(Predicate[]::new));
+        }
+
+        Query query = entityManager.createQuery(q);
+
+        return query.getResultList();
+    }
+
 }

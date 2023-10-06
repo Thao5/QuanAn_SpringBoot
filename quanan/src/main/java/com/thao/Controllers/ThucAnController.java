@@ -73,6 +73,7 @@ public class ThucAnController {
         if (!rs.hasErrors()) {
             if (food.getId() == null) {
                 food.setCreatedDate(new Date());
+                food.setActive(Boolean.TRUE);
                 Map<String, String> tmp = new HashMap<>();
                 tmp.put("vaiTro", "CUSTOMER");
                 for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
@@ -90,6 +91,8 @@ public class ThucAnController {
     @RequestMapping("/deletefood/{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
-        this.foodService.delete(id);
+        ThucAn ta = this.foodService.getThucAnById(id);
+        ta.setActive(Boolean.FALSE);
+        this.foodService.save(ta);
     }
 }
