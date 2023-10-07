@@ -18,5 +18,5 @@ public interface CustomNguoiDungRepository {
     NguoiDung getNDByUsername(String username);
     boolean authNguoiDung(String taiKhoan, String matKhau, BCryptPasswordEncoder passEncoder);
     List<NguoiDung> getNDCus(Map<String, String> params);
-    
+    Boolean isAlreadyHave(NguoiDung nd);
 }

@@ -5,6 +5,7 @@
 package com.thao.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thao.validation.NguoiDungDistinct;
 import java.io.Serializable;
 import java.util.Set;
 import jakarta.persistence.Basic;
@@ -42,6 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "NguoiDung.findByAvatar", query = "SELECT n FROM NguoiDung n WHERE n.avatar = :avatar"),
     @NamedQuery(name = "NguoiDung.findByVaiTro", query = "SELECT n FROM NguoiDung n WHERE n.vaiTro = :vaiTro"),
     @NamedQuery(name = "NguoiDung.findByActive", query = "SELECT n FROM NguoiDung n WHERE n.active = :active")})
+@NguoiDungDistinct(message = "Tài khoản hoặc email hoặc số điện thoại đã tồn tại")
 public class NguoiDung implements Serializable {
 
     private static final long serialVersionUID = 1L;

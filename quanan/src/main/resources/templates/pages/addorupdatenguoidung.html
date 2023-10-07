@@ -10,6 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container" th:with="action='/quanan/admin/addorupdatenguoidung'">
             <form method="post" th:action="${action}" th:object="${nd}" enctype="multipart/form-data">
+                <p th:if="${#fields.hasErrors('*')}" th:errorclass="text-danger" th:errors="*{*}" />
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="avatar" th:value="*{avatar}"/>
                 <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan != null}">

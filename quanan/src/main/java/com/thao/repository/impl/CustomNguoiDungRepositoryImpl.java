@@ -7,6 +7,8 @@ package com.thao.repository.impl;
 import com.thao.pojo.NguoiDung;
 import com.thao.repository.CustomNguoiDungRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.Query;
@@ -15,6 +17,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.Map;
+import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -80,6 +83,33 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         Query query = entityManager.createQuery(q);
         
         return query.getResultList();
+    }
+
+    @Override
+    public Boolean isAlreadyHave(NguoiDung nd) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
+        Root root = q.from(NguoiDung.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(b.isTrue(root.<Boolean>get("active")));
+        predicates.add(b.or(
+                b.or(
+                        b.or(b.equal(root.get("taiKhoan"), nd.getTaiKhoan()), b.equal(root.get("email"), nd.getEmail()), b.equal(root.get("taiKhoan"), nd.getTaiKhoan()), b.equal(root.get("phone"), nd.getPhone()), b.equal(root.get("phone"), nd.getPhone()), b.equal(root.get("email"), nd.getEmail())))));
+        
+        q.where(predicates.toArray(Predicate[]::new));
+        
+        Query query = entityManager.createQuery(q);
+        
+        try{
+            NguoiDung t = (NguoiDung) query.getSingleResult();
+            return true;
+        }catch(NoResultException ex){
+            return false;
+        }catch(NonUniqueResultException ex){
+            return true;
+        }
+            
     }
 
 }
