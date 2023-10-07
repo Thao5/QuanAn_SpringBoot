@@ -29,11 +29,13 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyAuthority;
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -78,7 +80,6 @@ public class SpringSecurityConfig {
 
 //    @Autowired
 //    private AutowireCapableBeanFactory autowireCapableBeanFactory;
-
     @Resource
     private Environment env;
 
@@ -160,27 +161,26 @@ public class SpringSecurityConfig {
 //    }
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        
-//        http.userDetailsService(userDetailsService)
-//            .authorizeHttpRequests(rmr->{
+//
+//        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
 //            try {
 //                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
 //                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
 //                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
+//                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
 //                        .and()
 //                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-//                                .successForwardUrl("/"))
+//                        .successForwardUrl("/"))
 //                        .logout(lo -> lo.permitAll()
-//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
 //            } catch (Exception ex) {
 //                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 //        }).csrf(csrf -> csrf.disable());
-//            
-//            
-//            
+//
 //        return http.build();
 //    }
+
     @Bean
     public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
 
@@ -199,12 +199,15 @@ public class SpringSecurityConfig {
 //    public void setAutowireCapableBeanFactory(AutowireCapableBeanFactory autowireCapableBeanFactory) {
 //        this.autowireCapableBeanFactory = autowireCapableBeanFactory;
 //    }
-
 //    @Bean
 //    public MethodValidationPostProcessor methodValidationPostProcessor(Validator validator) {
 //        MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
 //        methodValidationPostProcessor.setValidator(validator);
 //        return methodValidationPostProcessor;
+//    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
 //    }
 
     @Bean

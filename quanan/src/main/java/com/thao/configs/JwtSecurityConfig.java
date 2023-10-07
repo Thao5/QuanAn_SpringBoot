@@ -87,6 +87,12 @@ public class JwtSecurityConfig {
     public CustomAccessDeniedHandler customAccessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
+    
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring()
+//            .requestMatchers(new AntPathRequestMatcher("/api/**"));
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -107,9 +113,12 @@ public class JwtSecurityConfig {
 //            .access("hasRole('ROLE_ADMIN')");
 //        http.csrf().disable();
         // Disable crsf cho đường dẫn /rest/**
-        http.csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
+//        http.csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
 
-        http.authorizeHttpRequests(rmr -> rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"), new AntPathRequestMatcher("/api/food/"), new AntPathRequestMatcher("/api/cates/")).permitAll());
+//        http.authorizeHttpRequests(rmr -> rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
+//                 new AntPathRequestMatcher("/api/food/"),
+//                 new AntPathRequestMatcher("/api/cates/"),
+//                 new AntPathRequestMatcher("/api/dangky/")).permitAll()).csrf(csrf -> csrf.disable());
 
 //        http.securityMatcher(new AntPathRequestMatcher("/api/**"))
 //                .httpBasic(b -> {
@@ -133,23 +142,28 @@ public class JwtSecurityConfig {
 //                    }
 //                }
 //                );
-        http.authorizeHttpRequests(rmr -> {
-                    try {
-                        rmr.requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                                .and()
-                                .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-//                                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                                .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()));
-                    } catch (Exception ex) {
-                        Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-        
 
-        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr->{
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
+            try {
+                rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
+                 new AntPathRequestMatcher("/api/food/"),
+                 new AntPathRequestMatcher("/api/cates/"),
+                 new AntPathRequestMatcher("/api/dangky/"),
+                 new AntPathRequestMatcher("/api/current-user/")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        .and()
+                        .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
+                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                        .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler())).csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
+            } catch (Exception ex) {
+                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
             try {
                 rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
                         .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
@@ -157,9 +171,9 @@ public class JwtSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
                         .and()
                         .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                                .successForwardUrl("/"))
+                        .successForwardUrl("/"))
                         .logout(lo -> lo.permitAll()
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
             } catch (Exception ex) {
                 Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
             }

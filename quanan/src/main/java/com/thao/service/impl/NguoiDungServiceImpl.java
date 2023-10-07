@@ -118,6 +118,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
         u.setTaiKhoan(params.get("username"));
         u.setMatKhau(this.passwordEncoder.encode(params.get("password")));
         u.setVaiTro("CUSTOMER");
+        u.setActive(Boolean.TRUE);
         if (!avatar.isEmpty()) {
             Map res;
             try {
