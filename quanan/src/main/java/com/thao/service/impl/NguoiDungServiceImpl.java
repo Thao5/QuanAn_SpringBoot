@@ -57,7 +57,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
             nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
         }
 
-        if (!nd.getFile().isEmpty()) {
+        if (nd.getFile() != null && !nd.getFile().isEmpty()) {
             Map res;
             try {
                 res = this.cloudinary.uploader().upload(nd.getFile().getBytes(),

@@ -155,7 +155,7 @@ public class JwtSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .and()
                         .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                         .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler())).csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
             } catch (Exception ex) {

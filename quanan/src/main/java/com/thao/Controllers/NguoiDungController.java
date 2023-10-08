@@ -5,6 +5,7 @@
 package com.thao.Controllers;
 
 import com.thao.pojo.NguoiDung;
+import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Map;
@@ -32,9 +33,11 @@ public class NguoiDungController {
 
     @Autowired
     private NguoiDungService ndSer;
+    @Autowired
+    private EmailService emailSer;
 
     @RequestMapping("/nguoidung")
-    public String list(Model model, @RequestParam Map<String,String> params) {
+    public String list(Model model, @RequestParam Map<String, String> params) {
         model.addAttribute("nds", this.ndSer.getNDCus(params));
         return "nguoidung";
     }
@@ -54,7 +57,12 @@ public class NguoiDungController {
     @PostMapping("/addorupdatenguoidung")
     public String addOrUpdate(@ModelAttribute(value = "nd") @Valid NguoiDung nd, BindingResult rs) {
         if (!rs.hasErrors()) {
-            nd.setActive(Boolean.TRUE);
+            if (nd.getId() == null) {
+                nd.setActive(Boolean.TRUE);
+                this.emailSer.sendSimpleMessage(nd.getEmail(), "Đã tạo thành công người dùng", String.format("Đã tạo thành công người dùng %s", nd.getTaiKhoan()));
+            } else{
+                this.emailSer.sendSimpleMessage(nd.getEmail(), "Đã cập nhật thành công người dùng", String.format("Đã cập nhật thành công người dùng %s", nd.getTaiKhoan()));
+            }
             this.ndSer.save(nd);
             return "redirect:/admin/nguoidung";
         }
@@ -66,8 +74,8 @@ public class NguoiDungController {
     public void delete(@PathVariable("id") Long id) {
         NguoiDung nd = this.ndSer.getNguoiDungById(id);
         nd.setActive(Boolean.FALSE);
+        this.emailSer.sendSimpleMessage(nd.getEmail(), "Đã ngừng hoạt động người dùng", String.format("Đã ngừng hoạt động người dùng %s", nd.getTaiKhoan()));
         this.ndSer.save(nd);
     }
-    
-    
+
 }

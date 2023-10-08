@@ -6,6 +6,7 @@ package com.thao.Controllers;
 
 import com.thao.components.JwtService;
 import com.thao.pojo.NguoiDung;
+import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
 import java.security.Principal;
 import java.util.Map;
@@ -34,6 +35,8 @@ public class ApiNguoiDungController {
     private NguoiDungService ndSer;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private EmailService emailSer;
     
     @PostMapping("/login/")
     @CrossOrigin
@@ -60,6 +63,7 @@ public class ApiNguoiDungController {
     @CrossOrigin
     public ResponseEntity<NguoiDung> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         NguoiDung user = this.ndSer.addUser(params, avatar);
+        this.emailSer.sendSimpleMessage(user.getEmail(), "Đăng ký thành công", String.format("Tài khoản %s đã đăng ký thành công", user.getTaiKhoan()));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 }
