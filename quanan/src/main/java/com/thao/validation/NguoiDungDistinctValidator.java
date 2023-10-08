@@ -21,7 +21,8 @@ public class NguoiDungDistinctValidator implements ConstraintValidator<NguoiDung
 
     @Override
     public void initialize(NguoiDungDistinct constraintAnnotation) {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);    }
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);    
+    }
 
     @Override
     public boolean isValid(NguoiDung t, ConstraintValidatorContext cvc) {

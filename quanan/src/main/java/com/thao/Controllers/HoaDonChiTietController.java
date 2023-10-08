@@ -10,6 +10,8 @@ import com.thao.service.HoaDonChiTietService;
 import com.thao.service.HoaDonService;
 import jakarta.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -39,16 +41,18 @@ public class HoaDonChiTietController {
     
     @GetMapping("/addorupdatehoadonchitiet")
     public String add(Model model) {
+        Map<String, String> tmp = new HashMap<>();
         model.addAttribute("hd", new HoaDonChiTiet());
-        model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("tas", this.foodSer.getThucAns(tmp));
         model.addAttribute("hs", this.hSer.getHoaDons());
         return "addorupdatehoadonchitiet";
     }
 
     @GetMapping("/addorupdatehoadonchitiet/{id}")
     public String update(Model model, @PathVariable("id") Long id) {
+        Map<String, String> tmp = new HashMap<>();
         model.addAttribute("hd", this.hdSer.getHoaDonChiTietById(id));
-        model.addAttribute("tas", this.foodSer.getThucAns());
+        model.addAttribute("tas", this.foodSer.getThucAns(tmp));
         model.addAttribute("hs", this.hSer.getHoaDons());
         return "addorupdatehoadonchitiet";
     }
@@ -62,7 +66,8 @@ public class HoaDonChiTietController {
             this.hdSer.save(hd);
             return "redirect:/admin/hoadon";
         }
-        model.addAttribute("tas", this.foodSer.getThucAns());
+        Map<String, String> tmp = new HashMap<>();
+        model.addAttribute("tas", this.foodSer.getThucAns(tmp));
         model.addAttribute("hs", this.hSer.getHoaDons());
         return "addorupdatehoadonchitiet";
     }
