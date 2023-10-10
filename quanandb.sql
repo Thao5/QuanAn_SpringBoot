@@ -49,7 +49,7 @@ create table thuc_an
     id_loai int,
     foreign key(id_loai) references category(id),
     id_chi_nhanh int,
-    foreign key(id_chi_nhanh) references chi_nhanh(id)
+    foreign key(id_chi_nhanh) references chi_nhanh(id),
     active bit(1)
 );
 
