@@ -66,4 +66,14 @@ public class ApiNguoiDungController {
         this.emailSer.sendSimpleMessage(user.getEmail(), "Đăng ký thành công", String.format("Tài khoản %s đã đăng ký thành công", user.getTaiKhoan()));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+    
+    @PostMapping("/quenmatkhau/")
+    @CrossOrigin
+    public ResponseEntity<NguoiDung> quenMatKhau(@RequestParam Map<String,String> params){
+        NguoiDung user = this.ndSer.changePasswordByEmail(params);
+        if(user != null){
+            this.emailSer.sendSimpleMessage(params.get("email"), "Thông báo mật khẩu mới", String.format("Hệ thống đã đổi mật khẩu của bạn thành %s", user.getMatKhau()));
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }

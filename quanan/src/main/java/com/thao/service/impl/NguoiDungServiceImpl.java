@@ -134,4 +134,9 @@ public class NguoiDungServiceImpl implements NguoiDungService {
         return u;
     }
 
+    @Override
+    public NguoiDung changePasswordByEmail(Map<String, String> params) {
+        return this.cndRepo.changePasswordByEmail(params, passwordEncoder);
+    }
+
 }

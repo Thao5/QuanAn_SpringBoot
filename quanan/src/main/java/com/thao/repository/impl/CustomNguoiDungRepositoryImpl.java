@@ -17,6 +17,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.Map;
+import java.util.Random;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -66,9 +67,9 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         q.select(root);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(b.isTrue(root.<Boolean>get("active")));
-        
+
         if (params != null) {
-            
+
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
                 predicates.add(b.like(root.get("firstName"), String.format("%%%s%%", kw)));
@@ -81,7 +82,7 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         }
 
         Query query = entityManager.createQuery(q);
-        
+
         return query.getResultList();
     }
 
@@ -96,20 +97,56 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         predicates.add(b.or(
                 b.or(
                         b.or(b.equal(root.get("taiKhoan"), nd.getTaiKhoan()), b.equal(root.get("email"), nd.getEmail()), b.equal(root.get("taiKhoan"), nd.getTaiKhoan()), b.equal(root.get("phone"), nd.getPhone()), b.equal(root.get("phone"), nd.getPhone()), b.equal(root.get("email"), nd.getEmail())))));
-        
+
         q.where(predicates.toArray(Predicate[]::new));
-        
+
         Query query = entityManager.createQuery(q);
-        
-        try{
+
+        try {
             NguoiDung t = (NguoiDung) query.getSingleResult();
             return true;
-        }catch(NoResultException ex){
+        } catch (NoResultException ex) {
             return false;
-        }catch(NonUniqueResultException ex){
+        } catch (NonUniqueResultException ex) {
             return true;
         }
-            
+
+    }
+
+    @Override
+    public NguoiDung changePasswordByEmail(Map<String, String> params, BCryptPasswordEncoder passwordEncoder) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
+        Root root = q.from(NguoiDung.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(b.isTrue(root.<Boolean>get("active")));
+
+        if (params != null) {
+            String email = params.get("email");
+            if (email != null && !email.isEmpty()) {
+                predicates.add(b.equal(root.get("email"), email));
+            }
+        }
+
+        q.where(predicates.toArray(Predicate[]::new));
+
+        Query query = entityManager.createQuery(q);
+        try {
+            NguoiDung t = (NguoiDung) query.getSingleResult();
+            String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            Random rnd = new Random();
+
+            StringBuilder sb = new StringBuilder(6);
+            for (int i = 0; i < 6; i++) {
+                sb.append(AB.charAt(rnd.nextInt(AB.length())));
+            }
+            t.setMatKhau(passwordEncoder.encode(sb.toString()));
+            this.entityManager.merge(t);
+            return t;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
 }
