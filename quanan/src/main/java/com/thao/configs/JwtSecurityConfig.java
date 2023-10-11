@@ -149,7 +149,9 @@ public class JwtSecurityConfig {
                  new AntPathRequestMatcher("/api/food/"),
                  new AntPathRequestMatcher("/api/cates/"),
                  new AntPathRequestMatcher("/api/dangky/"),
-                 new AntPathRequestMatcher("/api/current-user/")).permitAll()
+                 new AntPathRequestMatcher("/api/current-user/"),
+                 new AntPathRequestMatcher("/api/pay/"),
+                 new AntPathRequestMatcher("/api/payoffline/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
