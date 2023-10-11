@@ -69,6 +69,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 hdct.setCreatedDate(new Date());
                 
                 this.hdctRepo.save(hdct);
+                ThucAn ta = this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn())));
+                ta.setSoLuong(ta.getSoLuong() - m.getSoLuong());
+                this.foodRepo.save(ta);
             }
             
             return true;
@@ -97,6 +100,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 hdct.setCreatedDate(new Date());
                 
                 this.hdcttcRepo.save(hdct);
+                ThucAn ta = this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn())));
+                ta.setSoLuong(ta.getSoLuong() - m.getSoLuong());
+                this.foodRepo.save(ta);
             }
             
             return true;
