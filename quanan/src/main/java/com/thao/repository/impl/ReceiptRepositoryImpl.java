@@ -25,6 +25,7 @@ import jakarta.persistence.EntityManager;
 import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Repository;
  * @author Chung Vu
  */
 @Repository
+@EnableAsync
 public class ReceiptRepositoryImpl implements ReceiptRepository{
     @Autowired
     private CustomNguoiDungRepository ndRepo;
