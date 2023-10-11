@@ -20,6 +20,7 @@ import com.thao.repository.HoaDonRepository;
 import com.thao.repository.HoaDonTaiChoRepository;
 import com.thao.repository.NguoiDungRepository;
 import com.thao.repository.ReceiptRepository;
+import com.thao.service.EmailService;
 import jakarta.persistence.EntityManager;
 import java.util.Date;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
     private HoaDonTaiChoRepository hdtcRepo;
     @Autowired
     private HoaDonChiTietTaiChoRepository hdcttcRepo;
+    @Autowired
+    private EmailService emailSer;
 
 
     @Override
@@ -73,7 +76,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 ta.setSoLuong(ta.getSoLuong() - m.getSoLuong());
                 this.foodRepo.save(ta);
             }
-            
+            this.emailSer.sendSimpleMessage(nd.getEmail(), "Cảm ơn bạn đã mua hàng", "Cảm ơn bạn đã mua hàng");
             return true;
         }catch(Exception ex){
             ex.printStackTrace();
