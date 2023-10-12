@@ -20,6 +20,7 @@ import com.thao.repository.HoaDonRepository;
 import com.thao.repository.HoaDonTaiChoRepository;
 import com.thao.repository.NguoiDungRepository;
 import com.thao.repository.ReceiptRepository;
+import com.thao.service.BanService;
 import com.thao.service.EmailService;
 import jakarta.persistence.EntityManager;
 import java.util.Date;
@@ -53,6 +54,8 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
     private HoaDonChiTietTaiChoRepository hdcttcRepo;
     @Autowired
     private EmailService emailSer;
+    @Autowired
+    private BanService banSer;
 
 
     @Override
@@ -93,6 +96,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //            NguoiDung nd = this.ndRepo.getNDByUsername(authentication.getName());
             hd.setCreatedDate(new Date());
+            hd.setIdBan(this.banSer.getBanById(Long.parseLong(Integer.toString(carts.get(carts.keySet().toArray()[0]).getIdBan()))));
 //            hd.setIdNguoiDung(nd);
             this.hdtcRepo.save(hd);
             

@@ -30,4 +30,5 @@ public class ApiChiNhanhController {
     public ResponseEntity<List<ChiNhanh>> list(){
         return new ResponseEntity<>(this.cnSer.getChiNhanhs(), HttpStatus.OK);
     }
+    
 }
