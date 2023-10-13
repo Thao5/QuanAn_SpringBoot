@@ -17,13 +17,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li class="nav-item">
                             <a class="nav-link" th:href="${action}">Trang chu</a>
                         </li>
-                        
+
+                        <li th:each="cn : ${listCN}">
+                            <a th:href="@{'/bandatchinhanh/' + ${cn.id}}" th:text="${cn.diaChi}"></a>
+                        </li>
+
                         <div class="me-auto">
 
-                            <div th:each="cn : ${listCN}">
-                                <a th:href="@{'/bandatchinhanh/' + ${cn.id}}" th:text="${cn.diaChi}"></a>
-                            </div>
-                            
+
+
                             <div th:if="${#authentication.principal.username != null}">
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
@@ -72,7 +74,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </tr>
                 </th:block>
                 </tbody>
-                
+
             </table>
             <h1 th:if="${listBanDaDat == null}">Không có ai đặt bàn</h1>
         </section>
