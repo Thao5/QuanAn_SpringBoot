@@ -46,33 +46,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </nav>
 
         <section class="container">
-            <table class="table table-hover"  th:if="${listBan != null}">
+            <table class="table table-hover"  th:if="${listBanDaDat != null}">
                 <thead>
                     <tr>
                         <th>Mô tả bàn</th>
+                        <th>Họ tên người đặt</th>
                         <th>Ngày đặt</th>
                         <th>Ngày nhận</th>
                     </tr>
                 </thead>
                 <tbody>
-                <th:block th:each="ban : ${listBan}">
+                <th:block th:each="ban : ${listBanDaDat}">
 
 
                     <tr th:with="comf=('/quanan/bandatchinhanh/xacnhanbandat/' + ${ban.idBan} + '/'),del=('/quanan/bandatchinhanh/deletebandat/' + ${ban.idBan} + '/')">
                         <td th:text="${ban.moTa}"></td>
+                        <td th:text="${ban.hoTen}"></td>
                         <td th:text="${ban.ngayDat}"></td>
                         <td th:text="${ban.ngayNhan}"></td>
 
                         <td>
-                            <button th:data-id="${ban.id}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
-                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
+                            <button th:data-id="${ban.idBan}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
+                            <button th:data-id="${ban.idBan}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
                         </td>
                     </tr>
                 </th:block>
                 </tbody>
                 
             </table>
-            <h1 th:if="${listBan == null}">Không có ai đặt bàn</h1>
+            <h1 th:if="${listBanDaDat == null}">Không có ai đặt bàn</h1>
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
