@@ -73,7 +73,8 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 hdct.setIdThucAn(this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn()))));
                 hdct.setIdHoaDon(hd);
                 hdct.setSoLuongMua(m.getSoLuong());
-                hdct.setTongTien(Long.parseLong(Integer.toString(m.getSoLuong()*m.getDonGia())));
+                hdct.setGiaVanChuyen(Long.parseLong("10000"));
+                hdct.setTongTien(Long.parseLong(Integer.toString(m.getSoLuong()*m.getDonGia()+10000)));
                 hdct.setCreatedDate(new Date());
                 
                 this.hdctRepo.save(hdct);

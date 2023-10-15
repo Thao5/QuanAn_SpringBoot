@@ -55,6 +55,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <th>Họ tên người đặt</th>
                         <th>Ngày đặt</th>
                         <th>Ngày nhận</th>
+                        <th>Ghi chú thêm</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,11 +63,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 
                     <tr th:with="comf=('/quanan/bandatchinhanh/xacnhanbandat/' + ${ban.idBan} + '/'),del=('/quanan/bandatchinhanh/deletebandat/' + ${ban.idBan} + '/')">
-                        <td th:text="${ban.moTa}"></td>
+                        <td th:text="${ban.moTaBan}"></td>
                         <td th:text="${ban.hoTen}"></td>
                         <td th:text="${ban.ngayDat}"></td>
                         <td th:text="${ban.ngayNhan}"></td>
-
+                        <td th:text="${ban.moTa}"></td>
                         <td>
                             <button th:data-id="${ban.idBan}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
                             <button th:data-id="${ban.idBan}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>

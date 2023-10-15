@@ -67,7 +67,7 @@ public class ApiBanDaDatController {
             sessionTmp = session;
         }
         sessionTmp.setAttribute("listBan", listBan);
-        if(check){
+        if(!check){
             return new ResponseEntity(ban, HttpStatus.ACCEPTED);
         }
         this.emailSer.sendSimpleMessage(this.ndSer.getNguoiDungById(Long.parseLong(Integer.toString(ban.getIdNguoiDat()))).getEmail(), "Thông báo đặt bàn thành công", "Bạn đã đặt bàn thành công");
@@ -78,5 +78,11 @@ public class ApiBanDaDatController {
     @GetMapping("/ban/{id}/")
     public ResponseEntity<List<Ban>> list(@PathVariable(value = "id") int id){
         return new ResponseEntity<>(this.banSer.getBanTheoChiNhanh(id), HttpStatus.OK);
+    }
+    
+    @CrossOrigin
+    @GetMapping("/thongtinban/{id}/")
+    public ResponseEntity<Ban> ban(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<>(this.banSer.getBanById(id), HttpStatus.OK);
     }
 }

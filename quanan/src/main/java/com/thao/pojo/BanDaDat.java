@@ -23,4 +23,5 @@ public class BanDaDat {
     private Date ngayDat;
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private Date ngayNhan;
+    private String moTaBan;
 }
