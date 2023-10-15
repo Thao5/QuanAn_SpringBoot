@@ -5,10 +5,12 @@
 package com.thao.service.impl;
 
 import com.thao.pojo.HoaDon;
+import com.thao.repository.CustomHoaDonRepository;
 import com.thao.repository.HoaDonRepository;
 import com.thao.service.HoaDonService;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class HoaDonServiceImpl implements HoaDonService{
     @Autowired
     private HoaDonRepository hdRepo;
+    @Autowired
+    private CustomHoaDonRepository cusHDRepo;
 
     @Override
     public List<HoaDon> getHoaDons() {
@@ -43,6 +47,11 @@ public class HoaDonServiceImpl implements HoaDonService{
     @Override
     public HoaDon getHoaDonById(Long id) {
         return this.hdRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<HoaDon> getHDs(Map<String, String> params) {
+        return this.cusHDRepo.getHDs(params);
     }
     
     

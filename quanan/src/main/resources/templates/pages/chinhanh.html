@@ -10,6 +10,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container">
             <a th:href="@{/admin/addorupdatechinhanh}" title="Thêm chi nhánh" class="btn btn-outline-success">+</a>
+                <ul class="pagination mt-1" th:if="${pages > 1}">
+                    <li class="page-item"><a class="page-link" th:href="@{/admin/chinhanh}">Tất cả</a></li>
+                    
+                        <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/chinhanh?page=' + i}" th:text="${i}"></a></li>
+
+                </ul>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -45,7 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="modal fade" th:id="${'myModal-ta' + s.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdatefood}" title="Thêm thức ăn" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdatefood}" title="Thêm thức ăn" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các món ăn của chi nhánh ' + s.diaChi}"></h4>
@@ -66,25 +72,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="ta : ${tas}" th:if="${ta.idChiNhanh.id == s.id}">
-                                                        <td>
-                                                            <img th:src="${ta.image}" width="15"/>
-                                                        </td>
-                                                        <td th:text="${ta.id}"></td>
-                                                        <td th:text="${ta.name}"></td>
-                                                        <td th:text="${ta.soLuong}"></td>
-                                                        <td th:text="${ta.price}"></td>
-                                                        <td th:text="${ta.createdDate}"></td>
-                                                        <td th:text="${ta.idLoai.name}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdatefood/'+ta.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="ta : ${tas}" th:if="${ta.idChiNhanh.id == s.id}">
+                                                    <td>
+                                                        <img th:src="${ta.image}" width="15"/>
+                                                    </td>
+                                                    <td th:text="${ta.id}"></td>
+                                                    <td th:text="${ta.name}"></td>
+                                                    <td th:text="${ta.soLuong}"></td>
+                                                    <td th:text="${ta.price}"></td>
+                                                    <td th:text="${ta.createdDate}"></td>
+                                                    <td th:text="${ta.idLoai.name}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdatefood/'+ta.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delFood=('/quanan/admin/deletefood/' + ${ta.id} + '/')">
-                                                            <button th:data-id="${ta.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delFood=('/quanan/admin/deletefood/' + ${ta.id} + '/')">
+                                                        <button th:data-id="${ta.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -107,7 +113,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="modal fade" th:id="${'myModal-ban' + s.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdateban}" title="Thêm bàn" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdateban}" title="Thêm bàn" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các bàn của chi nhánh ' + s.diaChi}"></h4>
@@ -124,19 +130,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="ban : ${bans}" th:if="${ban.idChiNhanh.id == s.id}">
-                                                        <td th:text="${ban.id}"></td>
-                                                        <td th:text="${ban.moTa}"></td>
-                                                        <td th:text="${ban.createdDate}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdateban/'+ban.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="ban : ${bans}" th:if="${ban.idChiNhanh.id == s.id}">
+                                                    <td th:text="${ban.id}"></td>
+                                                    <td th:text="${ban.moTa}"></td>
+                                                    <td th:text="${ban.createdDate}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdateban/'+ban.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delBan=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
-                                                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${delBan}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delBan=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
+                                                        <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${delBan}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -159,7 +165,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="modal fade" th:id="${'myModal-dg' + s.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các đánh giá của chi nhánh ' + s.diaChi}"></h4>
@@ -179,21 +185,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="dg : ${dgs}" th:if="${dg.idChiNhanh.id == s.id}">
-                                                        <td th:text="${dg.id}"></td>
-                                                        <td th:text="${dg.noiDung}"></td>
-                                                        <td th:text="${dg.danhGia}"></td>
-                                                        <td th:text="${dg.createdDate}"></td>
-                                                        <td th:text="${dg.idNguoiDung.lastName + ' ' + dg.idNguoiDung.firstName}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdatedanhgia/'+dg.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="dg : ${dgs}" th:if="${dg.idChiNhanh.id == s.id}">
+                                                    <td th:text="${dg.id}"></td>
+                                                    <td th:text="${dg.noiDung}"></td>
+                                                    <td th:text="${dg.danhGia}"></td>
+                                                    <td th:text="${dg.createdDate}"></td>
+                                                    <td th:text="${dg.idNguoiDung.lastName + ' ' + dg.idNguoiDung.firstName}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdatedanhgia/'+dg.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delDG=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
-                                                            <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${delDG}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delDG=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
+                                                        <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${delDG}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 

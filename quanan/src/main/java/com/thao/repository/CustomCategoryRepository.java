@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.thao.service;
+package com.thao.repository;
 
-import com.thao.pojo.HoaDon;
+import com.thao.pojo.Category;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +12,6 @@ import java.util.Map;
  *
  * @author Chung Vu
  */
-public interface HoaDonService {
-    List<HoaDon> getHoaDons();
-    void save(HoaDon hd);
-    void delete(Long id);
-    HoaDon getHoaDonById(Long id);
-    List<HoaDon> getHDs(Map<String,String> params);
+public interface CustomCategoryRepository {
+    List<Category> getCates(Map<String,String> params);
 }

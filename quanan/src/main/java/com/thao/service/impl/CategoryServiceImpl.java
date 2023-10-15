@@ -6,8 +6,10 @@ package com.thao.service.impl;
 
 import com.thao.pojo.Category;
 import com.thao.repository.CategoryRepository;
+import com.thao.repository.CustomCategoryRepository;
 import com.thao.service.CategoryService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository cateRepo;
+    @Autowired
+    private CustomCategoryRepository cusCateRepo;
 
     @Override
     public List<Category> getCates() {
@@ -39,6 +43,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category getCateById(Long id) {
         return this.cateRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<Category> getCates(Map<String, String> params) {
+        return this.cusCateRepo.getCates(params);
     }
     
     

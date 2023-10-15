@@ -23,7 +23,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="${action}">Trang chu</a>
+                            <a class="nav-link" th:href="${action}">Trang chủ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/chinhanh}">Chi nhánh</a>
@@ -65,6 +65,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
 
                         </div>
+                        <li class="nav-item">
+                            <form>
+                                <input type="text" name="kw" class="form-control" placeholder="Tìm từ khóa..." />
+                                <button type="submit" class="btn btn-info">Tìm</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>

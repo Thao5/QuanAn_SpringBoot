@@ -4,8 +4,8 @@
  */
 package com.thao.repository.impl;
 
-import com.thao.pojo.ChiNhanh;
-import com.thao.repository.CustomChiNhanhRepository;
+import com.thao.pojo.Category;
+import com.thao.repository.CustomCategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -26,41 +26,24 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @PropertySource("classpath:configs.properties")
-public class CustomChiNhanhRepositoryImpl implements CustomChiNhanhRepository {
-
+public class CustomCategoryRepositoryImpl implements CustomCategoryRepository{
     @Autowired
     private EntityManager entityManager;
     @Autowired
     private Environment env;
 
     @Override
-    public List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id) {
+    public List<Category> getCates(Map<String, String> params) {
         CriteriaBuilder b = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ChiNhanh> q = b.createQuery(ChiNhanh.class);
-        Root root = q.from(ChiNhanh.class);
-        q.select(root);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(b.equal(root.get("idNguoiDung").get("id"), id));
-        q.where(predicates.toArray(Predicate[]::new));
-
-        Query query = entityManager.createQuery(q);
-        
-
-        return query.getResultList();
-    }
-
-    @Override
-    public List<ChiNhanh> getChiNhanhs(Map<String, String> params) {
-        CriteriaBuilder b = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ChiNhanh> q = b.createQuery(ChiNhanh.class);
-        Root root = q.from(ChiNhanh.class);
+        CriteriaQuery<Category> q = b.createQuery(Category.class);
+        Root root = q.from(Category.class);
         q.select(root);
         List<Predicate> predicates = new ArrayList<>();
         if (params != null) {
 
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                predicates.add(b.like(root.get("diaChi"), String.format("%%%s%%", kw)));
+                predicates.add(b.like(root.get("name"), String.format("%%%s%%", kw)));
             }
             q.where(predicates.toArray(Predicate[]::new));
         }
@@ -77,5 +60,4 @@ public class CustomChiNhanhRepositoryImpl implements CustomChiNhanhRepository {
 
         return query.getResultList();
     }
-
 }

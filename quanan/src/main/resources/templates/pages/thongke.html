@@ -26,13 +26,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                         <div class="form-floating mb-3 mt-3">
                             <form method="get" th:action="@{/admin/stats}">
-                            <select id="year" name="y" class="form-select">
-                                <option value="">Tất cả</option>
-                                <option th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:value="${i}" th:text="${i}"></option>
-                            </select>
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="submit" value="Thống kê" class="btn btn-info" />
-                            </div>
+                                <select id="year" name="y" class="form-select">
+                                    <option value="">Tất cả</option>
+                                    <option th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:value="${i}" th:text="${i}"></option>
+                                </select>
+                                <select id="month" name="m" class="form-select">
+                                    <option value="">Tất cả</option>
+                                    <option th:each="i : ${#numbers.sequence( 1, 12, 1)}" th:value="${i}" th:text="${i}"></option>
+                                </select>
+                                <div class="form-floating mb-3 mt-3">
+                                    <input type="submit" value="Thống kê" class="btn btn-info" />
+                                </div>
                             </form>
                         </div>
                         <div class="card mb-4">
@@ -85,7 +89,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         for (var i = 0; i < chartData.length; i++) {
             k.push(chartData[i][0]);
             v.push(chartData[i][1]);
-        };
+        }
+        ;
         var ctx = document.getElementById("myAreaChart");
         var myLineChart = new Chart(ctx, {
             type: 'line',
@@ -185,7 +190,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         for (var i = 0; i < chartData2.length; i++) {
             k2.push(chartData2[i][0]);
             v2.push(chartData2[i][1]);
-        };
+        }
+        ;
         var ctx2 = document.getElementById("myPieChart");
         var myPieChart = new Chart(ctx2, {
             type: 'pie',
@@ -198,6 +204,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             },
         });
         /*]]>*/
-</script>
+    </script>
 </body>
 </html>

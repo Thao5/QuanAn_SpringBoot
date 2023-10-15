@@ -10,6 +10,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container">
             <a th:href="@{/admin/addorupdatecate}" title="Thêm loại" class="btn btn-outline-success">+</a>
+            <ul class="pagination mt-1" th:if="${pages > 1}">
+                    <li class="page-item"><a class="page-link" th:href="@{/admin/cate}">Tất cả</a></li>
+                    
+                        <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/cate?page=' + i}" th:text="${i}"></a></li>
+
+                </ul>
             <table class="table table-hover">
                 <thead>
                     <tr>

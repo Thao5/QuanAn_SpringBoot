@@ -5,6 +5,7 @@
 package com.thao.repository.impl;
 
 import com.thao.pojo.HoaDonChiTiet;
+import com.thao.pojo.HoaDonChiTietTaiCho;
 import com.thao.repository.StatsRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -32,17 +33,21 @@ public class StatsRepositoryImpl implements StatsRepository{
         CriteriaBuilder b = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
         Root<HoaDonChiTiet> root = q.from(HoaDonChiTiet.class);
+        Root<HoaDonChiTietTaiCho> root2 = q.from(HoaDonChiTietTaiCho.class);
         q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
+        q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));
         List<Predicate> predicates = new ArrayList<>();
         if (params != null) {
             
             String y = params.get("y");
             if (y != null && !y.isEmpty()) {
                 predicates.add(b.equal(b.function("YEAR", Integer.class, root.get("createdDate")), Integer.parseInt(y)));
+                predicates.add(b.equal(b.function("YEAR", Integer.class, root2.get("createdDate")), Integer.parseInt(y)));
             }
             String m = params.get("m");
             if (m != null && !m.isEmpty()) {
                 predicates.add(b.equal(b.function("MONTH", Integer.class, root.get("createdDate")), Integer.parseInt(m)));
+                predicates.add(b.equal(b.function("MONTH", Integer.class, root2.get("createdDate")), Integer.parseInt(m)));
             }
             q.where(predicates.toArray(Predicate[]::new));
         }
