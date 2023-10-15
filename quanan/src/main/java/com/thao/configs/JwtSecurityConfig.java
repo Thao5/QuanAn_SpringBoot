@@ -156,7 +156,9 @@ public class JwtSecurityConfig {
                  new AntPathRequestMatcher("/api/ban/**"),
                  new AntPathRequestMatcher("/api/comments/**"),
                  new AntPathRequestMatcher("/api/stores/**"),
-                 new AntPathRequestMatcher("/api/thongtinban/**")).permitAll()
+                 new AntPathRequestMatcher("/api/thongtinban/**"),
+                 new AntPathRequestMatcher("/api/quenmatkhau/**"),
+                 new AntPathRequestMatcher("/api/doimatkhau/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")

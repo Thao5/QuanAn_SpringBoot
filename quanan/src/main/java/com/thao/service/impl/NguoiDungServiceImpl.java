@@ -49,6 +49,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
     @Override
     public void save(NguoiDung nd) {
+        String tmp = this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau();
         if (nd.getId() != null) {
             if (!nd.getMatKhau().equals(this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau())) {
                 nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
@@ -135,8 +136,17 @@ public class NguoiDungServiceImpl implements NguoiDungService {
     }
 
     @Override
-    public NguoiDung changePasswordByEmail(Map<String, String> params) {
+    public String changePasswordByEmail(Map<String, String> params) {
         return this.cndRepo.changePasswordByEmail(params, passwordEncoder);
+    }
+
+    @Override
+    public NguoiDung changePassword(Map<String, String> params) {
+        NguoiDung nd = this.cndRepo.getNDByUsername(params.get("taiKhoan"));
+        nd.setMatKhau(passwordEncoder.encode(params.get("matKhauMoi")));
+        
+        this.ndRepo.save(nd);
+        return nd;
     }
 
 }

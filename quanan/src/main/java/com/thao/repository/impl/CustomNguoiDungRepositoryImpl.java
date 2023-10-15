@@ -6,6 +6,7 @@ package com.thao.repository.impl;
 
 import com.thao.pojo.NguoiDung;
 import com.thao.repository.CustomNguoiDungRepository;
+import com.thao.repository.NguoiDungRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
@@ -38,6 +39,8 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
     private EntityManager entityManager;
     @Autowired
     private Environment env;
+    @Autowired
+    private NguoiDungRepository ndRepo;
 
     @Override
     public NguoiDung getNDByUsername(String username) {
@@ -128,7 +131,7 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
     }
 
     @Override
-    public NguoiDung changePasswordByEmail(Map<String, String> params, BCryptPasswordEncoder passwordEncoder) {
+    public String changePasswordByEmail(Map<String, String> params, BCryptPasswordEncoder passwordEncoder) {
         CriteriaBuilder b = entityManager.getCriteriaBuilder();
         CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
         Root root = q.from(NguoiDung.class);
@@ -156,8 +159,8 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
                 sb.append(AB.charAt(rnd.nextInt(AB.length())));
             }
             t.setMatKhau(passwordEncoder.encode(sb.toString()));
-            this.entityManager.merge(t);
-            return t;
+            this.ndRepo.save(t);
+            return sb.toString();
         } catch (NoResultException ex) {
             return null;
         }
