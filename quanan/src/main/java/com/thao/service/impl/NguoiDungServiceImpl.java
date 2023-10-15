@@ -49,7 +49,6 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
     @Override
     public void save(NguoiDung nd) {
-        String tmp = this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau();
         if (nd.getId() != null) {
             if (!nd.getMatKhau().equals(this.ndRepo.getReferenceById(Long.parseLong(nd.getId().toString())).getMatKhau())) {
                 nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
