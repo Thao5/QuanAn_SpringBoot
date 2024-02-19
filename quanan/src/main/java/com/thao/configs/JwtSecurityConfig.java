@@ -4,6 +4,9 @@
  */
 package com.thao.configs;
 
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.OAuthTokenCredential;
+import com.paypal.base.rest.PayPalRESTException;
 import com.thao.filters.CustomAccessDeniedHandler;
 import com.thao.filters.JwtAuthenticationTokenFilter;
 import com.thao.filters.RestAuthenticationEntryPoint;
@@ -41,12 +44,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  *
@@ -73,12 +78,50 @@ public class JwtSecurityConfig {
     private BCryptPasswordEncoder passwordEncoder;
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://localhost:8080/quanan/admin/nguoidung";
+    public static String vnp_ReturnUrl = "http://localhost:8080/quanan/api/pay/";
     public static String vnp_TmnCode = "F08ACHP7";
     public static String secretKey = "KRNOBXWYMVKGUMTTTEDOQSGUORCTVUUQ";
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
+    //paypal
+    @Value("${paypal.client.app}")
+    private String clientId;
+    @Value("${paypal.client.secret}")
+    private String clientSecret;
+    @Value("${paypal.mode}")
+    private String mode;
+
+    public enum PaypalPaymentIntent {
+        sale, authorize, order
+    }
+    
+    public enum PaypalPaymentMethod {
+	credit_card, paypal
+    }
+
+    @Bean
+    public Map<String, String> paypalSdkConfig() {
+
+        Map<String, String> sdkConfig = new HashMap<>();
+
+        sdkConfig.put("mode", mode);
+        return sdkConfig;
+    }
+
+    @Bean
+    public OAuthTokenCredential authTokenCredential() {
+        return new OAuthTokenCredential(clientId, clientSecret, paypalSdkConfig());
+    }
+
+    @Bean
+    public APIContext apiContext() throws PayPalRESTException {
+        APIContext apiContext = new APIContext(authTokenCredential().getAccessToken());
+        apiContext.setConfigurationMap(paypalSdkConfig()
+        );
+        return apiContext;
+    }
 
     public static String md5(String message) {
         String digest = null;
@@ -279,7 +322,8 @@ public class JwtSecurityConfig {
                         new AntPathRequestMatcher("/api/stores/**"),
                         new AntPathRequestMatcher("/api/thongtinban/**"),
                         new AntPathRequestMatcher("/api/quenmatkhau/**"),
-                        new AntPathRequestMatcher("/api/doimatkhau/**")).permitAll()
+                        new AntPathRequestMatcher("/api/doimatkhau/**"),
+                        new AntPathRequestMatcher("/api/pay_paypal/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")

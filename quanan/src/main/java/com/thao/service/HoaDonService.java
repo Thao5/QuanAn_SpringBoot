@@ -4,6 +4,8 @@
  */
 package com.thao.service;
 
+import com.paypal.api.payments.Payment;
+import com.thao.configs.JwtSecurityConfig;
 import com.thao.pojo.HoaDon;
 import java.util.List;
 import java.util.Map;
@@ -18,4 +20,6 @@ public interface HoaDonService {
     void delete(Long id);
     HoaDon getHoaDonById(Long id);
     List<HoaDon> getHDs(Map<String,String> params);
+    Payment createPayment(Long total, String currency, JwtSecurityConfig.PaypalPaymentMethod method, JwtSecurityConfig.PaypalPaymentIntent intent, String description, String cancelUrl, String successUrl);
+    Payment executePayment(String paymentId, String payerId);
 }

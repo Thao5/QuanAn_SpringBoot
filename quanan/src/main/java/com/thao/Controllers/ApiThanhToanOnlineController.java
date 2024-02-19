@@ -4,9 +4,17 @@
  */
 package com.thao.Controllers;
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import com.thao.components.PayPalComponent;
 import com.thao.configs.JwtSecurityConfig;
+import com.thao.configs.JwtSecurityConfig.PaypalPaymentIntent;
+import com.thao.configs.JwtSecurityConfig.PaypalPaymentMethod;
 import com.thao.pojo.PaymentRes;
+import com.thao.service.HoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,19 +44,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class ApiThanhToanOnlineController {
-    @GetMapping("/create_payment/")
-    public ResponseEntity<?> createPayment(HttpServletRequest req) throws UnsupportedEncodingException{
+
+    @Autowired
+    private HoaDonService hdSer;
+    @Autowired
+    private PayPalComponent paypalComponent;
+
+    public static final String URL_PAYPAL_SUCCESS = "pay/success";
+    public static final String URL_PAYPAL_CANCEL = "pay/cancel";
+
+    @GetMapping("/create_payment_vnpay/")
+    public ResponseEntity<?> createPayment(HttpServletRequest req) throws UnsupportedEncodingException {
         String orderType = "other";
 //        long amount = Integer.parseInt(req.getParameter("amount"))*100;
 //        String bankCode = req.getParameter("bankCode");
-        
+
         String vnp_TxnRef = JwtSecurityConfig.getRandomNumber(8);
         String vnp_IpAddr = JwtSecurityConfig.getIpAddress(req);
-        
-        long amount = 100000*100;
+
+        long amount = 100000 * 100;
 
         String vnp_TmnCode = JwtSecurityConfig.vnp_TmnCode;
-        
+
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", JwtSecurityConfig.vnp_Version);
         vnp_Params.put("vnp_Command", JwtSecurityConfig.vnp_Command);
@@ -53,7 +73,7 @@ public class ApiThanhToanOnlineController {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", "NCB");
-        
+
 //        if (bankCode != null && !bankCode.isEmpty()) {
 //            vnp_Params.put("vnp_BankCode", bankCode);
 //        }
@@ -75,11 +95,11 @@ public class ApiThanhToanOnlineController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-        
+
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-        
+
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
@@ -107,7 +127,7 @@ public class ApiThanhToanOnlineController {
         String vnp_SecureHash = JwtSecurityConfig.hmacSHA512(JwtSecurityConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = JwtSecurityConfig.vnp_PayUrl + "?" + queryUrl;
-        
+
         PaymentRes paymentRes = new PaymentRes();
         paymentRes.setStatus("OK");
         paymentRes.setMessage("Successfully");
@@ -121,7 +141,7 @@ public class ApiThanhToanOnlineController {
 
         return new ResponseEntity<>(paymentRes, HttpStatus.OK);
     }
-    
+
 //    @GetMapping("/payment_info/")
 //    public ResponseEntity<?> transaction(@RequestParam(value = "vnp_Amount") String amount,
 //                                         @RequestParam(value = "vnp_BankCode") String bankCode,
@@ -129,4 +149,29 @@ public class ApiThanhToanOnlineController {
 //                                         @RequestParam(value = "vnp_ResponseCode") String responseCode){
 //        
 //    }
+    //Paypal
+    @GetMapping("/pay_paypal/")
+    public String pay(HttpServletResponse httpServletResponse, HttpServletRequest request/*, @RequestParam("price") Long price*/) throws PayPalRESTException {
+        String cancelUrl = this.paypalComponent.getBaseURL(request) + "/" + "admin/nguoidung";
+        String successUrl = this.paypalComponent.getBaseURL(request) + "/" + "api/pay/";
+        int priceTmp = 10;
+        Long price = (long) priceTmp;
+        Payment payment = this.hdSer.createPayment(
+                price * 1000,
+                "USD",
+                PaypalPaymentMethod.paypal,
+                PaypalPaymentIntent.sale,
+                "payment description",
+                cancelUrl,
+                successUrl);
+        for (Links links : payment.getLinks()) {
+            if (links.getRel().equals("approval_url")) {
+                httpServletResponse.setHeader("Location", links.getHref());
+                httpServletResponse.setStatus(302);
+                return String.format("redirect:/%s", links.getHref());
+            }
+        }
+
+        return "redirect:/";
+    }
 }

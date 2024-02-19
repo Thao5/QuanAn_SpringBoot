@@ -4,6 +4,8 @@
  */
 package com.thao.service.impl;
 
+import com.paypal.api.payments.Payment;
+import com.thao.configs.JwtSecurityConfig;
 import com.thao.pojo.HoaDon;
 import com.thao.repository.CustomHoaDonRepository;
 import com.thao.repository.HoaDonRepository;
@@ -52,6 +54,16 @@ public class HoaDonServiceImpl implements HoaDonService{
     @Override
     public List<HoaDon> getHDs(Map<String, String> params) {
         return this.cusHDRepo.getHDs(params);
+    }
+
+    @Override
+    public Payment createPayment(Long total, String currency, JwtSecurityConfig.PaypalPaymentMethod method, JwtSecurityConfig.PaypalPaymentIntent intent, String description, String cancelUrl, String successUrl) {
+        return this.cusHDRepo.createPayment(total, currency, method, intent, description, cancelUrl, successUrl);
+    }
+
+    @Override
+    public Payment executePayment(String paymentId, String payerId) {
+        return this.cusHDRepo.executePayment(paymentId, payerId);
     }
     
     
