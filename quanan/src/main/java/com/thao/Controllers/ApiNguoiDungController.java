@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/api")
-@EnableAsync
 public class ApiNguoiDungController {
     @Autowired
     private NguoiDungService ndSer;
@@ -71,17 +69,11 @@ public class ApiNguoiDungController {
     
     @PostMapping("/quenmatkhau/")
     @CrossOrigin
-    public ResponseEntity<String> quenMatKhau(@RequestBody Map<String,String> params){
-        String user = this.ndSer.changePasswordByEmail(params);
+    public ResponseEntity<NguoiDung> quenMatKhau(@RequestParam Map<String,String> params){
+        NguoiDung user = this.ndSer.changePasswordByEmail(params);
         if(user != null){
-            this.emailSer.sendSimpleMessage(params.get("email"), "Thông báo mật khẩu mới", String.format("Hệ thống đã đổi mật khẩu của bạn thành %s", user));
+            this.emailSer.sendSimpleMessage(params.get("email"), "Thông báo mật khẩu mới", String.format("Hệ thống đã đổi mật khẩu của bạn thành %s", user.getMatKhau()));
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-    
-    @PostMapping("/doimatkhau/")
-    @CrossOrigin
-    public ResponseEntity<NguoiDung> doiMatKhau(@RequestBody Map<String,String> params){
-        return new ResponseEntity<>(this.ndSer.changePassword(params), HttpStatus.OK);
     }
 }

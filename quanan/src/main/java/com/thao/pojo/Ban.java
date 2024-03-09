@@ -4,8 +4,6 @@
  */
 package com.thao.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
@@ -38,7 +36,6 @@ import org.springframework.format.annotation.DateTimeFormat;
     @NamedQuery(name = "Ban.findById", query = "SELECT b FROM Ban b WHERE b.id = :id"),
     @NamedQuery(name = "Ban.findByMoTa", query = "SELECT b FROM Ban b WHERE b.moTa = :moTa"),
     @NamedQuery(name = "Ban.findByCreatedDate", query = "SELECT b FROM Ban b WHERE b.createdDate = :createdDate")})
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ban implements Serializable {
 
     private static final long serialVersionUID = 1L;

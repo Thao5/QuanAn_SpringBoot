@@ -6,7 +6,6 @@ package com.thao.service;
 
 import com.thao.pojo.Category;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -17,5 +16,4 @@ public interface CategoryService {
     void save(Category cate);
     void delete(Long id);
     Category getCateById(Long id);
-    List<Category> getCates(Map<String,String> params);
 }

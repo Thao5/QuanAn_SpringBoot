@@ -14,13 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Chung Vu
  */
-@RestController
+@Controller
 @RequestMapping("/api")
 public class ApiChiNhanhController {
     @Autowired
@@ -31,5 +30,4 @@ public class ApiChiNhanhController {
     public ResponseEntity<List<ChiNhanh>> list(){
         return new ResponseEntity<>(this.cnSer.getChiNhanhs(), HttpStatus.OK);
     }
-    
 }

@@ -6,7 +6,6 @@ package com.thao.service;
 
 import com.thao.pojo.HoaDonTaiCho;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -17,5 +16,4 @@ public interface HoaDonTaiChoService {
     void save(HoaDonTaiCho hd);
     void delete(Long id);
     HoaDonTaiCho getHoaDonById(Long id);
-    List<HoaDonTaiCho> getHDs(Map<String,String> params);
 }

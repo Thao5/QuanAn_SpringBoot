@@ -6,7 +6,6 @@ package com.thao.Controllers;
 
 import com.thao.pojo.ThucAn;
 import com.thao.service.FoodService;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +30,13 @@ public class ApiThucAnController {
     
     @CrossOrigin
     @GetMapping("/thucan/")
-    public ResponseEntity<List<ThucAn>> list(@RequestBody Map<String,String> params){
+    public ResponseEntity<List<ThucAn>> list(@RequestParam Map<String,String> params){
         return new ResponseEntity<>(this.foodSer.getThucAnByChiNhanh(Integer.parseInt(params.get("cnId"))), HttpStatus.OK);
     }
     
     @CrossOrigin
     @GetMapping("/food/")
-    public ResponseEntity<List<ThucAn>> listFood(){
-        Map<String,String> tmp = new HashMap<>();
-        return new ResponseEntity<>(this.foodSer.getThucAns(tmp), HttpStatus.OK);
+    public ResponseEntity<List<ThucAn>> list(){
+        return new ResponseEntity<>(this.foodSer.getThucAns(), HttpStatus.OK);
     }
 }

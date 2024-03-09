@@ -7,8 +7,6 @@ package com.thao.Controllers;
 import com.thao.pojo.Ban;
 import com.thao.pojo.BanDaDat;
 import com.thao.service.BanService;
-import com.thao.service.EmailService;
-import com.thao.service.NguoiDungService;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiBanDaDatController {
     @Autowired
     private BanService banSer;
-    @Autowired
-    private EmailService emailSer;
-    @Autowired
-    private NguoiDungService ndSer;
     
     public static HttpSession sessionTmp;
     
@@ -47,30 +41,34 @@ public class ApiBanDaDatController {
     @PostMapping(value = "/datban/", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<BanDaDat> datBan(HttpSession session, @RequestBody BanDaDat ban){
-        Map<String, BanDaDat> listBan;
+        Map<Integer, ArrayList<BanDaDat>> listBan;
         if(sessionTmp == null){
-            listBan = (Map<String, BanDaDat>) session.getAttribute("listBan");
+            listBan = (Map<Integer, ArrayList<BanDaDat>>) session.getAttribute("listBan");
         } else{
-            listBan = (Map<String, BanDaDat>) sessionTmp.getAttribute("listBan");
+            listBan = (Map<Integer, ArrayList<BanDaDat>>) sessionTmp.getAttribute("listBan");
         } if(listBan == null){
             listBan = new HashMap<>();
             listBanDaDat = new ArrayList<>();
         }
         boolean check = false;
-        if(!listBan.containsKey(ban.getIdBan())){
-            listBan.put(ban.getIdBan(), ban);
-            check = true;
+        for(BanDaDat b : listBanDaDat){
+            if(b.getIdBan().equals(ban.getIdBan())){
+                check = true;
+                break;
+            }
         }
-        
+        if(!check){
+            listBanDaDat.add(ban);
+            listBan.put(ban.getIdChiNhanh(), listBanDaDat);
+        }
         session.setAttribute("listBan", listBan);
         if(sessionTmp == null){
             sessionTmp = session;
         }
         sessionTmp.setAttribute("listBan", listBan);
-        if(!check){
-            return new ResponseEntity(ban, HttpStatus.ACCEPTED);
+        if(check){
+            return new ResponseEntity(ban, HttpStatus.FORBIDDEN);
         }
-        this.emailSer.sendSimpleMessage(this.ndSer.getNguoiDungById(Long.parseLong(Integer.toString(ban.getIdNguoiDat()))).getEmail(), "Thông báo đặt bàn thành công", "Bạn đã đặt bàn thành công");
         return new ResponseEntity(ban, HttpStatus.OK);
     }
     
@@ -78,11 +76,5 @@ public class ApiBanDaDatController {
     @GetMapping("/ban/{id}/")
     public ResponseEntity<List<Ban>> list(@PathVariable(value = "id") int id){
         return new ResponseEntity<>(this.banSer.getBanTheoChiNhanh(id), HttpStatus.OK);
-    }
-    
-    @CrossOrigin
-    @GetMapping("/thongtinban/{id}/")
-    public ResponseEntity<Ban> ban(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<>(this.banSer.getBanById(id), HttpStatus.OK);
     }
 }

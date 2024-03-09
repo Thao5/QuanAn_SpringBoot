@@ -14,10 +14,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="avatar" th:value="*{avatar}"/>
                 <input type="hidden" name="active" th:value="*{active}"/>
-                <div class="form-floating mb-3 mt-3" th:if="${nd.id != null}">
+                <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan != null}">
                     <input type="hidden" name="taiKhoan" th:value="*{taiKhoan}"/>
                 </div>
-                <div class="form-floating mb-3 mt-3" th:if="${nd.id == null}">
+                <div class="form-floating mb-3 mt-3" th:if="${nd.taiKhoan == null}">
                     <input type="text" id="taiKhoan" class="form-control" name="taiKhoan" th:value="*{taiKhoan}" placeholder="Nhập tài khoản" required/>
                     <label for="taiKhoan">Tài khoản</label>
                     <p th:if="${#fields.hasErrors('taiKhoan')}" th:errorclass="text-danger" th:errors="*{taiKhoan}" />

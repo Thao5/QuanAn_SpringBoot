@@ -8,12 +8,9 @@ import com.thao.pojo.NguoiDung;
 import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,16 +35,10 @@ public class NguoiDungController {
     private NguoiDungService ndSer;
     @Autowired
     private EmailService emailSer;
-    @Autowired
-    private Environment env;
 
     @RequestMapping("/nguoidung")
     public String list(Model model, @RequestParam Map<String, String> params) {
-        Map<String,String> tmp = new HashMap<>();
-        List<NguoiDung> listNDPages = this.ndSer.getNDCus(tmp);
-        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         model.addAttribute("nds", this.ndSer.getNDCus(params));
-        model.addAttribute("pages", Math.ceil(listNDPages.size()*1.0/pageSize));
         return "nguoidung";
     }
 

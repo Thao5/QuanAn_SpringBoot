@@ -15,11 +15,9 @@ import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
@@ -57,19 +55,13 @@ public class ChiNhanhController {
     private BanService banSer;
     @Autowired
     private DanhGiaService dgSer;
-    @Autowired
-    private Environment env;
 
     @RequestMapping("/chinhanh")
     public String list(Model model, @RequestParam Map<String,String> params) {
-        Map<String,String> tmp = new HashMap<>();
-        List<ChiNhanh> listPages = this.storeService.getChiNhanhs(tmp);
-        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         model.addAttribute("stores", this.storeService.getChiNhanhs(params));
         model.addAttribute("tas", this.foodSer.getThucAns(params));
         model.addAttribute("bans", this.banSer.getBans());
         model.addAttribute("dgs", this.dgSer.getDanhGias());
-        model.addAttribute("pages", Math.ceil(listPages.size()*1.0/pageSize));
         return "chinhanh";
     }
 

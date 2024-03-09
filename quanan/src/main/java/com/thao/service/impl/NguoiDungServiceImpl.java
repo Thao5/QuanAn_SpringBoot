@@ -135,17 +135,8 @@ public class NguoiDungServiceImpl implements NguoiDungService {
     }
 
     @Override
-    public String changePasswordByEmail(Map<String, String> params) {
+    public NguoiDung changePasswordByEmail(Map<String, String> params) {
         return this.cndRepo.changePasswordByEmail(params, passwordEncoder);
-    }
-
-    @Override
-    public NguoiDung changePassword(Map<String, String> params) {
-        NguoiDung nd = this.cndRepo.getNDByUsername(params.get("taiKhoan"));
-        nd.setMatKhau(passwordEncoder.encode(params.get("matKhauMoi")));
-        
-        this.ndRepo.save(nd);
-        return nd;
     }
 
 }

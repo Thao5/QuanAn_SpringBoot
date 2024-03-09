@@ -20,13 +20,10 @@ import com.thao.repository.HoaDonRepository;
 import com.thao.repository.HoaDonTaiChoRepository;
 import com.thao.repository.NguoiDungRepository;
 import com.thao.repository.ReceiptRepository;
-import com.thao.service.BanService;
-import com.thao.service.EmailService;
 import jakarta.persistence.EntityManager;
 import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -36,7 +33,6 @@ import org.springframework.stereotype.Repository;
  * @author Chung Vu
  */
 @Repository
-@EnableAsync
 public class ReceiptRepositoryImpl implements ReceiptRepository{
     @Autowired
     private CustomNguoiDungRepository ndRepo;
@@ -52,10 +48,6 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
     private HoaDonTaiChoRepository hdtcRepo;
     @Autowired
     private HoaDonChiTietTaiChoRepository hdcttcRepo;
-    @Autowired
-    private EmailService emailSer;
-    @Autowired
-    private BanService banSer;
 
 
     @Override
@@ -73,16 +65,12 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 hdct.setIdThucAn(this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn()))));
                 hdct.setIdHoaDon(hd);
                 hdct.setSoLuongMua(m.getSoLuong());
-                hdct.setGiaVanChuyen(Long.parseLong("10000"));
-                hdct.setTongTien(Long.parseLong(Integer.toString(m.getSoLuong()*m.getDonGia()+10000)));
+                hdct.setTongTien(Long.parseLong(Integer.toString(m.getSoLuong()*m.getDonGia())));
                 hdct.setCreatedDate(new Date());
                 
                 this.hdctRepo.save(hdct);
-                ThucAn ta = this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn())));
-                ta.setSoLuong(ta.getSoLuong() - m.getSoLuong());
-                this.foodRepo.save(ta);
             }
-            this.emailSer.sendSimpleMessage(nd.getEmail(), "Cảm ơn bạn đã mua hàng", "Cảm ơn bạn đã mua hàng");
+            
             return true;
         }catch(Exception ex){
             ex.printStackTrace();
@@ -97,7 +85,6 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //            NguoiDung nd = this.ndRepo.getNDByUsername(authentication.getName());
             hd.setCreatedDate(new Date());
-            hd.setIdBan(this.banSer.getBanById(Long.parseLong(Integer.toString(carts.get(carts.keySet().toArray()[0]).getIdBan()))));
 //            hd.setIdNguoiDung(nd);
             this.hdtcRepo.save(hd);
             
@@ -110,9 +97,6 @@ public class ReceiptRepositoryImpl implements ReceiptRepository{
                 hdct.setCreatedDate(new Date());
                 
                 this.hdcttcRepo.save(hdct);
-                ThucAn ta = this.foodRepo.getReferenceById(Long.parseLong(Integer.toString(m.getIdThucAn())));
-                ta.setSoLuong(ta.getSoLuong() - m.getSoLuong());
-                this.foodRepo.save(ta);
             }
             
             return true;

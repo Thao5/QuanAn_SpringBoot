@@ -16,5 +16,4 @@ public interface DanhGiaService {
     void save(DanhGia dg);
     void delete(Long id);
     DanhGia getDanhGiaById(Long id);
-    List<DanhGia> getComments(int storeId);
 }

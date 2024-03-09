@@ -5,7 +5,6 @@
 package com.thao.service.impl;
 
 import com.thao.pojo.DanhGia;
-import com.thao.repository.CustomDanhGiaRepository;
 import com.thao.repository.DanhGiaRepository;
 import com.thao.service.DanhGiaService;
 import java.util.List;
@@ -20,8 +19,6 @@ import org.springframework.stereotype.Service;
 public class DanhGiaServiceImpl implements DanhGiaService{
     @Autowired
     private DanhGiaRepository dgRepo;
-    @Autowired
-    private CustomDanhGiaRepository cusDGRepo;
 
     @Override
     public List<DanhGia> getDanhGias() {
@@ -42,11 +39,6 @@ public class DanhGiaServiceImpl implements DanhGiaService{
     @Override
     public DanhGia getDanhGiaById(Long id) {
         return this.dgRepo.getReferenceById(id);
-    }
-
-    @Override
-    public List<DanhGia> getComments(int storeId) {
-        return this.cusDGRepo.getComments(storeId);
     }
     
     
