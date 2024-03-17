@@ -14,6 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <input type="hidden" name="image" th:value="*{image}"/>
                 <input type="hidden" name="active" th:value="*{active}"/>
+                <input type="hidden" name="active" th:value="*{idChiNhanh}"/>
                 <p th:if="${#fields.hasErrors('*')}" th:errorclass="text-danger" th:errors="*{*}" />
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn" required/>
@@ -30,7 +31,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <label for="price">Giá</label>
                     <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
                 </div>
-                <div class="form-floating mb-3 mt-3">
+<!--                <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
                         <th:block th:each="cn : ${cns}">
                             <option th:if="${food.idChiNhanh != null && cn.id == food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" selected></option>
@@ -40,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
                     <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
-                </div>
+                </div>-->
                 <div class="form-floating mb-3 mt-3">
                     <select id="idLoai" name="idLoai" th:field="*{idLoai}" class="form-select">
                         <th:block th:each="c : ${cates}">

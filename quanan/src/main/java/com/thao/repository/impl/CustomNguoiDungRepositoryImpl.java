@@ -6,6 +6,7 @@ package com.thao.repository.impl;
 
 import com.thao.pojo.NguoiDung;
 import com.thao.repository.CustomNguoiDungRepository;
+import com.thao.repository.NguoiDungRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
@@ -20,6 +21,8 @@ import java.util.Map;
 import java.util.Random;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +32,15 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Chung Vu
  */
 @Repository
+@PropertySource("classpath:configs.properties")
 public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository {
 
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private Environment env;
+    @Autowired
+    private NguoiDungRepository ndRepo;
 
     @Override
     public NguoiDung getNDByUsername(String username) {
@@ -82,6 +90,15 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         }
 
         Query query = entityManager.createQuery(q);
+        
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null) {
+                int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+                query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
+                query.setMaxResults(pageSize);
+            }
+        }
 
         return query.getResultList();
     }
@@ -114,7 +131,7 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
     }
 
     @Override
-    public NguoiDung changePasswordByEmail(Map<String, String> params, BCryptPasswordEncoder passwordEncoder) {
+    public String changePasswordByEmail(Map<String, String> params, BCryptPasswordEncoder passwordEncoder) {
         CriteriaBuilder b = entityManager.getCriteriaBuilder();
         CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
         Root root = q.from(NguoiDung.class);
@@ -142,8 +159,8 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
                 sb.append(AB.charAt(rnd.nextInt(AB.length())));
             }
             t.setMatKhau(passwordEncoder.encode(sb.toString()));
-            this.entityManager.merge(t);
-            return t;
+            this.ndRepo.save(t);
+            return sb.toString();
         } catch (NoResultException ex) {
             return null;
         }

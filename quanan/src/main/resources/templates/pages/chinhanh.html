@@ -10,6 +10,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container">
             <a th:href="@{/admin/addorupdatechinhanh}" title="Thêm chi nhánh" class="btn btn-outline-success">+</a>
+            <ul class="pagination mt-1" th:if="${pages > 1}">
+                <li class="page-item"><a class="page-link" th:href="@{/admin/chinhanh}">Tất cả</a></li>
+
+                <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/chinhanh?page=' + i}" th:text="${i}"></a></li>
+
+            </ul>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -35,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td th:text="${s.createdDate}"></td>
 
                         <td th:text="${s.idNguoiDung.lastName + ' ' + s.idNguoiDung.firstName}"></td>
-                        <td>
+                        <td class="pc-toggle">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-ta' + s.id}">
                                 Xem thông tin thức ăn
@@ -43,9 +49,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             <!-- The Modal -->
                             <div class="modal fade" th:id="${'myModal-ta' + s.id}">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdatefood}" title="Thêm thức ăn" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdatefood}" title="Thêm thức ăn" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các món ăn của chi nhánh ' + s.diaChi}"></h4>
@@ -66,25 +72,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="ta : ${tas}" th:if="${ta.idChiNhanh.id == s.id}">
-                                                        <td>
-                                                            <img th:src="${ta.image}" width="15"/>
-                                                        </td>
-                                                        <td th:text="${ta.id}"></td>
-                                                        <td th:text="${ta.name}"></td>
-                                                        <td th:text="${ta.soLuong}"></td>
-                                                        <td th:text="${ta.price}"></td>
-                                                        <td th:text="${ta.createdDate}"></td>
-                                                        <td th:text="${ta.idLoai.name}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdatefood/'+ta.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="ta : ${tas}" th:if="${ta.idChiNhanh.id == s.id}">
+                                                    <td>
+                                                        <img th:src="${ta.image}" width="15"/>
+                                                    </td>
+                                                    <td th:text="${ta.id}"></td>
+                                                    <td th:text="${ta.name}"></td>
+                                                    <td th:text="${ta.soLuong}"></td>
+                                                    <td th:text="${ta.price}"></td>
+                                                    <td th:text="${ta.createdDate}"></td>
+                                                    <td th:text="${ta.idLoai.name}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdatefood/'+ta.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delFood=('/quanan/admin/deletefood/' + ${ta.id} + '/')">
-                                                            <button th:data-id="${ta.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delFood=('/quanan/admin/deletefood/' + ${ta.id} + '/')">
+                                                        <button th:data-id="${ta.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -97,7 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="pc-toggle">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-ban' + s.id}">
                                 Xem thông tin bàn
@@ -107,7 +113,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="modal fade" th:id="${'myModal-ban' + s.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdateban}" title="Thêm bàn" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdateban}" title="Thêm bàn" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các bàn của chi nhánh ' + s.diaChi}"></h4>
@@ -124,19 +130,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="ban : ${bans}" th:if="${ban.idChiNhanh.id == s.id}">
-                                                        <td th:text="${ban.id}"></td>
-                                                        <td th:text="${ban.moTa}"></td>
-                                                        <td th:text="${ban.createdDate}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdateban/'+ban.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="ban : ${bans}" th:if="${ban.idChiNhanh.id == s.id}">
+                                                    <td th:text="${ban.id}"></td>
+                                                    <td th:text="${ban.moTa}"></td>
+                                                    <td th:text="${ban.createdDate}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdateban/'+ban.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delBan=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
-                                                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${delBan}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delBan=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
+                                                        <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${delBan}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -149,7 +155,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="pc-toggle">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-dg' + s.id}">
                                 Xem thông tin đánh giá
@@ -159,7 +165,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="modal fade" th:id="${'myModal-dg' + s.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin các đánh giá của chi nhánh ' + s.diaChi}"></h4>
@@ -170,7 +176,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <div class="modal-body">
                                             <table class="table table-hover">
                                                 <tr>
-                                                    <td></td>
                                                     <td>#</td>
                                                     <td>Nội dung</td>
                                                     <td>Đánh giá</td>
@@ -179,21 +184,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="dg : ${dgs}" th:if="${dg.idChiNhanh.id == s.id}">
-                                                        <td th:text="${dg.id}"></td>
-                                                        <td th:text="${dg.noiDung}"></td>
-                                                        <td th:text="${dg.danhGia}"></td>
-                                                        <td th:text="${dg.createdDate}"></td>
-                                                        <td th:text="${dg.idNguoiDung.lastName + ' ' + dg.idNguoiDung.firstName}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdatedanhgia/'+dg.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="dg : ${dgs}" th:if="${dg.idChiNhanh.id == s.id}">
+                                                    <td th:text="${dg.id}"></td>
+                                                    <td th:text="${dg.noiDung}"></td>
+                                                    <td th:text="${dg.danhGia}"></td>
+                                                    <td th:text="${dg.createdDate}"></td>
+                                                    <td th:text="${dg.idNguoiDung.lastName + ' ' + dg.idNguoiDung.firstName}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdatedanhgia/'+dg.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delDG=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
-                                                            <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${delDG}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delDG=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
+                                                        <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${delDG}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -206,9 +211,244 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="pc-toggle">
                             <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
                             <button th:data-id="${s.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                        <td class="mobile-toggle">
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus' + s.id}">
+                                Các chức năng
+                            </button>
+
+                            <!-- The Modal -->
+                            <div class="modal fade" th:id="${'myModal-plus' + s.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Các chức năng</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <td>
+                                                        <!-- Button to Open the Modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus-ta' + s.id}">
+                                                            Xem thông tin thức ăn
+                                                        </button>
+
+                                                        <!-- The Modal -->
+                                                        <div class="modal fade" th:id="${'myModal-plus-ta' + s.id}">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <a th:href="@{/admin/addorupdatefood}" title="Thêm thức ăn" class="btn btn-outline-success">+</a>
+                                                                    <!-- Modal Header -->
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" th:text="${'Thông tin các món ăn của chi nhánh ' + s.diaChi}"></h4>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal2"></button>
+                                                                    </div>
+
+                                                                    <!-- Modal body -->
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-hover">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>#</td>
+                                                                                <td>Tên thức ăn</td>
+                                                                                <td>Số lượng</td>
+                                                                                <td>Giá</td>
+                                                                                <td>Ngày tạo</td>
+                                                                                <td>Tên loại</td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr th:each="ta : ${tas}" th:if="${ta.idChiNhanh.id == s.id}">
+                                                                                <td>
+                                                                                    <img th:src="${ta.image}" width="15"/>
+                                                                                </td>
+                                                                                <td th:text="${ta.id}"></td>
+                                                                                <td th:text="${ta.name}"></td>
+                                                                                <td th:text="${ta.soLuong}"></td>
+                                                                                <td th:text="${ta.price}"></td>
+                                                                                <td th:text="${ta.createdDate}"></td>
+                                                                                <td th:text="${ta.idLoai.name}"></td>
+                                                                                <td>
+                                                                                    <a th:href="${'/quanan/admin/addorupdatefood/'+ta.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                                                        <i class="fa-solid fa-wrench"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td th:with="delFood=('/quanan/admin/deletefood/' + ${ta.id} + '/')">
+                                                                                    <button th:data-id="${ta.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <!-- Modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal2">Đóng</button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <script th:inline="javascript">
+                                                            /*<![CDATA[*/
+                                                            $("button[data-bs-dismiss=modal2]").click(function () {
+                                                                $(String('#') + String(/*[[${'myModal-plus-ta' + s.id}]]*/)).modal('hide');
+                                                            });
+                                                            /*]]>*/
+                                                    </script>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <!-- Button to Open the Modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus-ban' + s.id}">
+                                                            Xem thông tin bàn
+                                                        </button>
+
+                                                        <!-- The Modal -->
+                                                        <div class="modal fade" th:id="${'myModal-plus-ban' + s.id}">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <a th:href="@{/admin/addorupdateban}" title="Thêm bàn" class="btn btn-outline-success">+</a>
+                                                                    <!-- Modal Header -->
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" th:text="${'Thông tin các bàn của chi nhánh ' + s.diaChi}"></h4>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal2"></button>
+                                                                    </div>
+
+                                                                    <!-- Modal body -->
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-hover">
+                                                                            <tr>
+                                                                                <td>#</td>
+                                                                                <td>Mô tả</td>
+                                                                                <td>Ngày tạo</td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr th:each="ban : ${bans}" th:if="${ban.idChiNhanh.id == s.id}">
+                                                                                <td th:text="${ban.id}"></td>
+                                                                                <td th:text="${ban.moTa}"></td>
+                                                                                <td th:text="${ban.createdDate}"></td>
+                                                                                <td>
+                                                                                    <a th:href="${'/quanan/admin/addorupdateban/'+ban.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                                                        <i class="fa-solid fa-wrench"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td th:with="delBan=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
+                                                                                    <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${delBan}')|">Xóa</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <!-- Modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal2">Đóng</button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <script th:inline="javascript">
+                                                            /*<![CDATA[*/
+                                                            $("button[data-bs-dismiss=modal2]").click(function () {
+                                                                $(String('#') + String(/*[[${'myModal-plus-ban' + s.id}]]*/)).modal('hide');
+                                                            });
+                                                            /*]]>*/
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <!-- Button to Open the Modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus-dg' + s.id}">
+                                                            Xem thông tin đánh giá
+                                                        </button>
+
+                                                        <!-- The Modal -->
+                                                        <div class="modal fade" th:id="${'myModal-plus-dg' + s.id}">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
+                                                                    <!-- Modal Header -->
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" th:text="${'Thông tin các đánh giá của chi nhánh ' + s.diaChi}"></h4>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal2"></button>
+                                                                    </div>
+
+                                                                    <!-- Modal body -->
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-hover">
+                                                                            <tr>
+                                                                                <td>#</td>
+                                                                                <td>Nội dung</td>
+                                                                                <td>Đánh giá</td>
+                                                                                <td>Ngày tạo</td>
+                                                                                <td>Họ tên người đánh giá</td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr th:each="dg : ${dgs}" th:if="${dg.idChiNhanh.id == s.id}">
+                                                                                <td th:text="${dg.id}"></td>
+                                                                                <td th:text="${dg.noiDung}"></td>
+                                                                                <td th:text="${dg.danhGia}"></td>
+                                                                                <td th:text="${dg.createdDate}"></td>
+                                                                                <td th:text="${dg.idNguoiDung.lastName + ' ' + dg.idNguoiDung.firstName}"></td>
+                                                                                <td>
+                                                                                    <a th:href="${'/quanan/admin/addorupdatedanhgia/'+dg.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                                                        <i class="fa-solid fa-wrench"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td th:with="delDG=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
+                                                                                    <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${delDG}')|">Xóa</button>
+                                                                                </td>
+                                                                                
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <!-- Modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal2">Đóng</button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <script th:inline="javascript">
+                                                            /*<![CDATA[*/
+                                                            $("button[data-bs-dismiss=modal2]").click(function () {
+                                                                $(String('#') + String(/*[[${'myModal-plus-dg' + s.id}]]*/)).modal('hide');
+                                                            });
+                                                            /*]]>*/
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
+                                                        <button th:data-id="${s.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </th:block>
@@ -216,6 +456,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </table>
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
+
+        <style>
+            @media screen and (max-width: 973px) {
+                .mobile-toggle {
+                    display: block;
+                }
+                .pc-toggle{
+                    display: none;
+                }
+            }
+            @media screen and (min-width: 974px) {
+                .mobile-toggle {
+                    display: none;
+                }
+            }
+        </style>
+
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
     </body>
 </html>

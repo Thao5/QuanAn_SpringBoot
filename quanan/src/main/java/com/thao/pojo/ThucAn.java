@@ -5,7 +5,7 @@
 package com.thao.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.thao.validation.FoodDistinct;
+//import com.thao.validation.FoodDistinct;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -27,6 +27,7 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "ThucAn.findByPrice", query = "SELECT t FROM ThucAn t WHERE t.price = :price"),
     @NamedQuery(name = "ThucAn.findByCreatedDate", query = "SELECT t FROM ThucAn t WHERE t.createdDate = :createdDate"),
     @NamedQuery(name = "ThucAn.findByImage", query = "SELECT t FROM ThucAn t WHERE t.image = :image")})
-@FoodDistinct(message = "Chi nhánh đã có món này rồi")
+//@FoodDistinct(message = "Chi nhánh đã có món này rồi")
 public class ThucAn implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -80,7 +81,7 @@ public class ThucAn implements Serializable {
     @NotNull(message = "Thiếu loại")
     private Category idLoai;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
-    @NotNull(message = "Thiếu chi nhánh")
+//    @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
     @Column(name = "active")

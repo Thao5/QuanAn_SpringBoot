@@ -9,11 +9,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container">
-            <a th:href="@{/admin/addorupdatenguoidung}" title="Thêm người dùng" class="btn btn-outline-success">+</a>
+            <a th:href="@{/admin/addorupdatefood}" title="Thêm loại" class="btn btn-outline-success">+</a>
             <ul class="pagination mt-1" th:if="${pages > 1}">
-                <li class="page-item"><a class="page-link" th:href="@{/admin/nguoidung}">Tất cả</a></li>
+                <li class="page-item"><a class="page-link" th:href="@{/admin/cate}">Tất cả</a></li>
 
-                <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/nguoidung?page=' + i}" th:text="${i}"></a></li>
+                <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/cate?page=' + i}" th:text="${i}"></a></li>
 
             </ul>
             <table class="table table-hover">
@@ -21,39 +21,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>Họ</th>
-                        <th>Tên</th>
-                        <th>Tài khoản</th>
-                        <th class="pc-toggle">Email</th>
-                        <th class="pc-toggle">Số điện thoại</th>
-                        <th class="pc-toggle">Vai trò</th>
-                        <th class="pc-toggle">Đang hoạt dộng</th>
-                        <th class="mobile-toggle"></th>
+                        <th>Tên loại</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th class="pc-toggle">Loại</th>
+                        <th class="pc-toggle">Ngày tạo</th>
+                        <th class="pc-toggle">Đang hoạt động</th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                <th:block th:each="nd : ${nds}">
+                <th:block th:each="f : ${foods}">
 
-
-                    <tr th:with="update=('/quanan/admin/addorupdatenguoidung/' + ${nd.id}), del=('/quanan/admin/deletenguoidung/' + ${nd.id} + '/')">
-                        <td><img th:src="${nd.avatar}" th:alt="${nd.avatar}" width="120"/></td>
-                        <td th:text="${nd.id}"></td>
-                        <td th:text="${nd.lastName}"></td>
-                        <td th:text="${nd.firstName}"></td>
-                        <td th:text="${nd.taiKhoan}"></td>
-                        <td class="pc-toggle" th:text="${nd.email}"></td>
-                        <td class="pc-toggle" th:text="${nd.phone}"></td>
-                        <td class="pc-toggle" th:text="${nd.vaiTro}"></td>
-                        <td class="pc-toggle" th:text="${nd.active}"></td>
+                    <tr th:if="${f.active == true}" th:with="updateStore=('/quanan/admin/addorupdatefood/' + ${f.id}), del=('/quanan/admin/deletefood/' + ${f.id} + '/')">
+                        <td><img th:src="${f.image}" th:alt="${f.image}" width="120"/></td>
+                        <td th:text="${f.id}"></td>
+                        <td th:text="${f.name}"></td>
+                        <td th:text="${f.soLuong}"></td>
+                        <td th:text="${f.price}"></td>
+                        <td class="pc-toggle" th:text="${f.idLoai.name}"></td>
+                        <td class="pc-toggle" th:text="${f.createdDate}"></td>
+                        <td class="pc-toggle" th:text="${f.active}"></td>
                         <td class="mobile-toggle">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-nd' + nd.id}">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-f' + f.id}">
                                 Các thông tin khác
                             </button>
 
                             <!-- The Modal -->
-                            <div class="modal fade" th:id="${'myModal-nd' + nd.id}">
+                            <div class="modal fade" th:id="${'myModal-f' + f.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <!-- Modal Header -->
@@ -66,16 +62,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <div class="modal-body">
                                             <table class="table table-hover">
                                                 <tr>
-                                                    <td>Email</td>
-                                                    <td>Số điện thoại</td>
-                                                    <td>Vai trò</td>
+                                                    <td>Loại</td>
+                                                    <td>Ngày tạo</td>
                                                     <td>Đang hoạt động</td>
                                                 </tr>
                                                 <tr>
-                                                    <td th:text="${nd.email}"></td>
-                                                    <td th:text="${nd.phone}"></td>
-                                                    <td th:text="${nd.vaiTro}"></td>
-                                                    <td th:text="${nd.active}"></td>
+                                                    <td th:text="${f.idLoai.name}"></td>
+                                                    <td th:text="${f.createdDate}"></td>
+                                                    <td th:text="${f.active}"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -90,10 +84,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
                         </td>
                         <td>
-                            <a th:href="${update}" class="btn btn-success" >Cập nhật</a>
+                            <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
                         </td>
                         <td>
-                            <button th:data-id="${nd.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                            <button th:data-id="${f.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
                         </td>
                     </tr>
                 </th:block>

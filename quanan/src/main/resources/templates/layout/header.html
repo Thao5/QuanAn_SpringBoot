@@ -5,31 +5,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:fragment="html_head">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <title>Hệ thống quản lý đặt món tại chỗ và đặt món online Nhoằm Nhoằm</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body >
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan'" th:fragment="html_nav">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Food App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <nav class="navbar navbar-expand-xl bg-dark navbar-dark" th:with="action='/quanan'" th:fragment="html_nav">
+            <div class="container-fluid d-flex justify-content-between">
+                <div>
+                    <a class="navbar-brand" th:href="${action}">Food App</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="${action}">Trang chu</a>
+                            <a class="nav-link" th:href="${action}">Trang chủ</a>
                         </li>
-                        <li class="nav-item">
+<!--                        <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/chinhanh}">Chi nhánh</a>
-                        </li>
+                        </li>-->
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/nguoidung}">Người dùng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/food}">Thức ăn</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/cate}">Loại</a>
@@ -41,29 +48,53 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <a class="nav-link" th:href="@{/admin/hoadontaicho}">Hóa đơn tại chỗ</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" th:href="@{/bandatchinhanh/4}">Bàn đặt</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/stats}">Thống kê</a>
                         </li>
-                        
-                        <div class="me-auto">
-
-                            <div th:if="${#authentication.principal.username != null}">
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
-                                </li>
-                            </div>
-                            <div th:if="${#authentication.principal.username == null}">
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
-                                </li>
-
-                            </div>
-
-                        </div>
                     </ul>
                 </div>
+
+                <div class="d-flex p-2 align-items-center">
+                    <div class="dropdown" th:if="${#authentication.principal.username != null}">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" th:text="${#authentication.principal.username}" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                            </div>
+                    </div>
+
+                    <!--                    <div th:if="${#authentication.principal.username != null}">
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
+                                            </li>
+                                        </div>-->
+                    <div th:if="${#authentication.principal.username == null}">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+                        </li>
+
+                    </div>
+                    <div>
+
+                        <form class="d-flex p-2">
+                            <input type="text" name="kw" class="form-control" placeholder="Tìm từ khóa..." />
+                            <button type="submit" class="btn btn-info">Tìm</button>
+                        </form>
+                    </div>
+                </div>
+                <!--                <div>
+                                    
+                                            <form class="d-flex p-2">
+                                                <input type="text" name="kw" class="form-control" placeholder="Tìm từ khóa..." />
+                                                <button type="submit" class="btn btn-info">Tìm</button>
+                                            </form>
+                                </div>-->
             </div>
         </nav>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan'" th:fragment="html_nav_2">
@@ -75,12 +106,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="${action}">Trang chu</a>
+                            <a class="nav-link" th:href="${action}">Trang chủ</a>
                         </li>
-                        
+
                         <div class="me-auto">
 
-                            
+
                             <div>
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{/login}">Đăng nhập</a>

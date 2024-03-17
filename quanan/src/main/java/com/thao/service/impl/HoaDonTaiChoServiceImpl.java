@@ -5,10 +5,12 @@
 package com.thao.service.impl;
 
 import com.thao.pojo.HoaDonTaiCho;
+import com.thao.repository.CustomHoaDonTaiChoRepository;
 import com.thao.repository.HoaDonTaiChoRepository;
 import com.thao.service.HoaDonTaiChoService;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class HoaDonTaiChoServiceImpl implements HoaDonTaiChoService{
     @Autowired
     private HoaDonTaiChoRepository hdRepo;
+    @Autowired
+    private CustomHoaDonTaiChoRepository cusHdRepo;
 
     @Override
     public List<HoaDonTaiCho> getHoaDons() {
@@ -43,6 +47,11 @@ public class HoaDonTaiChoServiceImpl implements HoaDonTaiChoService{
     @Override
     public HoaDonTaiCho getHoaDonById(Long id) {
         return this.hdRepo.getReferenceById(id);
+    }
+
+    @Override
+    public List<HoaDonTaiCho> getHDs(Map<String, String> params) {
+        return this.cusHdRepo.getHDs(params);
     }
     
 }

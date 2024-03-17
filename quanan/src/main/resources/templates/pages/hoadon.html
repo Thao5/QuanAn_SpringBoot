@@ -10,6 +10,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <section class="container">
             <a th:href="@{/admin/addorupdatehoadon}" title="Thêm người dùng" class="btn btn-outline-success">+</a>
+            <ul class="pagination mt-1" th:if="${pages > 1}">
+                <li class="page-item"><a class="page-link" th:href="@{/admin/hoadon}">Tất cả</a></li>
+
+                <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/hoadon?page=' + i}" th:text="${i}"></a></li>
+
+            </ul>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -28,7 +34,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td th:text="${hd.id}"></td>
                         <td th:text="${hd.idNguoiDung.lastName + ' ' + hd.idNguoiDung.firstName}"></td>
                         <td th:text="${hd.createdDate}"></td>
-                        <td>
+                        <td class="pc-toggle">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-hd' + hd.id}">
                                 Xem thông tin hóa đơn chi tiết
@@ -36,9 +42,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             <!-- The Modal -->
                             <div class="modal fade" th:id="${'myModal-hd' + hd.id}">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                            <a th:href="@{/admin/addorupdatehoadonchitiet}" title="Thêm hóa đơn chi tiết" class="btn btn-outline-success">+</a>
+                                        <a th:href="@{/admin/addorupdatehoadonchitiet}" title="Thêm hóa đơn chi tiết" class="btn btn-outline-success">+</a>
                                         <!-- Modal Header -->
                                         <div class="modal-header">
                                             <h4 class="modal-title" th:text="${'Thông tin hóa đơn chí tiết của ' + hd.idNguoiDung.lastName + ' ' + hd.idNguoiDung.firstName}"></h4>
@@ -59,23 +65,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
-                                                    <tr th:each="hdct : ${hdcts}" th:if="${hdct.idHoaDon.id == hd.id}">
-                                                        <td th:text="${hdct.id}"></td>
-                                                        <td th:text="${hdct.soLuongMua}"></td>
-                                                        <td th:text="${hdct.giaVanChuyen}"></td>
-                                                        <td th:text="${hdct.tongTien}"></td>
-                                                        <td th:text="${hdct.createdDate}"></td>
-                                                        <td th:text="${hdct.idHoaDon.id}"></td>
-                                                        <td th:text="${hdct.idThucAn.name}"></td>
-                                                        <td>
-                                                            <a th:href="${'/quanan/admin/addorupdatehoadonchitiet/'+hdct.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                <tr th:each="hdct : ${hdcts}" th:if="${hdct.idHoaDon.id == hd.id}">
+                                                    <td th:text="${hdct.id}"></td>
+                                                    <td th:text="${hdct.soLuongMua}"></td>
+                                                    <td th:text="${hdct.giaVanChuyen}"></td>
+                                                    <td th:text="${hdct.tongTien}"></td>
+                                                    <td th:text="${hdct.createdDate}"></td>
+                                                    <td th:text="${hdct.idHoaDon.id}"></td>
+                                                    <td th:text="${hdct.idThucAn.name}"></td>
+                                                    <td>
+                                                        <a th:href="${'/quanan/admin/addorupdatehoadonchitiet/'+hdct.id}" title="Cập nhật" class="btn btn-outline-primary">
                                                             <i class="fa-solid fa-wrench"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td th:with="delFood=('/quanan/admin/deletehoadonchitiet/' + ${hdct.id} + '/')">
-                                                            <button th:data-id="${hdct.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
-                                                        </td>
-                                                    </tr>
+                                                        </a>
+                                                    </td>
+                                                    <td th:with="delFood=('/quanan/admin/deletehoadonchitiet/' + ${hdct.id} + '/')">
+                                                        <button th:data-id="${hdct.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
@@ -88,9 +94,118 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="pc-toggle">
                             <a th:href="${update}" class="btn btn-success" >Cập nhật</a>
                             <button th:data-id="${hd.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                        <td class="mobile-toggle">
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus' + hd.id}">
+                                Các chức năng
+                            </button>
+
+                            <!-- The Modal -->
+                            <div class="modal fade" th:id="${'myModal-plus' + hd.id}">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Các chức năng</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <table class="table table-hover">
+                                                <tr>
+                                                    <td>
+                                                        <!-- Button to Open the Modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-plus-hd' + hd.id}">
+                                                            Xem thông tin hóa đơn chi tiết
+                                                        </button>
+
+                                                        <!-- The Modal -->
+                                                        <div class="modal fade" th:id="${'myModal-plus-hd' + hd.id}">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <a th:href="@{/admin/addorupdatehoadonchitiet}" title="Thêm hóa đơn chi tiết" class="btn btn-outline-success">+</a>
+                                                                    <!-- Modal Header -->
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" th:text="${'Thông tin hóa đơn chí tiết của ' + hd.idNguoiDung.lastName + ' ' + hd.idNguoiDung.firstName}"></h4>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal2"></button>
+                                                                    </div>
+
+                                                                    <!-- Modal body -->
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-hover">
+                                                                            <tr>
+                                                                                <td>#</td>
+                                                                                <td>Số lượng mua</td>
+                                                                                <td>Giá vận chuyển</td>
+                                                                                <td>Tổng tiền</td>
+                                                                                <td>Ngày tạo</td>
+                                                                                <td>ID hóa đơn</td>
+                                                                                <td>Tên món ăn</td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr th:each="hdct : ${hdcts}" th:if="${hdct.idHoaDon.id == hd.id}">
+                                                                                <td th:text="${hdct.id}"></td>
+                                                                                <td th:text="${hdct.soLuongMua}"></td>
+                                                                                <td th:text="${hdct.giaVanChuyen}"></td>
+                                                                                <td th:text="${hdct.tongTien}"></td>
+                                                                                <td th:text="${hdct.createdDate}"></td>
+                                                                                <td th:text="${hdct.idHoaDon.id}"></td>
+                                                                                <td th:text="${hdct.idThucAn.name}"></td>
+                                                                                <td>
+                                                                                    <a th:href="${'/quanan/admin/addorupdatehoadonchitiet/'+hdct.id}" title="Cập nhật" class="btn btn-outline-primary">
+                                                                                        <i class="fa-solid fa-wrench"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td th:with="delFood=('/quanan/admin/deletehoadonchitiet/' + ${hdct.id} + '/')">
+                                                                                    <button th:data-id="${hdct.id}" class="btn btn-danger" th:attr="onclick=|del('${delFood}')|">Xóa</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <!-- Modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal2">Đóng</button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <script th:inline="javascript">
+                                                            /*<![CDATA[*/
+                                                            $("button[data-bs-dismiss=modal2]").click(function () {
+                                                                $(String('#') + String(/*[[${'myModal-plus-hd' + hd.id}]]*/)).modal('hide');
+                                                            });
+                                                            /*]]>*/
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="${update}" class="btn btn-success" >Cập nhật</a>
+                                                        <button th:data-id="${hd.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </td>
                     </tr>
                 </th:block>
@@ -98,6 +213,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </table>
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
+
+        <style>
+            @media screen and (max-width: 973px) {
+                .mobile-toggle {
+                    display: block;
+                }
+                .pc-toggle{
+                    display: none;
+                }
+            }
+            @media screen and (min-width: 974px) {
+                .mobile-toggle {
+                    display: none;
+                }
+            }
+        </style>
+
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
     </body>
 </html>

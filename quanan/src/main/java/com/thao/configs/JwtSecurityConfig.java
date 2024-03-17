@@ -4,9 +4,13 @@
  */
 package com.thao.configs;
 
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.OAuthTokenCredential;
+import com.paypal.base.rest.PayPalRESTException;
 import com.thao.filters.CustomAccessDeniedHandler;
 import com.thao.filters.JwtAuthenticationTokenFilter;
 import com.thao.filters.RestAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  *
  * @author Chung Vu
@@ -57,6 +76,155 @@ public class JwtSecurityConfig {
     private UserDetailsService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static String vnp_ReturnUrl = "http://localhost:8080/quanan/api/pay/";
+    public static String vnp_TmnCode = "F08ACHP7";
+    public static String secretKey = "KRNOBXWYMVKGUMTTTEDOQSGUORCTVUUQ";
+    public static String vnp_Version = "2.1.0";
+    public static String vnp_Command = "pay";
+    public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
+    //paypal
+    @Value("${paypal.client.app}")
+    private String clientId;
+    @Value("${paypal.client.secret}")
+    private String clientSecret;
+    @Value("${paypal.mode}")
+    private String mode;
+
+    public enum PaypalPaymentIntent {
+        sale, authorize, order
+    }
+    
+    public enum PaypalPaymentMethod {
+	credit_card, paypal
+    }
+
+    @Bean
+    public Map<String, String> paypalSdkConfig() {
+
+        Map<String, String> sdkConfig = new HashMap<>();
+
+        sdkConfig.put("mode", mode);
+        return sdkConfig;
+    }
+
+    @Bean
+    public OAuthTokenCredential authTokenCredential() {
+        return new OAuthTokenCredential(clientId, clientSecret, paypalSdkConfig());
+    }
+
+    @Bean
+    public APIContext apiContext() throws PayPalRESTException {
+        APIContext apiContext = new APIContext(authTokenCredential().getAccessToken());
+        apiContext.setConfigurationMap(paypalSdkConfig()
+        );
+        return apiContext;
+    }
+
+    public static String md5(String message) {
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(message.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
+        }
+        return digest;
+    }
+
+    public static String Sha256(String message) {
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(message.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
+        }
+        return digest;
+    }
+
+    //Util for VNPAY
+    public static String hashAllFields(Map fields) {
+        List fieldNames = new ArrayList(fields.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder sb = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) fields.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                sb.append(fieldName);
+                sb.append("=");
+                sb.append(fieldValue);
+            }
+            if (itr.hasNext()) {
+                sb.append("&");
+            }
+        }
+        return hmacSHA512(secretKey, sb.toString());
+    }
+
+    public static String hmacSHA512(final String key, final String data) {
+        try {
+
+            if (key == null || data == null) {
+                throw new NullPointerException();
+            }
+            final Mac hmac512 = Mac.getInstance("HmacSHA512");
+            byte[] hmacKeyBytes = key.getBytes();
+            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
+            hmac512.init(secretKey);
+            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+            byte[] result = hmac512.doFinal(dataBytes);
+            StringBuilder sb = new StringBuilder(2 * result.length);
+            for (byte b : result) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    public static String getIpAddress(HttpServletRequest request) {
+        String ipAdress;
+        try {
+            ipAdress = request.getHeader("X-FORWARDED-FOR");
+            if (ipAdress == null) {
+                ipAdress = request.getRemoteAddr();
+            }
+        } catch (Exception e) {
+            ipAdress = "Invalid IP:" + e.getMessage();
+        }
+        return ipAdress;
+    }
+
+    public static String getRandomNumber(int len) {
+        Random rnd = new Random();
+        String chars = "0123456789";
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
 
     @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception {
@@ -87,13 +255,12 @@ public class JwtSecurityConfig {
     public CustomAccessDeniedHandler customAccessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
-    
+
 //    @Bean
 //    public WebSecurityCustomizer webSecurityCustomizer() {
 //        return (web) -> web.ignoring()
 //            .requestMatchers(new AntPathRequestMatcher("/api/**"));
 //    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.formLogin()
@@ -114,12 +281,10 @@ public class JwtSecurityConfig {
 //        http.csrf().disable();
         // Disable crsf cho đường dẫn /rest/**
 //        http.csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
-
 //        http.authorizeHttpRequests(rmr -> rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
 //                 new AntPathRequestMatcher("/api/food/"),
 //                 new AntPathRequestMatcher("/api/cates/"),
 //                 new AntPathRequestMatcher("/api/dangky/")).permitAll()).csrf(csrf -> csrf.disable());
-
 //        http.securityMatcher(new AntPathRequestMatcher("/api/**"))
 //                .httpBasic(b -> {
 //            try {
@@ -142,20 +307,30 @@ public class JwtSecurityConfig {
 //                    }
 //                }
 //                );
-
         http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
             try {
                 rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
-                 new AntPathRequestMatcher("/api/food/"),
-                 new AntPathRequestMatcher("/api/cates/"),
-                 new AntPathRequestMatcher("/api/dangky/"),
-                 new AntPathRequestMatcher("/api/current-user/")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        new AntPathRequestMatcher("/api/food/"),
+                        new AntPathRequestMatcher("/api/cates/"),
+                        new AntPathRequestMatcher("/api/dangky/"),
+                        new AntPathRequestMatcher("/api/current-user/"),
+                        new AntPathRequestMatcher("/api/pay/"),
+                        new AntPathRequestMatcher("/api/payoffline/"),
+                        new AntPathRequestMatcher("/api/datban/"),
+                        new AntPathRequestMatcher("/api/ban/**"),
+                        new AntPathRequestMatcher("/api/comments/**"),
+                        new AntPathRequestMatcher("/api/stores/**"),
+                        new AntPathRequestMatcher("/api/thongtinban/**"),
+                        new AntPathRequestMatcher("/api/quenmatkhau/**"),
+                        new AntPathRequestMatcher("/api/doimatkhau/**"),
+                        new AntPathRequestMatcher("/api/pay_paypal/**"),
+                        new AntPathRequestMatcher("/api/datmon/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .and()
                         .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-//                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        //                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                         .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler())).csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
             } catch (Exception ex) {

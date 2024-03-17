@@ -6,39 +6,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan'">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Food App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan/admin/danhsachbandat'">
+            <div class="container-fluid d-flex justify-content-between">
+                <div>
+                    <a class="navbar-brand" th:href="${action}">Danh sách bàn đã đặt</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="${action}">Trang chu</a>
-                        </li>
-                        
-                        <div class="me-auto">
 
-                            <div th:each="cn : ${listCN}">
-                                <a th:href="@{'/bandatchinhanh/' + ${cn.id}}" th:text="${cn.diaChi}"></a>
+                        <div class="d-flex p-2 align-items-center">
+                            <div class="dropdown" th:if="${#authentication.principal.username != null}">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" th:text="${#authentication.principal.username}" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                                </div>
                             </div>
-                            
-                            <div th:if="${#authentication.principal.username != null}">
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
-                                </li>
-                            </div>
+
+                            <!--                    <div th:if="${#authentication.principal.username != null}">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
+                                                    </li>
+                                                </div>-->
                             <div th:if="${#authentication.principal.username == null}">
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
                                 </li>
 
                             </div>
-
                         </div>
                     </ul>
                 </div>
@@ -46,33 +48,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </nav>
 
         <section class="container">
-            <table class="table table-hover"  th:if="${listBan != null}">
+            <table class="table table-hover"  th:if="${listBanDaDat != null}">
                 <thead>
                     <tr>
                         <th>Mô tả bàn</th>
+                        <th>Họ tên người đặt</th>
                         <th>Ngày đặt</th>
                         <th>Ngày nhận</th>
+                        <th>Ghi chú thêm</th>
                     </tr>
                 </thead>
                 <tbody>
-                <th:block th:each="ban : ${listBan}">
+                <th:block th:each="ban : ${listBanDaDat}">
 
 
                     <tr th:with="comf=('/quanan/bandatchinhanh/xacnhanbandat/' + ${ban.idBan} + '/'),del=('/quanan/bandatchinhanh/deletebandat/' + ${ban.idBan} + '/')">
-                        <td th:text="${ban.moTa}"></td>
+                        <td th:text="${ban.moTaBan}"></td>
+                        <td th:text="${ban.hoTen}"></td>
                         <td th:text="${ban.ngayDat}"></td>
                         <td th:text="${ban.ngayNhan}"></td>
-
+                        <td th:text="${ban.moTa}"></td>
                         <td>
-                            <button th:data-id="${ban.id}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
-                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
+                            <button th:data-id="${ban.idBan}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
+                            <button th:data-id="${ban.idBan}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
                         </td>
                     </tr>
                 </th:block>
                 </tbody>
-                
+
             </table>
-            <h1 th:if="${listBan == null}">Không có ai đặt bàn</h1>
+            <h1 th:if="${listBanDaDat == null}">Không có ai đặt bàn</h1>
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
         <script type="text/javascript" th:src="@{/js/del.js}"></script>

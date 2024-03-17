@@ -56,7 +56,7 @@ public class ThucAnController {
     public String add(Model model) {
         model.addAttribute("food", new ThucAn());
         model.addAttribute("cates", this.cateSer.getCates());
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+//        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         return "addorupdatefood";
     }
 
@@ -64,7 +64,7 @@ public class ThucAnController {
     public String update(Model model, @PathVariable("id") Long id) {
         model.addAttribute("food", this.foodService.getThucAnById(id));
         model.addAttribute("cates", this.cateSer.getCates());
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+//        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         return "addorupdatefood";
     }
 
@@ -74,6 +74,7 @@ public class ThucAnController {
             if (food.getId() == null) {
                 food.setCreatedDate(new Date());
                 food.setActive(Boolean.TRUE);
+                food.setIdChiNhanh(this.cnSer.getChiNhanhById(Long.parseLong(String.valueOf(4))));
                 Map<String, String> tmp = new HashMap<>();
                 tmp.put("vaiTro", "CUSTOMER");
                 for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
@@ -81,10 +82,10 @@ public class ThucAnController {
                 }
             }
             this.foodService.save(food);
-            return "redirect:/admin/chinhanh";
+            return "redirect:/admin/food";
         }
         model.addAttribute("cates", this.cateSer.getCates());
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
+//        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         return "addorupdatefood";
     }
 
