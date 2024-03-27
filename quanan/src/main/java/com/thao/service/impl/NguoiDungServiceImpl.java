@@ -148,4 +148,9 @@ public class NguoiDungServiceImpl implements NguoiDungService {
         return nd;
     }
 
+    @Override
+    public Boolean isAlreadyHave(NguoiDung nd) {
+        return this.cndRepo.isAlreadyHave(nd);
+    }
+
 }

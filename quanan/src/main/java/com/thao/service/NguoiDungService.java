@@ -26,4 +26,5 @@ public interface NguoiDungService extends UserDetailsService{
     NguoiDung addUser(Map<String, String> params, MultipartFile avatar);
     String changePasswordByEmail(Map<String,String> params);
     NguoiDung changePassword(Map<String,String> params);
+    Boolean isAlreadyHave(NguoiDung nd);
 }

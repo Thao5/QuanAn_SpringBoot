@@ -14,5 +14,5 @@ import lombok.Data;
 @Data
 public class FoodWrapper {
     String id;
-    List<String> foods;
+    List<ThucAn> foods;
 }

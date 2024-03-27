@@ -52,6 +52,10 @@ import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
+import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 
 /**
  *
@@ -67,11 +71,14 @@ import org.springframework.beans.factory.annotation.Value;
     "com.thao.service",
     "com.thao.Controllers",
     "com.thao.components",
-    "com.thao.validation"
+    "com.thao.validation",
+    "com.thao.configs"
 })
 @EnableMethodSecurity(securedEnabled = true)
 public class JwtSecurityConfig {
 
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -96,9 +103,9 @@ public class JwtSecurityConfig {
     public enum PaypalPaymentIntent {
         sale, authorize, order
     }
-    
+
     public enum PaypalPaymentMethod {
-	credit_card, paypal
+        credit_card, paypal
     }
 
     @Bean
@@ -238,6 +245,11 @@ public class JwtSecurityConfig {
         return new ProviderManager(provider);
     }
 
+//    @Bean
+//    public JwtDecoder jwtDecoder() {
+//        return JwtDecoders.fromOidcIssuerLocation("http://127.0.0.1:8080/quanan/oauth2/authorization/github");
+//    }
+
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -307,13 +319,35 @@ public class JwtSecurityConfig {
 //                    }
 //                }
 //                );
+        http.anonymous(a -> a.disable());
+
+        http.authorizeHttpRequests(rmr -> {
+            rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
+                    new AntPathRequestMatcher("/api/food/"),
+                    new AntPathRequestMatcher("/api/cates/"),
+                    new AntPathRequestMatcher("/api/dangky/"),
+                    new AntPathRequestMatcher("/api/doimatkhau/**"),
+                    new AntPathRequestMatcher("/api/current-user/")).permitAll();
+        });
+
+        http.userDetailsService(userDetailsService)
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(
+                            new AntPathRequestMatcher("/api/login/github/"),
+                            new AntPathRequestMatcher("/api/testlogin/"))
+                            .permitAll();
+                })
+                .oauth2Login(lg -> {
+                    lg.loginPage("/login").permitAll();
+                    lg.successHandler(oAuth2LoginSuccessHandler);
+                });
+//                .oauth2ResourceServer(o -> o.jwt(withDefaults()));
+//                .oauth2Login(withDefaults());
+
         http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
             try {
-                rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
-                        new AntPathRequestMatcher("/api/food/"),
-                        new AntPathRequestMatcher("/api/cates/"),
-                        new AntPathRequestMatcher("/api/dangky/"),
-                        new AntPathRequestMatcher("/api/current-user/"),
+                rmr.requestMatchers(
                         new AntPathRequestMatcher("/api/pay/"),
                         new AntPathRequestMatcher("/api/payoffline/"),
                         new AntPathRequestMatcher("/api/datban/"),
@@ -321,13 +355,12 @@ public class JwtSecurityConfig {
                         new AntPathRequestMatcher("/api/comments/**"),
                         new AntPathRequestMatcher("/api/stores/**"),
                         new AntPathRequestMatcher("/api/thongtinban/**"),
-                        new AntPathRequestMatcher("/api/quenmatkhau/**"),
                         new AntPathRequestMatcher("/api/doimatkhau/**"),
                         new AntPathRequestMatcher("/api/pay_paypal/**"),
-                        new AntPathRequestMatcher("/api/datmon/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        new AntPathRequestMatcher("/api/datmon/**")).authenticated()
+                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         .and()
                         .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
                         //                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -343,7 +376,7 @@ public class JwtSecurityConfig {
                 rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
                         .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN", "OWNER")
+                        //                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN")
                         .and()
                         .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
                         .successForwardUrl("/"))
@@ -358,6 +391,7 @@ public class JwtSecurityConfig {
 //        
 //
 //        
+
         return http.build();
     }
 

@@ -8,13 +8,23 @@ import com.thao.components.JwtService;
 import com.thao.pojo.NguoiDung;
 import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Map;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,35 +42,38 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 @EnableAsync
+//@EnableOAuth2Sso
+//@EnableResourceServer
 public class ApiNguoiDungController {
+
     @Autowired
     private NguoiDungService ndSer;
     @Autowired
     private JwtService jwtService;
     @Autowired
     private EmailService emailSer;
-    
+
     @PostMapping("/login/")
     @CrossOrigin
     public ResponseEntity<String> login(@RequestBody NguoiDung user) {
         if (this.ndSer.authNguoiDung(user.getTaiKhoan(), user.getMatKhau()) == true) {
             String token = this.jwtService.generateTokenLogin(user.getTaiKhoan());
-            
+
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
 
         return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
     }
-    
+
     @GetMapping(path = "/current-user/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<NguoiDung> details(Principal user) {
         NguoiDung u = this.ndSer.getNguoiDungByUsername(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
-    
-    @PostMapping(path = "/dangky/", 
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, 
+
+    @PostMapping(path = "/dangky/",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @CrossOrigin
     public ResponseEntity<NguoiDung> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
@@ -68,20 +81,53 @@ public class ApiNguoiDungController {
         this.emailSer.sendSimpleMessage(user.getEmail(), "Đăng ký thành công", String.format("Tài khoản %s đã đăng ký thành công", user.getTaiKhoan()));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
-    
+
     @PostMapping("/quenmatkhau/")
     @CrossOrigin
-    public ResponseEntity<String> quenMatKhau(@RequestBody Map<String,String> params){
+    public ResponseEntity<String> quenMatKhau(@RequestBody Map<String, String> params) {
         String user = this.ndSer.changePasswordByEmail(params);
-        if(user != null){
+        if (user != null) {
             this.emailSer.sendSimpleMessage(params.get("email"), "Thông báo mật khẩu mới", String.format("Hệ thống đã đổi mật khẩu của bạn thành %s", user));
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    
+
     @PostMapping("/doimatkhau/")
     @CrossOrigin
-    public ResponseEntity<NguoiDung> doiMatKhau(@RequestBody Map<String,String> params){
+    public ResponseEntity<NguoiDung> doiMatKhau(@RequestBody Map<String, String> params) {
         return new ResponseEntity<>(this.ndSer.changePassword(params), HttpStatus.OK);
     }
+
+    @GetMapping("/login/github/")
+    @CrossOrigin
+    public ResponseEntity<String> loginGithub(Principal oauth2User) {
+//        NguoiDung nd = new NguoiDung();
+//
+//        nd.setTaiKhoan(oauth2User.getAttribute("first_name"));
+//
+//        nd.setEmail(oauth2User.getAttribute("email"));
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (securityContext.getAuthentication().getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User u = (DefaultOAuth2User) securityContext.getAuthentication().getPrincipal();
+            if (u != null) {
+                String token = this.jwtService.generateTokenLogin(oauth2User.getName());
+
+                return new ResponseEntity<>(token, HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/testlogin/")
+    @CrossOrigin
+    public String getUserInfo(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+            return "Hello, " + oauth2User.getAttribute("login");
+        } else {
+            return "User not authenticated";
+        }
+    }
+
 }

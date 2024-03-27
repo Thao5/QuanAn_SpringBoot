@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdateban}" title="Thêm loại" class="btn btn-outline-success">+</a>
+            <ul class="pagination mt-1" th:if="${pages > 1}">
+                    <li class="page-item"><a class="page-link" th:href="@{/admin/ban}">Tất cả</a></li>
+                    
+                        <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/ban?page=' + i}" th:text="${i}"></a></li>
+
+                </ul>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mô tả</th>
+                        <th>Ngày tạo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ban : ${listBan}">
+
+
+                    <tr th:with="updateStore=('/quanan/admin/addorupdateban/' + ${ban.id}), del=('/quanan/admin/deleteban/' + ${ban.id} + '/')">
+                        <td th:text="${ban.id}"></td>
+                        <td th:text="${ban.moTa}"></td>
+                        <td th:text="${ban.createdDate}"></td>
+                        <td>
+                            <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
+                        </td>
+                        <td>
+                            <button th:data-id="${ban.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

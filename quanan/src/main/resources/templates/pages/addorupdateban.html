@@ -12,12 +12,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <form method="post" th:action="${action}" th:object="${ban}">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <input th:if="${ban.idChiNhanh != null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh.id}"/>
+                <input th:if="${ban.idChiNhanh == null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh}"/>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="moTa" class="form-control" name="moTa" th:value="*{moTa}" placeholder="Nhập mô tả" required/>
                     <label for="moTa">Mô tả</label>
                     <p th:if="${#fields.hasErrors('moTa')}" th:errorclass="text-danger" th:errors="*{moTa}" />
                 </div>
-                <div class="form-floating mb-3 mt-3">
+<!--                <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
                         <th:block th:each="cn : ${cns}">
                             <option th:if="${ban.idChiNhanh != null && cn.id == ban.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
@@ -27,7 +29,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
                     <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
-                </div>
+                </div>-->
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${ban.id != null}"> Cập nhật</button>
                     <button type="submit" class="btn btn-info" th:if="${ban.id == null}"> Thêm</button>

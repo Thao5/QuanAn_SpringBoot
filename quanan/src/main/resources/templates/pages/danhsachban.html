@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan/admin/danhsachfooddat'">
+            <div class="container-fluid d-flex justify-content-between">
+                <div>
+                    <a class="navbar-brand" th:href="${action}">Danh sách bàn</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+
+                        <div class="d-flex p-2 align-items-center">
+                            <div class="dropdown" th:if="${#authentication.principal.username != null}">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" th:text="${#authentication.principal.username}" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                                </div>
+                            </div>
+
+                            <!--                    <div th:if="${#authentication.principal.username != null}">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" th:href="${action}" th:text="${#authentication.principal.username}"></a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
+                                                    </li>
+                                                </div>-->
+                            <div th:if="${#authentication.principal.username == null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+                                </li>
+
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID bàn</th>
+                        <th>Mô tả bàn</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ban : ${listBan}">
+
+
+                    <tr>
+                        <td th:text="${ban.id}"></td>
+                        <td th:text="${ban.moTa}"></td>
+                        <td>
+                            <a th:href="|@{/admin/danhsachfooddat/}${ban.id}|" type="button" class="btn btn-primary">Danh sách món</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+    </body>
+</html>

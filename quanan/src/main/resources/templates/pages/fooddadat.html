@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:with="action='/quanan/admin/danhsachfooddat'">
             <div class="container-fluid d-flex justify-content-between">
                 <div>
-                    <a class="navbar-brand" th:href="${action}">Danh sách món đã đặt</a>
+                    <a class="navbar-brand" th:href="${action}">Danh sách bàn</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -53,13 +53,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <tr>
                         <th>ID Bàn</th>
                         <th>Danh sách các món</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 <th:block th:each="fs : ${listFoodDaDat}">
 
 
-                    <tr th:with="comf=('/quanan/bandatchinhanh/xacnhanbandat/' + 'a' + '/'),del=('/quanan/bandatchinhanh/deletebandat/' + 'a' + '/')">
+                    <tr th:with="comf=('/quanan/admin/xacnhanfooddat/' + ${fs.id} + '/'),del=('/quanan/admin/deletefooddat/' + ${fs.id} + '/')">
                         <td th:text="${fs.id}"></td>
 
                         <td>
@@ -80,9 +81,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <!-- Modal body -->
                                         <div class="modal-body">
                                             <table class="table table-hover">
+                                                <tr>
+                                                    <th>Tên món</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Giá</th>
+                                                </tr>
                                                 <th:block th:each="f : ${fs.foods}">
                                                     <tr>
-                                                        <td th:text="${f}"></td>
+                                                        <td th:text="${f.name}"></td>
+                                                        <td th:text="${f.soLuong}"></td>
+                                                        <td th:text="${f.price}"></td>
                                                     </tr>
                                                 </th:block>
                                             </table>
@@ -97,10 +105,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </div>
                         </td>
-                        <!--                        <td>
-                                                    <button th:data-id="${ban.idBan}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
-                                                    <button th:data-id="${ban.idBan}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
-                                                </td>-->
+                        <td>
+                            <button th:data-id="${fs.id}" class="btn btn-success" th:attr="onclick=|del('${comf}')|">Xác nhận</button>
+                            <button th:data-id="${fs.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Hủy bỏ</button>
+                        </td>
                     </tr>
                 </th:block>
                 </tbody>

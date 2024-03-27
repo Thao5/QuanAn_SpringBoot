@@ -59,7 +59,7 @@ public class Ban implements Serializable {
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
     @ManyToOne
-    @jakarta.validation.constraints.NotNull(message = "Thiếu chi nhánh")
+//    @jakarta.validation.constraints.NotNull(message = "Thiếu chi nhánh")
     private ChiNhanh idChiNhanh;
 
     public Ban() {
