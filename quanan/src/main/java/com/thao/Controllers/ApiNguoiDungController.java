@@ -99,7 +99,7 @@ public class ApiNguoiDungController {
         return new ResponseEntity<>(this.ndSer.changePassword(params), HttpStatus.OK);
     }
 
-    @GetMapping("/login/google/")
+    @PostMapping("/login/google/")
     @CrossOrigin
     public ResponseEntity<String> loginGithub(@RequestBody UserGoogleLogin u) {
         NguoiDung nd = new NguoiDung();
