@@ -77,8 +77,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 @EnableMethodSecurity(securedEnabled = true)
 public class JwtSecurityConfig {
 
-    @Autowired
-    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+//    @Autowired
+//    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -330,18 +330,18 @@ public class JwtSecurityConfig {
                     new AntPathRequestMatcher("/api/current-user/")).permitAll();
         });
 
-        http.userDetailsService(userDetailsService)
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(
-                            new AntPathRequestMatcher("/api/login/github/"),
-                            new AntPathRequestMatcher("/api/testlogin/"))
-                            .permitAll();
-                })
-                .oauth2Login(lg -> {
-                    lg.loginPage("/login").permitAll();
-                    lg.successHandler(oAuth2LoginSuccessHandler);
-                });
+//        http.userDetailsService(userDetailsService)
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> {
+//                    auth.requestMatchers(
+//                            new AntPathRequestMatcher("/api/login/github/"),
+//                            new AntPathRequestMatcher("/api/testlogin/"))
+//                            .permitAll();
+//                })
+//                .oauth2Login(lg -> {
+//                    lg.loginPage("/login").permitAll();
+//                    lg.successHandler(oAuth2LoginSuccessHandler);
+//                });
 //                .oauth2ResourceServer(o -> o.jwt(withDefaults()));
 //                .oauth2Login(withDefaults());
 

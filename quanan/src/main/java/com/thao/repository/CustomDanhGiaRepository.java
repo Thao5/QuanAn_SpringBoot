@@ -6,6 +6,7 @@ package com.thao.repository;
 
 import com.thao.pojo.DanhGia;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +14,5 @@ import java.util.List;
  */
 public interface CustomDanhGiaRepository {
     List<DanhGia> getComments(int storeId);
+    List<DanhGia> getCommentsByUser(Map<String, String> params);
 }

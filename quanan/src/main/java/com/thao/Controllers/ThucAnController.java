@@ -78,7 +78,7 @@ public class ThucAnController {
                 Map<String, String> tmp = new HashMap<>();
                 tmp.put("vaiTro", "CUSTOMER");
                 for (NguoiDung nd : this.ndSer.getNDCus(tmp)) {
-                    this.emailSer.sendSimpleMessage(nd.getEmail(), "Thông báo quán ăn thêm món mới", String.format("Chi nhánh %s đã thêm món %s vào menu", food.getIdChiNhanh().getDiaChi(), food.getName()));
+                    this.emailSer.sendSimpleMessage(nd.getEmail(), "Thông báo quán ăn thêm món mới", String.format("Chi nhánh đã thêm món %s vào menu", food.getName()));
                 }
             }
             this.foodService.save(food);

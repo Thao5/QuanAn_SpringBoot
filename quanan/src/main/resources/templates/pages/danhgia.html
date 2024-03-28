@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body>
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <a th:href="@{/admin/addorupdatedanhgia}" title="Thêm đánh giá" class="btn btn-outline-success">+</a>
+            <ul class="pagination mt-1" th:if="${pages > 1}">
+                    <li class="page-item"><a class="page-link" th:href="@{/admin/danhgia}">Tất cả</a></li>
+                    
+                        <li th:each="i : ${#numbers.sequence(1, pages)}" class="page-item"><a class="page-link" th:href="${'/quanan/admin/danhgia?page=' + i}" th:text="${i}"></a></li>
+
+                </ul>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nội dung</th>
+                        <th>Số sao</th>
+                        <th>Ngày đánh giá</th>
+                        <th>Người đánh giá</th>
+                        <th><th>
+                       <th><th>
+                    </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="dg : ${dgs}">
+
+
+                    <tr th:with="updateStore=('/quanan/admin/addorupdatedanhgia/' + ${dg.id}), del=('/quanan/admin/deletedanhgia/' + ${dg.id} + '/')">
+                        <td th:text="${dg.id}"></td>
+                        <td th:text="${dg.noiDung}"></td>
+                        <td th:text="${dg.danhGia}"></td>
+                        <td th:text="${dg.createdDate}"></td>
+                        <td th:text="${dg.idNguoiDung.firstName}"></td>
+                        <td>
+                            <a th:href="${updateStore}" class="btn btn-success" >Cập nhật</a>
+                        </td>
+                        <td>
+                            <button th:data-id="${dg.id}" class="btn btn-danger" th:attr="onclick=|del('${del}')|">Xóa</button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

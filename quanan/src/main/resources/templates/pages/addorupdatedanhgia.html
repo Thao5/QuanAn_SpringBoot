@@ -12,6 +12,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <form method="post" th:action="${action}" th:object="${dg}">
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
+                <input th:if="${dg.idChiNhanh != null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh.id}"/>
+                <input th:if="${dg.idChiNhanh == null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh}"/>
                 <div class="form-floating mb-3 mt-3">
                     <input type="text" id="noiDung" class="form-control" name="noiDung" th:value="*{noiDung}" placeholder="Nhập nội dung" required/>
                     <label for="noiDung">Nội dung</label>
@@ -29,13 +31,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <label for="idNguoiDung">Người đánh giá</label>
                     <p th:if="${#fields.hasErrors('idNguoiDung')}" th:errorclass="text-danger" th:errors="*{idNguoiDung}" />
                 </div>
-                 <div class="form-floating mb-3 mt-3">
+<!--                 <div class="form-floating mb-3 mt-3">
                     <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
                         <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
                     </select>
                     <label for="idChiNhanh">Chi nhánh</label>
                     <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
-                </div>
+                </div>-->
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${dg.id != null}"> Cập nhật</button>
                     <button type="submit" class="btn btn-info" th:if="${dg.id == null}"> Thêm</button>

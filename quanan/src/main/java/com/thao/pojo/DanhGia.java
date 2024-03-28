@@ -58,7 +58,7 @@ public class DanhGia implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @JoinColumn(name = "id_chi_nhanh", referencedColumnName = "id")
-    @NotNull(message = "Thiếu chi nhánh")
+//    @NotNull(message = "Thiếu chi nhánh")
     @ManyToOne
     private ChiNhanh idChiNhanh;
     @JoinColumn(name = "id_nguoi_dung", referencedColumnName = "id")

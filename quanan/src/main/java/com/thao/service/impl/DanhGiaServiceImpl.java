@@ -9,6 +9,7 @@ import com.thao.repository.CustomDanhGiaRepository;
 import com.thao.repository.DanhGiaRepository;
 import com.thao.service.DanhGiaService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,11 @@ public class DanhGiaServiceImpl implements DanhGiaService{
     @Override
     public List<DanhGia> getComments(int storeId) {
         return this.cusDGRepo.getComments(storeId);
+    }
+
+    @Override
+    public List<DanhGia> getCommentsByUser(Map<String, String> params) {
+        return this.cusDGRepo.getCommentsByUser(params);
     }
     
     

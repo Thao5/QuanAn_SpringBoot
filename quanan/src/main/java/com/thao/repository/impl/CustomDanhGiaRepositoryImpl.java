@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,11 +23,11 @@ import org.springframework.stereotype.Repository;
  * @author Chung Vu
  */
 @Repository
-public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository{
+public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository {
 
     @Autowired
     private EntityManager entityManager;
-    
+
     @Override
     public List<DanhGia> getComments(int storeId) {
         CriteriaBuilder b = entityManager.getCriteriaBuilder();
@@ -41,5 +42,24 @@ public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository{
 
         return query.getResultList();
     }
-    
+
+    @Override
+    public List<DanhGia> getCommentsByUser(Map<String, String> params) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DanhGia> q = b.createQuery(DanhGia.class);
+        Root root = q.from(DanhGia.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        if (params != null) {
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                predicates.add(b.equal(root.get("idNguoiDung").get("firstName"), String.format("%%%s%%", kw)));
+            }
+            q.where(predicates.toArray(Predicate[]::new));
+        }
+
+        Query query = entityManager.createQuery(q);
+        return query.getResultList();
+    }
+
 }

@@ -6,6 +6,7 @@ package com.thao.service;
 
 import com.thao.pojo.DanhGia;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface DanhGiaService {
     void delete(Long id);
     DanhGia getDanhGiaById(Long id);
     List<DanhGia> getComments(int storeId);
+    List<DanhGia> getCommentsByUser(Map<String, String> params);
 }

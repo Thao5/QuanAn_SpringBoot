@@ -6,6 +6,7 @@ package com.thao.Controllers;
 
 import com.thao.components.JwtService;
 import com.thao.pojo.NguoiDung;
+import com.thao.pojo.UserGoogleLogin;
 import com.thao.service.EmailService;
 import com.thao.service.NguoiDungService;
 import java.nio.charset.Charset;
@@ -98,36 +99,35 @@ public class ApiNguoiDungController {
         return new ResponseEntity<>(this.ndSer.changePassword(params), HttpStatus.OK);
     }
 
-    @GetMapping("/login/github/")
+    @GetMapping("/login/google/")
     @CrossOrigin
-    public ResponseEntity<String> loginGithub(Principal oauth2User) {
-//        NguoiDung nd = new NguoiDung();
-//
-//        nd.setTaiKhoan(oauth2User.getAttribute("first_name"));
-//
-//        nd.setEmail(oauth2User.getAttribute("email"));
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        if (securityContext.getAuthentication().getPrincipal() instanceof DefaultOAuth2User) {
-            DefaultOAuth2User u = (DefaultOAuth2User) securityContext.getAuthentication().getPrincipal();
-            if (u != null) {
-                String token = this.jwtService.generateTokenLogin(oauth2User.getName());
+    public ResponseEntity<String> loginGithub(@RequestBody UserGoogleLogin u) {
+        NguoiDung nd = new NguoiDung();
+        nd.setEmail(u.getEmail());
+        nd.setTaiKhoan(u.getEmail());
+        if (ndSer.isAlreadyHave(nd)) {
+            NguoiDung us = this.ndSer.getNguoiDungByUsername(nd.getTaiKhoan());
+            String token = this.jwtService.generateTokenLogin(us.getTaiKhoan());
 
-                return new ResponseEntity<>(token, HttpStatus.OK);
-            }
-        }
-
-        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping("/testlogin/")
-    @CrossOrigin
-    public String getUserInfo(Authentication authentication) {
-        if (authentication != null && authentication.getPrincipal() instanceof OAuth2User) {
-            OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-            return "Hello, " + oauth2User.getAttribute("login");
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
-            return "User not authenticated";
-        }
-    }
+            nd.setFirstName(u.getFirstName());
+            nd.setLastName(u.getLastName());
+            nd.setPhone("");
+            nd.setActive(true);
+            nd.setAvatar(u.getAvatar());
+            nd.setVaiTro("CUSTOMER");
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            String generatedString = new String(array, Charset.forName("UTF-8"));
+            nd.setMatKhau(generatedString);
+            ndSer.save(nd);
 
+            String token = this.jwtService.generateTokenLogin(nd.getTaiKhoan());
+            return new ResponseEntity<>(token, HttpStatus.OK);
+        }
+
+//        return new ResponseEntity<>(
+//                "error", HttpStatus.BAD_REQUEST);
+    }
 }

@@ -11,8 +11,10 @@ import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -38,13 +41,23 @@ public class DanhGiaController {
     private NguoiDungService ndSer;
     @Autowired
     private ChiNhanhService cnSer;
+    @Autowired
+    private Environment env;
+    
+    @RequestMapping("/danhgia")
+    public String list(Model model, @RequestParam Map<String, String> params){
+        List<DanhGia> tmp = this.dgSer.getCommentsByUser(params);
+        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+        model.addAttribute("dgs", tmp);
+        model.addAttribute("pages", Math.ceil(tmp.size()*1.0/pageSize));
+        return "danhgia";
+    }
     
     @GetMapping("/addorupdatedanhgia")
     public String update(Model model) {
         Map<String, String> tmp = new HashMap<>();
         tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", new DanhGia());
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
@@ -54,7 +67,6 @@ public class DanhGiaController {
         Map<String, String> tmp = new HashMap<>();
         tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", this.dgSer.getDanhGiaById(id));
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
@@ -64,13 +76,13 @@ public class DanhGiaController {
         if (!rs.hasErrors()) {
             if (dg.getId() == null) {
                 dg.setCreatedDate(new Date());
+                dg.setIdChiNhanh(this.cnSer.getChiNhanhById(Long.parseLong(String.valueOf(4))));
             }
             this.dgSer.save(dg);
-            return "redirect:/admin/chinhanh";
+            return "redirect:/admin/danhgia";
         }
         Map<String, String> tmp = new HashMap<>();
         tmp.put("vaiTro", "CUSTOMER");
-        model.addAttribute("cns", this.cnSer.getChiNhanhs());
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
         return "addorupdatedanhgia";
     }
