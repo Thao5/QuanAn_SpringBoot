@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,5 +41,11 @@ public class ApiThucAnController {
     public ResponseEntity<List<ThucAn>> listFood(){
         Map<String,String> tmp = new HashMap<>();
         return new ResponseEntity<>(this.foodSer.getThucAns(tmp), HttpStatus.OK);
+    }
+    
+    @CrossOrigin
+    @GetMapping("/food/{id}/")
+    public ResponseEntity<ThucAn> foodDetail(@PathVariable("id") Long id){
+        return new ResponseEntity<>(this.foodSer.getThucAnById2(id), HttpStatus.OK);
     }
 }

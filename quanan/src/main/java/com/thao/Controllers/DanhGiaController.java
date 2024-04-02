@@ -46,9 +46,10 @@ public class DanhGiaController {
     
     @RequestMapping("/danhgia")
     public String list(Model model, @RequestParam Map<String, String> params){
-        List<DanhGia> tmp = this.dgSer.getCommentsByUser(params);
+        Map<String,String> tmp = new HashMap<>();
+        List<DanhGia> listCommentPages = this.dgSer.getCommentsByUser(tmp);
         int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
-        model.addAttribute("dgs", tmp);
+        model.addAttribute("dgs", this.dgSer.getCommentsByUser(params));
         model.addAttribute("pages", Math.ceil(tmp.size()*1.0/pageSize));
         return "danhgia";
     }

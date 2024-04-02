@@ -128,6 +128,12 @@ public class FoodServiceImpl implements FoodService{
     public ThucAn getThucAnById(Long id) {
         return this.foodRepo.getReferenceById(id);
     }
+    
+    @Override
+    public ThucAn getThucAnById2(Long id) {
+        return this.foodRepo.findById(id).get();
+    }
+
 
     @Override
     public List<ThucAn> getThucAnByChiNhanh(int cnId) {

@@ -323,11 +323,12 @@ public class JwtSecurityConfig {
 
         http.authorizeHttpRequests(rmr -> {
             rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
-                    new AntPathRequestMatcher("/api/food/"),
+                    new AntPathRequestMatcher("/api/food/**"),
                     new AntPathRequestMatcher("/api/cates/"),
                     new AntPathRequestMatcher("/api/dangky/"),
                     new AntPathRequestMatcher("/api/doimatkhau/**"),
-                    new AntPathRequestMatcher("/api/current-user/")).permitAll();
+                    new AntPathRequestMatcher("/api/current-user/"),
+                    new AntPathRequestMatcher("/api/login/google/")).permitAll();
         });
 
 //        http.userDetailsService(userDetailsService)
