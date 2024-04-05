@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <h1>Chatbot App</h1>
+    <div>
+        <div id="chatbox">
+            <p class="botText"><span>Hi there!</span></p>
+        </div>
+        <div id="userInput">
+            <input id="textInput" type="text" name="userMessage" placeholder="Type your message"/>
+            <input id="buttonInput" type="submit" value="send"/>
+        </div>
+    </div>
+
+<!--    <script>-->
+<!--        function getUserResponse(){-->
+<!--            var userText = $('#textInput').val();-->
+<!--            var userHTML = "<p class='userText'><span>"+userText+"</span></p>";-->
+<!--            $('#textInput').val("");-->
+<!--            $('#chatbox').append(userHTML);-->
+<!--            document.getElementById("userInput").scrollIntoView({block:'start', behavior:'smooth'});-->
+<!--            $.get("/get/",{userMessage: userText}).done(function(data){-->
+<!--                var botHTML = "<p class='botText'><span>"+data+"</span></p>"-->
+<!--                $('#chatbox').append(botHTML);-->
+<!--            });-->
+<!--        }-->
+
+<!--        $("#textInput").keypress(function(e){-->
+<!--            if(e.which == 13){-->
+<!--                getUserResponse();-->
+<!--            }-->
+<!--        });-->
+
+<!--        $('#buttonInput').click(function(){-->
+<!--            getUserResponse();-->
+<!--        })-->
+
+
+<!--    </script>-->
+
+</body>
+</html>
