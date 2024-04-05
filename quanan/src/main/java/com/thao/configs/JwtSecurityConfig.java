@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -320,6 +319,10 @@ public class JwtSecurityConfig {
 //                }
 //                );
         http.anonymous(a -> a.disable());
+        
+//        http.authorizeHttpRequests(rmr ->{
+//           rmr.requestMatchers(new AntPathRequestMatcher("https://sandbox.vnpayment.vn/**")).permitAll();
+//        });
 
         http.authorizeHttpRequests(rmr -> {
             rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
@@ -328,7 +331,12 @@ public class JwtSecurityConfig {
                     new AntPathRequestMatcher("/api/dangky/"),
                     new AntPathRequestMatcher("/api/doimatkhau/**"),
                     new AntPathRequestMatcher("/api/current-user/"),
-                    new AntPathRequestMatcher("/api/login/google/")).permitAll();
+                    new AntPathRequestMatcher("/api/login/google/"),
+                    new AntPathRequestMatcher("/api/create_payment_vnpay/"),
+                    new AntPathRequestMatcher("/api/pay_paypal/"),
+                    new AntPathRequestMatcher("/api/pay/pay_online/**"),
+                    new AntPathRequestMatcher("/api/stores/**"),
+                    new AntPathRequestMatcher("/api/comments/**")).permitAll();
         });
 
 //        http.userDetailsService(userDetailsService)
@@ -353,12 +361,10 @@ public class JwtSecurityConfig {
                         new AntPathRequestMatcher("/api/payoffline/"),
                         new AntPathRequestMatcher("/api/datban/"),
                         new AntPathRequestMatcher("/api/ban/**"),
-                        new AntPathRequestMatcher("/api/comments/**"),
-                        new AntPathRequestMatcher("/api/stores/**"),
                         new AntPathRequestMatcher("/api/thongtinban/**"),
                         new AntPathRequestMatcher("/api/doimatkhau/**"),
-                        new AntPathRequestMatcher("/api/pay_paypal/**"),
-                        new AntPathRequestMatcher("/api/datmon/**")).authenticated()
+                        new AntPathRequestMatcher("/api/datmon/**")
+                        ).authenticated()
                         //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
                         //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
