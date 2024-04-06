@@ -51,6 +51,7 @@ import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.Customizer;
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -248,7 +249,6 @@ public class JwtSecurityConfig {
 //    public JwtDecoder jwtDecoder() {
 //        return JwtDecoders.fromOidcIssuerLocation("http://127.0.0.1:8080/quanan/oauth2/authorization/github");
 //    }
-
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -319,11 +319,10 @@ public class JwtSecurityConfig {
 //                }
 //                );
         http.anonymous(a -> a.disable());
-        
+
 //        http.authorizeHttpRequests(rmr ->{
 //           rmr.requestMatchers(new AntPathRequestMatcher("https://sandbox.vnpayment.vn/**")).permitAll();
 //        });
-
         http.authorizeHttpRequests(rmr -> {
             rmr.requestMatchers(new AntPathRequestMatcher("/api/login/"),
                     new AntPathRequestMatcher("/api/food/**"),
@@ -331,13 +330,23 @@ public class JwtSecurityConfig {
                     new AntPathRequestMatcher("/api/dangky/"),
                     new AntPathRequestMatcher("/api/doimatkhau/**"),
                     new AntPathRequestMatcher("/api/current-user/"),
-                    new AntPathRequestMatcher("/api/login/google/"),
-                    new AntPathRequestMatcher("/api/create_payment_vnpay/"),
-                    new AntPathRequestMatcher("/api/pay_paypal/"),
-                    new AntPathRequestMatcher("/api/pay/pay_online/**"),
-                    new AntPathRequestMatcher("/api/stores/**"),
-                    new AntPathRequestMatcher("/api/comments/**")).permitAll();
+                    new AntPathRequestMatcher("/api/login/google/")
+            ).permitAll();
         });
+
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
+            rmr.requestMatchers(
+                    new AntPathRequestMatcher("/api/food/delete/**"),
+                    new AntPathRequestMatcher("/api/food/patch/**"),
+                    new AntPathRequestMatcher("/api/food/addfood/**")
+            ).hasAnyAuthority("ADMIN", "OWNER"); //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+            //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+            //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER");
+        }).httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
+//                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))).cors(Customizer.withDefaults());
 
 //        http.userDetailsService(userDetailsService)
 //                .csrf(AbstractHttpConfigurer::disable)
@@ -353,46 +362,41 @@ public class JwtSecurityConfig {
 //                });
 //                .oauth2ResourceServer(o -> o.jwt(withDefaults()));
 //                .oauth2Login(withDefaults());
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
+            rmr.requestMatchers(
+                    new AntPathRequestMatcher("/api/pay/"),
+                    new AntPathRequestMatcher("/api/payoffline/"),
+                    new AntPathRequestMatcher("/api/datban/"),
+                    new AntPathRequestMatcher("/api/ban/**"),
+                    new AntPathRequestMatcher("/api/thongtinban/**"),
+                    new AntPathRequestMatcher("/api/doimatkhau/**"),
+                    new AntPathRequestMatcher("/api/datmon/**"),
+                    new AntPathRequestMatcher("/api/stores/**"),
+                    new AntPathRequestMatcher("/api/comments/**"),
+                    new AntPathRequestMatcher("/api/create_payment_vnpay/"),
+                    new AntPathRequestMatcher("/api/pay_paypal/"),
+                    new AntPathRequestMatcher("/api/pay/pay_online/**")
+            ).authenticated(); //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+            //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
+            //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER");
+        })
+                .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
+                //                                                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))).cors(Customizer.withDefaults());
 
         http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
-            try {
-                rmr.requestMatchers(
-                        new AntPathRequestMatcher("/api/pay/"),
-                        new AntPathRequestMatcher("/api/payoffline/"),
-                        new AntPathRequestMatcher("/api/datban/"),
-                        new AntPathRequestMatcher("/api/ban/**"),
-                        new AntPathRequestMatcher("/api/thongtinban/**"),
-                        new AntPathRequestMatcher("/api/doimatkhau/**"),
-                        new AntPathRequestMatcher("/api/datmon/**")
-                        ).authenticated()
-                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                        //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
-                        .and()
-                        .httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-                        //                        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                        .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler())).csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**")));
-            } catch (Exception ex) {
-                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-
-        http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
-            try {
-                rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                        .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/")).authenticated()
-                        //                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN")
-                        .and()
-                        .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                        .successForwardUrl("/"))
-                        .logout(lo -> lo.permitAll()
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"));
-            } catch (Exception ex) {
-                Logger.getLogger(SpringSecurityConfig.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }).csrf(csrf -> csrf.disable());
+            rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                    .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/")).authenticated();
+        })
+                //                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN")
+                .formLogin(lg -> lg.loginPage("/login").permitAll().loginProcessingUrl("/login")
+                .successForwardUrl("/"))
+                .logout(lo -> lo.permitAll()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login"))
+                .csrf(csrf -> csrf.disable());
 //        
 //        
 //        
