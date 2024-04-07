@@ -7,6 +7,7 @@ package com.thao.Controllers;
 import com.thao.pojo.DanhGia;
 import com.thao.service.ChiNhanhService;
 import com.thao.service.DanhGiaService;
+import com.thao.service.FoodService;
 import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
@@ -42,6 +43,8 @@ public class DanhGiaController {
     @Autowired
     private ChiNhanhService cnSer;
     @Autowired
+    private FoodService foodSer;
+    @Autowired
     private Environment env;
     
     @RequestMapping("/danhgia")
@@ -50,7 +53,7 @@ public class DanhGiaController {
         List<DanhGia> listCommentPages = this.dgSer.getCommentsByUser(tmp);
         int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         model.addAttribute("dgs", this.dgSer.getCommentsByUser(params));
-        model.addAttribute("pages", Math.ceil(tmp.size()*1.0/pageSize));
+        model.addAttribute("pages", Math.ceil(listCommentPages.size()*1.0/pageSize));
         return "danhgia";
     }
     
@@ -60,6 +63,7 @@ public class DanhGiaController {
         tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", new DanhGia());
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
+        model.addAttribute("foods", this.foodSer.getThucAns(tmp));
         return "addorupdatedanhgia";
     }
 
@@ -69,6 +73,7 @@ public class DanhGiaController {
         tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("dg", this.dgSer.getDanhGiaById(id));
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
+        model.addAttribute("foods", this.foodSer.getThucAns(tmp));
         return "addorupdatedanhgia";
     }
 
@@ -85,6 +90,7 @@ public class DanhGiaController {
         Map<String, String> tmp = new HashMap<>();
         tmp.put("vaiTro", "CUSTOMER");
         model.addAttribute("nds", this.ndSer.getNDCus(tmp));
+        model.addAttribute("foods", this.foodSer.getThucAns(tmp));
         return "addorupdatedanhgia";
     }
 

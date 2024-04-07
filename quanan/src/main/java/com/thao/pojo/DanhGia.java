@@ -65,6 +65,10 @@ public class DanhGia implements Serializable {
     @NotNull(message = "Thiếu người đánh giá")
     @ManyToOne
     private NguoiDung idNguoiDung;
+    @JoinColumn(name = "id_thuc_an", referencedColumnName = "id")
+    @NotNull(message = "Thiếu món ăn được đánh giá")
+    @ManyToOne
+    private ThucAn idThucAn;
 
     public DanhGia() {
     }
@@ -144,6 +148,20 @@ public class DanhGia implements Serializable {
     @Override
     public String toString() {
         return "com.thao.pojo.DanhGia[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the idThucAn
+     */
+    public ThucAn getIdThucAn() {
+        return idThucAn;
+    }
+
+    /**
+     * @param idThucAn the idThucAn to set
+     */
+    public void setIdThucAn(ThucAn idThucAn) {
+        this.idThucAn = idThucAn;
     }
     
 }

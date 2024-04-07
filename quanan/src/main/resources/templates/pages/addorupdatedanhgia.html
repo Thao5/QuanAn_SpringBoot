@@ -26,18 +26,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="form-floating mb-3 mt-3">
                     <select id="idNguoiDung" name="idNguoiDung" th:field="*{idNguoiDung}" class="form-select">
-                        <option th:each="nd : ${nds}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                        <th:block th:each="nd : ${nds}">
+                            <option th:if="${dg.idNguoiDung != null && nd.id == dg.idNguoiDung.id}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}" selected></option>
+                            <option th:if="${dg.idNguoiDung != null && nd.id != dg.idNguoiDung.id}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                            <option th:if="${dg.idNguoiDung == null}" th:value="${nd.id}" th:text="${nd.lastName + ' ' + nd.firstName}"></option>
+                        </th:block>
                     </select>
                     <label for="idNguoiDung">Người đánh giá</label>
                     <p th:if="${#fields.hasErrors('idNguoiDung')}" th:errorclass="text-danger" th:errors="*{idNguoiDung}" />
                 </div>
-<!--                 <div class="form-floating mb-3 mt-3">
-                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
-                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                <div class="form-floating mb-3 mt-3">
+                    <select id="idNguoiDung" name="idThucAn" th:field="*{idThucAn}" class="form-select">
+                        <th:block th:each="f : ${foods}">
+                            <option th:if="${dg.idThucAn != null && f.id == dg.idThucAn.id}" th:value="${f.id}" th:text="${f.name}" selected></option>
+                            <option th:if="${dg.idThucAn != null && f.id != dg.idThucAn.id}" th:value="${f.id}" th:text="${f.name}"></option>
+                            <option th:if="${dg.idThucAn == null}" th:value="${f.id}" th:text="${f.name}"></option>
+                        </th:block>
                     </select>
-                    <label for="idChiNhanh">Chi nhánh</label>
-                    <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
-                </div>-->
+                    <label for="idThucAn">Món đánh giá</label>
+                    <p th:if="${#fields.hasErrors('idThucAn')}" th:errorclass="text-danger" th:errors="*{idThucAn}" />
+                </div>
+                <!--                 <div class="form-floating mb-3 mt-3">
+                                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
+                                        <option th:each="cn : ${cns}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                                    </select>
+                                    <label for="idChiNhanh">Chi nhánh</label>
+                                    <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
+                                </div>-->
                 <div class="form-floating mb-3 mt-3">
                     <button type="submit" class="btn btn-info" th:if="${dg.id != null}"> Cập nhật</button>
                     <button type="submit" class="btn btn-info" th:if="${dg.id == null}"> Thêm</button>
