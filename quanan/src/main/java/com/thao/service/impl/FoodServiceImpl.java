@@ -6,7 +6,11 @@ package com.thao.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.thao.pojo.Category;
 import com.thao.pojo.ThucAn;
+import com.thao.repository.CategoryRepository;
+import com.thao.repository.ChiNhanhRepository;
+import com.thao.repository.CustomChiNhanhRepository;
 import com.thao.repository.CustomThucAnRepository;
 import com.thao.repository.FoodRepository;
 import com.thao.service.ChiNhanhService;
@@ -28,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Thao
  */
 @Service
-public class FoodServiceImpl implements FoodService{
+public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodRepository foodRepo;
@@ -36,13 +40,15 @@ public class FoodServiceImpl implements FoodService{
     private Cloudinary cloudinary;
     @Autowired
     private CustomThucAnRepository cfoodRepo;
-    
+    @Autowired
+    private ChiNhanhRepository CnRepo;
+    @Autowired
+    private CategoryRepository cateRepo;
+
     @Override
     public List<ThucAn> getThucAns() {
         return foodRepo.findAll();
     }
-    
-    
 
 ////    @Override
 ////    public ThucAn getThucAnByChiNhanh(int id) {
@@ -102,7 +108,6 @@ public class FoodServiceImpl implements FoodService{
 ////        return f;
 ////    }
 //    
-
     @Override
     public void save(ThucAn ta) {
         if (ta.getFile() != null && !ta.getFile().isEmpty()) {
@@ -128,12 +133,11 @@ public class FoodServiceImpl implements FoodService{
     public ThucAn getThucAnById(Long id) {
         return this.foodRepo.getReferenceById(id);
     }
-    
+
     @Override
     public ThucAn getThucAnById2(Long id) {
         return this.foodRepo.findById(id).get();
     }
-
 
     @Override
     public List<ThucAn> getThucAnByChiNhanh(int cnId) {
@@ -144,7 +148,31 @@ public class FoodServiceImpl implements FoodService{
     public List<ThucAn> getThucAns(Map<String, String> params) {
         return this.cfoodRepo.getThucAns(params);
     }
-    
-    
-    
+
+    @Override
+    public ThucAn addFood(Map<String, String> params, MultipartFile avatar) {
+        ThucAn food = new ThucAn();
+        food.setCreatedDate(new Date());
+        food.setActive(Boolean.TRUE);
+        food.setIdChiNhanh(this.CnRepo.getReferenceById(Long.parseLong(String.valueOf(4))));
+        food.setName(params.get("name"));
+        food.setPrice(Long.parseLong(params.get("price")));
+        food.setSoLuong(Integer.parseInt(params.get("soLuong")));
+        Category c = this.cateRepo.findById(Long.parseLong(params.get("idLoai"))).get();
+        food.setIdLoai(c);
+        if (!avatar.isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                food.setImage(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        this.foodRepo.save(food);
+        return food;
+    }
+
 }

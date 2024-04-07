@@ -54,6 +54,8 @@ public class NguoiDungServiceImpl implements NguoiDungService {
                 nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
             }
         } else{
+            if(nd.getLoaiNguoiDung() != null)
+                nd.setLoaiNguoiDung("NORMAL");
             nd.setMatKhau(this.passwordEncoder.encode(nd.getMatKhau()));
         }
 

@@ -5,7 +5,9 @@
 package com.thao.Controllers;
 
 import com.thao.pojo.ThucAn;
+import com.thao.service.ChiNhanhService;
 import com.thao.service.FoodService;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -32,46 +36,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class ApiThucAnController {
+
     @Autowired
     private FoodService foodSer;
-    
+    @Autowired
+    private ChiNhanhService cnSer;
+
     @CrossOrigin
     @GetMapping("/thucan/")
-    public ResponseEntity<List<ThucAn>> list(@RequestBody Map<String,String> params){
+    public ResponseEntity<List<ThucAn>> list(@RequestBody Map<String, String> params) {
         return new ResponseEntity<>(this.foodSer.getThucAnByChiNhanh(Integer.parseInt(params.get("cnId"))), HttpStatus.OK);
     }
-    
+
     @CrossOrigin
     @GetMapping("/food/")
-    public ResponseEntity<List<ThucAn>> listFood(){
-        Map<String,String> tmp = new HashMap<>();
+    public ResponseEntity<List<ThucAn>> listFood() {
+        Map<String, String> tmp = new HashMap<>();
         return new ResponseEntity<>(this.foodSer.getThucAns(tmp), HttpStatus.OK);
     }
-    
+
     @CrossOrigin
     @GetMapping("/food/{id}/")
-    public ResponseEntity<ThucAn> foodDetail(@PathVariable("id") Long id){
+    public ResponseEntity<ThucAn> foodDetail(@PathVariable("id") Long id) {
         return new ResponseEntity<>(this.foodSer.getThucAnById2(id), HttpStatus.OK);
     }
-    
+
     @CrossOrigin
-    @PostMapping("/food/addfood/")
-    public ResponseEntity<ThucAn> foodAdd(@RequestBody ThucAn ta){
-        this.foodSer.save(ta);
-        return new ResponseEntity<>(ta, HttpStatus.OK);
+    @PostMapping(path = "/food/addfood/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ThucAn> foodAdd(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+        ThucAn food = this.foodSer.addFood(params, avatar);
+        return new ResponseEntity<>(food, HttpStatus.OK);
     }
-    
+
     @CrossOrigin
     @DeleteMapping("/food/delete/{id}/")
-    public ResponseEntity<Long> foodDel(@PathVariable("id") Long id){
+    public ResponseEntity<Long> foodDel(@PathVariable("id") Long id) {
         this.foodSer.delete(id);
         return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
     }
-    
+
     @CrossOrigin
-    @PatchMapping(path= "/food/patch/{id}/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+    @PatchMapping(path = "/food/patch/{id}/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestBody ThucAn ta){
+    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestBody ThucAn ta) {
         ThucAn food = this.foodSer.getThucAnById(id);
         food.setActive(ta.getActive());
         food.setIdLoai(ta.getIdLoai());

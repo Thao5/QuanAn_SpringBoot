@@ -83,8 +83,8 @@ public class NguoiDung implements Serializable {
     private String email;
     @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 45)
-    @NotNull(message = "Thiếu số điện thoại")
-    @NotBlank(message = "Thiếu số điện thoại")
+//    @NotNull(message = "Thiếu số điện thoại")
+//    @NotBlank(message = "Thiếu số điện thoại")
     @Column(name = "phone")
     private String phone;
     @Size(max = 255)
@@ -99,6 +99,8 @@ public class NguoiDung implements Serializable {
     private String vaiTro;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "loai_nguoi_dung")
+    private String loaiNguoiDung;
     @JsonIgnore
     @OneToMany(mappedBy = "idNguoiDung")
     private Set<DanhGia> danhGiaSet;
@@ -265,6 +267,20 @@ public class NguoiDung implements Serializable {
      */
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    /**
+     * @return the loaiNguoiDung
+     */
+    public String getLoaiNguoiDung() {
+        return loaiNguoiDung;
+    }
+
+    /**
+     * @param loaiNguoiDung the loaiNguoiDung to set
+     */
+    public void setLoaiNguoiDung(String loaiNguoiDung) {
+        this.loaiNguoiDung = loaiNguoiDung;
     }
     
 }

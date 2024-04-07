@@ -28,6 +28,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <th class="pc-toggle">Số điện thoại</th>
                         <th class="pc-toggle">Vai trò</th>
                         <th class="pc-toggle">Đang hoạt dộng</th>
+                        <th class="pc-toggle">Loại người dùng</th>
                         <th class="mobile-toggle"></th>
                         <th></th>
                         <th></th>
@@ -47,6 +48,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td class="pc-toggle" th:text="${nd.phone}"></td>
                         <td class="pc-toggle" th:text="${nd.vaiTro}"></td>
                         <td class="pc-toggle" th:text="${nd.active}"></td>
+                        <td class="pc-toggle" th:text="${nd.loaiNguoiDung}"></td>
                         <td class="mobile-toggle">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#myModal-nd' + nd.id}">
                                 Các thông tin khác
@@ -70,12 +72,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <td>Số điện thoại</td>
                                                     <td>Vai trò</td>
                                                     <td>Đang hoạt động</td>
+                                                    <td>Loại người dùng</td>
                                                 </tr>
                                                 <tr>
                                                     <td th:text="${nd.email}"></td>
                                                     <td th:text="${nd.phone}"></td>
                                                     <td th:text="${nd.vaiTro}"></td>
                                                     <td th:text="${nd.active}"></td>
+                                                    <td th:text="${nd.loaiNguoiDung}"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -103,7 +107,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <footer th:replace="../layout/footer :: html_footer"/>
 
         <style>
-            @media screen and (max-width: 1103px) {
+            @media screen and (max-width: 1400px) {
                 /*                .mobile-toggle {
                                     display: block;
                                 }*/
@@ -111,7 +115,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     display: none;
                 }
             }
-            @media screen and (min-width: 1104px) {
+            @media screen and (min-width: 1401px) {
                 .mobile-toggle {
                     display: none;
                 }
