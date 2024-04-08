@@ -175,4 +175,41 @@ public class FoodServiceImpl implements FoodService {
         return food;
     }
 
+    @Override
+    public ThucAn updateFood(Long id, Map<String, String> params, MultipartFile avatar) {
+        ThucAn food = this.foodRepo.findById(id).get();
+        if (params != null) {
+            if (params.get("active") != null) {
+                food.setActive(Boolean.parseBoolean(params.get("active")));
+            }
+            if (params.get("name") != null && !params.get("name").trim().equals("") && !params.get("name").equals(food.getName())) {
+                food.setName(params.get("name"));
+            }
+            if (params.get("price") != null && !params.get("price").trim().equals("")) {
+                food.setPrice(Long.parseLong(params.get("price")));
+            }
+            if (params.get("soLuong") != null && !params.get("soLuong").trim().equals("")) {
+                food.setSoLuong(Integer.parseInt(params.get("soLuong")));
+            }
+            if (params.get("idLoai") != null && !params.get("idLoai").trim().equals("")) {
+                Category c = this.cateRepo.findById(Long.parseLong(params.get("idLoai"))).get();
+                food.setIdLoai(c);
+            }
+
+            if (!avatar.isEmpty()) {
+                Map res;
+                try {
+                    res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                            ObjectUtils.asMap("resource_type", "auto"));
+                    food.setImage(res.get("secure_url").toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            this.foodRepo.save(food);
+        }
+        return food;
+    }
+
 }

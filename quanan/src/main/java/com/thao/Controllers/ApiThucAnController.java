@@ -79,14 +79,7 @@ public class ApiThucAnController {
     @CrossOrigin
     @PatchMapping(path = "/food/patch/{id}/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestBody ThucAn ta) {
-        ThucAn food = this.foodSer.getThucAnById(id);
-        food.setActive(ta.getActive());
-        food.setIdLoai(ta.getIdLoai());
-        food.setImage(ta.getImage());
-        food.setPrice(ta.getPrice());
-        food.setSoLuong(ta.getSoLuong());
-        this.foodSer.save(food);
-        return new ResponseEntity<>(food, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+        return new ResponseEntity<>(this.foodSer.updateFood(id, params, avatar), HttpStatus.NOT_FOUND);
     }
 }
