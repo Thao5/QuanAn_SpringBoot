@@ -176,7 +176,7 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public ThucAn updateFood(Long id, Map<String, String> params, MultipartFile avatar) {
+    public ThucAn updateFood(Long id, Map<String, String> params) {
         ThucAn food = this.foodRepo.findById(id).get();
         if (params != null) {
             if (params.get("active") != null) {
@@ -195,21 +195,28 @@ public class FoodServiceImpl implements FoodService {
                 Category c = this.cateRepo.findById(Long.parseLong(params.get("idLoai"))).get();
                 food.setIdLoai(c);
             }
-
-            if (!avatar.isEmpty()) {
-                Map res;
-                try {
-                    res = this.cloudinary.uploader().upload(avatar.getBytes(),
-                            ObjectUtils.asMap("resource_type", "auto"));
-                    food.setImage(res.get("secure_url").toString());
-                } catch (IOException ex) {
-                    Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
             this.foodRepo.save(food);
         }
         return food;
     }
 
+    @Override
+    public ThucAn updateFoodAvatar(Long id, MultipartFile avatar) {
+        ThucAn food = this.foodRepo.findById(id).get();
+        if (!avatar.isEmpty()) {
+            Map res;
+            try {
+                res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                food.setImage(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(NguoiDungServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        this.foodRepo.save(food);
+        return food;
+    }
+
+    
 }

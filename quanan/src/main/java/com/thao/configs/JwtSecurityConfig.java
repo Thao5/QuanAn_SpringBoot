@@ -338,7 +338,10 @@ public class JwtSecurityConfig {
             rmr.requestMatchers(
                     new AntPathRequestMatcher("/api/food/delete/**"),
                     new AntPathRequestMatcher("/api/food/patch/**"),
-                    new AntPathRequestMatcher("/api/food/addfood/**")
+                    new AntPathRequestMatcher("/api/food/addfood/**"),
+                    new AntPathRequestMatcher("/api/foodall/**"),
+                    new AntPathRequestMatcher("/api/stats/**"),
+                    new AntPathRequestMatcher("/api/chinhanh/**")
             ).hasAnyAuthority("ADMIN", "OWNER"); //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "GET")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
             //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
             //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER");

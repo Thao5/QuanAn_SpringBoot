@@ -54,6 +54,13 @@ public class ApiThucAnController {
         Map<String, String> tmp = new HashMap<>();
         return new ResponseEntity<>(this.foodSer.getThucAns(tmp), HttpStatus.OK);
     }
+    
+    @CrossOrigin
+    @GetMapping("/foodall/")
+    public ResponseEntity<List<ThucAn>> listFoodAll() {
+        Map<String, String> tmp = new HashMap<>();
+        return new ResponseEntity<>(this.foodSer.getThucAns(), HttpStatus.OK);
+    }
 
     @CrossOrigin
     @GetMapping("/food/{id}/")
@@ -72,14 +79,22 @@ public class ApiThucAnController {
     @CrossOrigin
     @DeleteMapping("/food/delete/{id}/")
     public ResponseEntity<Long> foodDel(@PathVariable("id") Long id) {
-        this.foodSer.delete(id);
-        return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
+        ThucAn food = this.foodSer.getThucAnById2(id);
+        food.setActive(Boolean.FALSE);
+        this.foodSer.save(food);
+        return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
     @CrossOrigin
-    @PatchMapping(path = "/food/patch/{id}/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+    @PatchMapping(path = "/food/patch/{id}/")
+    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.foodSer.updateFood(id, params), HttpStatus.OK);
+    }
+    
+    @CrossOrigin
+    @PatchMapping(path = "/food/patchavatar/{id}/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ThucAn> foodPut(@PathVariable("id") Long id, @RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
-        return new ResponseEntity<>(this.foodSer.updateFood(id, params, avatar), HttpStatus.NOT_FOUND);
+    public ResponseEntity<ThucAn> foodPutAvatar(@PathVariable("id") Long id, @RequestPart MultipartFile avatar) {
+        return new ResponseEntity<>(this.foodSer.updateFoodAvatar(id, avatar), HttpStatus.OK);
     }
 }

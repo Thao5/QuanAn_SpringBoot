@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,12 @@ public class ApiChiNhanhController {
     @GetMapping("/chinhanh/")
     public ResponseEntity<List<ChiNhanh>> list(){
         return new ResponseEntity<>(this.cnSer.getChiNhanhs(), HttpStatus.OK);
+    }
+    
+    @CrossOrigin
+    @GetMapping("/chinhanh/{id}/")
+    public ResponseEntity<ChiNhanh> list(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<>(this.cnSer.getChiNhanhById2(id), HttpStatus.OK);
     }
     
 }

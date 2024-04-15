@@ -20,6 +20,7 @@ public interface ChiNhanhService {
     ChiNhanh getChiNhanhById(Long id);
     List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id);
     List<ChiNhanh> getChiNhanhs(Map<String,String> params);
+    ChiNhanh getChiNhanhById2(Long id);
 //    ChiNhanh getChiNhanhById(int id);
 //    boolean deleteStore(int id);
 //    ChiNhanh getChiNhanhByUser(String username);

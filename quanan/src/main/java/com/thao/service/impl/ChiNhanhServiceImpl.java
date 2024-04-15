@@ -79,6 +79,11 @@ public class ChiNhanhServiceImpl implements ChiNhanhService {
     public ChiNhanh getChiNhanhById(Long id) {
         return this.storeRepo.getReferenceById(id);
     }
+    
+    @Override
+    public ChiNhanh getChiNhanhById2(Long id) {
+        return this.storeRepo.findById(id).get();
+    }
 
     @Override
     public List<ChiNhanh> getChiNhanhTheoChuChiNhanh(int id) {
