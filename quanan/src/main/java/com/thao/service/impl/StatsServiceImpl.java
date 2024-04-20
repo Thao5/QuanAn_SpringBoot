@@ -25,5 +25,8 @@ public class StatsServiceImpl implements StatsService{
         return this.statsRepo.getTongTienMoiThucAn(params);
     }
     
-    
+    @Override
+    public List<Object[]> getTongTienMoiThucAnOff(Map<String, String> params) {
+        return this.statsRepo.getTongTienMoiThucAnOff(params);
+    }
 }

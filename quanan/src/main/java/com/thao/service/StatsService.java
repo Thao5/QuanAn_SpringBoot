@@ -13,4 +13,5 @@ import java.util.Map;
  */
 public interface StatsService {
     List<Object[]> getTongTienMoiThucAn(Map<String,String> params);
+    List<Object[]> getTongTienMoiThucAnOff(Map<String, String> params);
 }
