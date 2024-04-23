@@ -5,13 +5,17 @@
 package com.thao.Controllers;
 
 import com.thao.pojo.DanhGia;
+import com.thao.pojo.NguoiDung;
 import com.thao.service.DanhGiaService;
+import com.thao.service.NguoiDungService;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +35,8 @@ public class ApiCommentController {
     
     @Autowired
     private DanhGiaService commentService;
+    @Autowired
+    private NguoiDungService ndSer;
     
     @GetMapping("/stores/{storeId}/comments/")
     @CrossOrigin
@@ -40,8 +46,10 @@ public class ApiCommentController {
     
     @PostMapping(path="/comments/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<DanhGia> addComment(@RequestBody DanhGia comment) {
+    public ResponseEntity<DanhGia> addComment(@RequestBody DanhGia comment, Principal user) {
+        NguoiDung u = this.ndSer.getNguoiDungByUsername(user.getName());
         comment.setCreatedDate(new Date());
+        comment.setIdNguoiDung(u);
         this.commentService.save(comment);
         
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
