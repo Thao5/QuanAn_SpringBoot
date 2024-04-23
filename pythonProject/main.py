@@ -5,6 +5,7 @@ from datetime import datetime, date
 
 import flask
 import pymysql
+import requests
 from flask import Flask, render_template, request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -19,6 +20,8 @@ from flask_cors import CORS
 import glob
 import os
 from underthesea import sentiment, pos_tag, word_tokenize
+from system_recomendation import CF
+from flask import g
 
 app = Flask(__name__)
 CORS(app)
@@ -34,10 +37,6 @@ def get_conn():
         cursorclass=pymysql.cursors.DictCursor
     )
     return conn
-
-
-# existing_file = 'Book2.xlsx'
-# df = pd.read_excel(existing_file)
 
 
 class NpEncoder(json.JSONEncoder):
@@ -71,15 +70,13 @@ def get_clean(x):
     return x
 
 
-# df['Review'] = df['Review'].apply(lambda x: get_clean(x))
-# tfidf = TfidfVectorizer(max_features=100)
-
-
 class Sentiment(object):
     def __init__(self):
         self.count = 1
         self.existing_file = 'Book2.xlsx'
+        self.existing_file2 = 'system_recommendation2.xlsx'
         self.df = pd.read_excel(self.existing_file)
+        self.df_rec = pd.read_excel(self.existing_file2)
         self.df['Review'] = self.df['Review'].apply(lambda x: get_clean(x))
         self.tfidf = TfidfVectorizer(max_features=100)
         self.X = self.tfidf.fit_transform(self.df['Review'])
@@ -200,103 +197,9 @@ class Sentiment(object):
 
 
 sentiment_object = Sentiment()
-
-# print(sentiment_object.countif_excel('positive'))
-
-# X = df['Review']
-# y = df['Sentiment']
-# X = tfidf.fit_transform(X)
-
-
-# clf = LinearSVC()
-# clf.fit(X_train, y_train)
-#
-# y_pred = clf.predict(X_test)
-# print(classification_report(y_test, y_pred))
-
-# # Existing Excel file
-# existing_file = 'Book2.xlsx'
-# # Read existing data
-# df_existing = pd.read_excel(existing_file)
-
-
-# def select_comment():
-#     rows = None
-#     try:
-#         with conn.cursor() as cursor:
-#             # Read data from database
-#             sql = "SELECT * FROM `danh_gia`"
-#             cursor.execute(sql)
-#
-#             # Fetch all rows
-#             rows = cursor.fetchall()
-#
-#             # # Print results
-#             # for row in rows:
-#             #     print(row['noi_dung'])
-#     finally:
-#         conn.close()
-#         return rows
-#
-#
-# def get_data_from_database():
-#     danh_gias = select_comment()
-#
-#     for dg in danh_gias:
-#         x = dg['noi_dung']
-#         print(x)
-#         x = get_clean(x)
-#         vec = tfidf.transform([x])
-#         vec.shape
-#         print(clf.predict(vec))
-#         tmp = str(clf.predict(vec)).strip('[]\'')
-#
-#         # New data to append
-#         new_data = {'Review': [x], 'Sentiment': [tmp]}
-#         df_new = pd.DataFrame(new_data)
-#
-#         # Append new data
-#         df_combined = pd.concat([df, df_new], ignore_index=True)
-#
-#     # Save the combined data to Excel
-#     df_combined.to_excel(existing_file, index=False)
-
-
-# get_data_from_database()
-
-
-# @app.route("/")
-# def main():
-#     return render_template("index.html")
-
-# def phan_loai_sentiment(noiDung):
-#     x = noiDung
-#     print(x)
-#     x = get_clean(x)
-#     vec = tfidf.transform([x])
-#     vec.shape
-#     print(clf.predict(vec))
-#     tmp = str(clf.predict(vec)).strip('[]\'')
-#
-#     # New data to append
-#     new_data = {'Review': [x], 'Sentiment': [tmp]}
-#     df_new = pd.DataFrame(new_data)
-#
-#     # Append new data
-#     df_combined = pd.concat([df, df_new], ignore_index=True)
-#
-#     # Save the combined data to Excel
-#     df_combined.to_excel(existing_file, index=False)
-
-
-# get_data_from_database()
-
-# def countif_excel(pos_neg_neutral):
-#     df2 = sentiment_object.df.copy()
-#     df2 = df2.loc[9:]
-#     df3 = df2.copy()
-#     df2 = df2[df2['Sentiment'].__eq__(pos_neg_neutral)]
-#     return str("{:.2f}%").format((df2[df2.columns[0]].count() / df3[df3.columns[0]].count()) * 100)
+rec = CF(data_matrix=sentiment_object.df_rec, k=4)
+rec.normalize_matrix()
+rec.similarity()
 
 
 @app.route("/getsentiment/", methods=['POST'])
@@ -321,6 +224,24 @@ def get_count_sentiment():
         neu = sentiment_object.countif_excel('neutral')
         list_count = {'positive': pos, 'negative': neg, 'neutral': neu}
     return json.dumps(list_count, cls=NpEncoder, ensure_ascii=False).encode('utf8')
+
+
+@app.route("/getrec/", methods=['POST'])
+def get_rec():
+    # response = flask.jsonify({'some': 'data'})
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    list_rec = []
+    if request.method == "POST":
+        tmp = request.get_json()
+        s = tmp['idNguoiDung']
+        list_rec = rec.recommend_top(s, 0, sentiment_object.df_rec)
+        list_f = []
+        for r in list_rec:
+            if r['similar'] >= 0:
+                f = sentiment_object.find_food_id(r['id'])
+                list_f.append(f)
+
+    return json.dumps(list_f, cls=NpEncoder, ensure_ascii=False).encode('utf8')
 
 
 if __name__ == "__main__":
