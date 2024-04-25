@@ -54,6 +54,11 @@ public class DanhGiaServiceImpl implements DanhGiaService{
     public List<DanhGia> getCommentsByUser(Map<String, String> params) {
         return this.cusDGRepo.getCommentsByUser(params);
     }
+
+    @Override
+    public List<DanhGia> getCommentsFood(int foodId) {
+        return this.cusDGRepo.getCommentsFood(foodId);
+    }
     
     
 }

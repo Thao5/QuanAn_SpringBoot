@@ -19,4 +19,5 @@ public interface DanhGiaService {
     DanhGia getDanhGiaById(Long id);
     List<DanhGia> getComments(int storeId);
     List<DanhGia> getCommentsByUser(Map<String, String> params);
+    List<DanhGia> getCommentsFood(int foodId);
 }

@@ -6,6 +6,7 @@ from datetime import datetime, date
 import flask
 import pymysql
 import requests
+from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -127,6 +128,26 @@ class Sentiment(object):
                     #     print(row['noi_dung'])
         finally:
             conn.close()
+            return
+
+    def get_last_rec_comment(self):
+        conn = get_conn()
+        rows = None
+        try:
+            if conn.open:
+                with conn.cursor() as cursor:
+                    # Read data from database
+                    sql = "SELECT * FROM `danh_gia` WHERE id=(SELECT max(id) FROM `danh_gia`)"
+                    cursor.execute(sql)
+
+                    # Fetch all rows
+                    rows = cursor.fetchall()
+
+                    # # Print results
+                    # for row in rows:
+                    #     print(row['noi_dung'])
+        finally:
+            conn.close()
             return rows
 
     def find_food_id(self, idThucAn):
@@ -135,6 +156,13 @@ class Sentiment(object):
         for f in foods:
             if f['id'] == idThucAn:
                 return f
+
+    def find_comment_id(self, idComment):
+        cms = self.select_comment()
+
+        for c in cms:
+            if c['id'] == idComment:
+                return c
 
     def get_data_from_database(self):
         danh_gias = self.select_comment()
@@ -159,7 +187,7 @@ class Sentiment(object):
         df_combined.to_excel(self.existing_file, index=False)
         self.df = df_combined
 
-    def phan_loai_sentiment(self, noiDung):
+    def phan_loai_sentiment(self, noiDung, idThucAn, idNguoiDung):
         x = noiDung
         print(x)
         x = get_clean(x)
@@ -169,7 +197,7 @@ class Sentiment(object):
         tmp = str(self.clf.predict(vec)).strip('[]\'')
 
         # New data to append
-        new_data = {'Review': [x], 'Sentiment': [tmp]}
+        new_data = {'Review': [x], 'Sentiment': [tmp], 'idThucAn': idThucAn, 'idNguoiDung': idNguoiDung, 'idComment': self.get_last_rec_comment()[0]['id']}
         df_new = pd.DataFrame(new_data)
 
         # Append new data
@@ -185,14 +213,14 @@ class Sentiment(object):
         df2 = df2.loc[9:]
         df3 = df2.copy()
         df2 = df2[df2['Sentiment'].__eq__(pos_neg_neutral)]
-        list_food = []
+        list_comment = []
         for index, row in df2.iterrows():
-            if row['Sentiment'].__eq__(pos_neg_neutral) and row['idThucAn'] > 0:
-                f = self.find_food_id(row['idThucAn'])
-                if f not in list_food:
-                    list_food.append(f)
+            if row['Sentiment'].__eq__(pos_neg_neutral) and row['idComment'] > 0:
+                c = self.find_comment_id(row['idComment'])
+                if c not in list_comment:
+                    list_comment.append(c)
 
-        s = {"rate": str((df2[df2.columns[0]].count() / df3[df3.columns[0]].count()) * 100), "list_food": list_food}
+        s = {"rate": str((df2[df2.columns[0]].count() / df3[df3.columns[0]].count()) * 100), "list_comment": list_comment}
         return s
 
 
@@ -209,7 +237,9 @@ def get_sentiment():
     if request.method == "POST":
         tmp = request.get_json()
         s = tmp['noiDung']
-        sentiment_object.phan_loai_sentiment(str(s))
+        idThucAn = tmp['idThucAn']
+        idNguoiDung = tmp['idNguoiDung']
+        sentiment_object.phan_loai_sentiment(str(s), idThucAn, idNguoiDung)
     return str(s)
 
 
@@ -247,14 +277,14 @@ def get_rec():
 if __name__ == "__main__":
     app.run(debug=True)
 
-files_content = []
-
-emoji_pattern = re.compile("["
-                           u"\U0001F600-\U0001F64F"  # emoticons
-                           u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-                           u"\U0001F680-\U0001F6FF"  # transport & map symbols
-                           u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-                           "]+", flags=re.UNICODE)
+# files_content = []
+#
+# emoji_pattern = re.compile("["
+#                            u"\U0001F600-\U0001F64F"  # emoticons
+#                            u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+#                            u"\U0001F680-\U0001F6FF"  # transport & map symbols
+#                            u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+#                            "]+", flags=re.UNICODE)
 
 
 # try:
@@ -276,13 +306,44 @@ emoji_pattern = re.compile("["
 
 # get all y.txt files from all subdirectories
 def load_all_sentiment_from_txt():
-    all_files = glob.glob('/pythonProject/dataset/**/train/**/*.txt')
+    all_files = glob.glob('/pythonProject/dataset/**/test/**/*.txt')
     print(all_files)
 
     for file in all_files:
         with open(file, mode='r', encoding="utf8") as f:
             tmp = f.read()
             sentiment_object.phan_loai_sentiment(tmp)
+
+
+def load_all_sentiment_from_txt2(pos, sen, st):
+    s = '/pythonProject/dataset/**/test/{}/*.txt'.format(pos)
+    all_files = glob.glob(s)
+
+    df_combined = sen.df
+
+    for file in all_files:
+        with open(file, mode='r', encoding="utf8") as f:
+            tmp = f.read()
+            tmp = get_clean(tmp)
+            print(file)
+            print(tmp)
+            new_data = {'Review': [tmp], 'Sentiment': [st], 'idThucAn': 0, 'idNguoiDung': 0, 'idComment': 0}
+            df_new = pd.DataFrame(new_data)
+
+            # Append new data
+            df_combined = pd.concat([sen.df, df_new], ignore_index=True)
+
+            # Save the combined data to Excel
+            # df_combined.to_excel(sen.existing_file, index=False)
+            sen.df = df_combined
+    df_combined.to_excel(sen.existing_file, index=False)
+
+
+# load_all_sentiment_from_txt2(1, sentiment_object, 'positive')
+# load_all_sentiment_from_txt2(-1, sentiment_object, 'negative')
+# load_all_sentiment_from_txt2(2, sentiment_object, 'neutral')
+
+# print(sentiment_object.phan_loai_sentiment("day la commen test", 0, 0))
 
 
 # load_all_sentiment_from_txt()

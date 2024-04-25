@@ -44,6 +44,12 @@ public class ApiCommentController {
         return new ResponseEntity<>(this.commentService.getComments(id), HttpStatus.OK);
     }
     
+    @GetMapping("/food/{foodId}/comments/")
+    @CrossOrigin
+    public ResponseEntity<List<DanhGia>> listCommentsFood(@PathVariable(value = "foodId") int id) {
+        return new ResponseEntity<>(this.commentService.getCommentsFood(id), HttpStatus.OK);
+    }
+    
     @PostMapping(path="/comments/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<DanhGia> addComment(@RequestBody DanhGia comment, Principal user) {

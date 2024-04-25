@@ -62,4 +62,19 @@ public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository {
         return query.getResultList();
     }
 
+    @Override
+    public List<DanhGia> getCommentsFood(int foodId) {
+        CriteriaBuilder b = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DanhGia> q = b.createQuery(DanhGia.class);
+        Root root = q.from(DanhGia.class);
+        q.select(root);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(b.equal(root.get("idThucAn").get("id"), foodId));
+        q.where(predicates.toArray(Predicate[]::new));
+
+        Query query = entityManager.createQuery(q);
+
+        return query.getResultList();
+    }
+
 }

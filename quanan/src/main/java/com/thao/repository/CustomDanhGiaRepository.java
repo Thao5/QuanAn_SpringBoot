@@ -15,4 +15,5 @@ import java.util.Map;
 public interface CustomDanhGiaRepository {
     List<DanhGia> getComments(int storeId);
     List<DanhGia> getCommentsByUser(Map<String, String> params);
+    List<DanhGia> getCommentsFood(int foodId);
 }
