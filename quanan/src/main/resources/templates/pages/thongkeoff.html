@@ -14,9 +14,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Thống kê doanh thu online</h1>
+                        <h1 class="mt-4">Thống kê doanh thu offline</h1>
                         <div class="form-floating mb-3 mt-3">
-                            <form method="get" th:action="@{/admin/stats}">
+                            <form method="get" th:action="@{/admin/stats/offline}">
                                 <select id="year" name="y" class="form-select">
                                     <option value="">Tất cả</option>
                                     <option th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:value="${i}" th:text="${i}"></option>

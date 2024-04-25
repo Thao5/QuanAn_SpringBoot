@@ -5,7 +5,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
-    <body>
+    <body style="min-height: 100vh;
+    display: flex;
+    flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container" th:with="action='/quanan/admin/addorupdatequydinh'">

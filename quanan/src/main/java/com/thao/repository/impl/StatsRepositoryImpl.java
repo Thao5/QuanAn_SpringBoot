@@ -36,6 +36,7 @@ public class StatsRepositoryImpl implements StatsRepository {
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
         Root<HoaDonChiTiet> root = q.from(HoaDonChiTiet.class);
 //        Root<HoaDonChiTietTaiCho> root2 = q.from(HoaDonChiTietTaiCho.class);
+        q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
         List<Predicate> predicates = new ArrayList<>();
         if (params == null || params.isEmpty()) {
             q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
@@ -92,6 +93,7 @@ public class StatsRepositoryImpl implements StatsRepository {
 //        Root<HoaDonChiTiet> root = q.from(HoaDonChiTiet.class);
         Root<HoaDonChiTietTaiCho> root2 = q.from(HoaDonChiTietTaiCho.class);
         List<Predicate> predicates = new ArrayList<>();
+        q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));
         if (params == null || params.isEmpty()) {
 //            q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
             q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));

@@ -27,4 +27,10 @@ public class StatsController {
         model.addAttribute("stats", this.statsSer.getTongTienMoiThucAn(params));
         return "thongke";
     }
+    
+    @RequestMapping("/stats/offline")
+    public String listOff(Model model, @RequestParam Map<String,String> params){
+        model.addAttribute("stats", this.statsSer.getTongTienMoiThucAnOff(params));
+        return "thongkeoff";
+    }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,6 +28,8 @@ public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository {
 
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private Environment env;
 
     @Override
     public List<DanhGia> getComments(int storeId) {
@@ -59,6 +62,16 @@ public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository {
         }
 
         Query query = entityManager.createQuery(q);
+        
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null) {
+                int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+                query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
+                query.setMaxResults(pageSize);
+            }
+        }
+        
         return query.getResultList();
     }
 
