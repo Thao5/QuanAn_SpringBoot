@@ -231,6 +231,20 @@ class CF(object):
         # sorted_items.pop(top_x)
         return sorted_items
 
+    def write_sentiment_to_rec(self, s, sen, idThucAn, idNguoiDung):
+        if s.__eq__('positive'):
+            new_data = {'user_id': [idNguoiDung], 'item_id': [idThucAn], 'rating': 5}
+        elif s.__eq__('neutral'):
+            new_data = {'user_id': [idNguoiDung], 'item_id': [idThucAn], 'rating': 3}
+        else:
+            new_data = {'user_id': [idNguoiDung], 'item_id': [idThucAn], 'rating': 1}
+        df_new = pd.DataFrame(new_data)
+        # Append new data
+        df_combined = pd.concat([sen.df_rec, df_new], ignore_index=True)
+        # Save the combined data to Excel
+        df_combined.to_excel(sen.existing_file2, index=False)
+        sen.df_rec = df_combined
+
 
 def write_excel_to_excel(df, df2):
     for index, row in df.iterrows():

@@ -187,7 +187,7 @@ class Sentiment(object):
         df_combined.to_excel(self.existing_file, index=False)
         self.df = df_combined
 
-    def phan_loai_sentiment(self, noiDung, idThucAn, idNguoiDung):
+    def phan_loai_sentiment(self, noiDung, idThucAn, idNguoiDung, rec):
         x = noiDung
         print(x)
         x = get_clean(x)
@@ -206,6 +206,8 @@ class Sentiment(object):
         # Save the combined data to Excel
         df_combined.to_excel(self.existing_file, index=False)
         self.df = df_combined
+        if idNguoiDung > 0:
+            rec.write_sentiment_to_rec(tmp, self, idThucAn, idNguoiDung)
         return tmp
 
     def countif_excel(self, pos_neg_neutral):
@@ -239,7 +241,7 @@ def get_sentiment():
         s = tmp['noiDung']
         idThucAn = tmp['idThucAn']
         idNguoiDung = tmp['idNguoiDung']
-        sentiment_object.phan_loai_sentiment(str(s), idThucAn, idNguoiDung)
+        sentiment_object.phan_loai_sentiment(str(s), idThucAn, idNguoiDung, rec)
     return str(s)
 
 
