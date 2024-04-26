@@ -128,7 +128,7 @@ class Sentiment(object):
                     #     print(row['noi_dung'])
         finally:
             conn.close()
-            return
+            return rows
 
     def get_last_rec_comment(self):
         conn = get_conn()

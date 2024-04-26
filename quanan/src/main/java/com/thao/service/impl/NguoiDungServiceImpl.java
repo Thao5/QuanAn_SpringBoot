@@ -82,6 +82,11 @@ public class NguoiDungServiceImpl implements NguoiDungService {
     public NguoiDung getNguoiDungById(Long id) {
         return this.ndRepo.getReferenceById(id);
     }
+    
+    @Override
+    public NguoiDung getNguoiDungById2(Long id) {
+        return this.ndRepo.findById(id).get();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

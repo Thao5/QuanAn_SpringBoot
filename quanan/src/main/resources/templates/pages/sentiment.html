@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../layout/header :: html_head"/>
+    <body style="min-height: 100vh;
+          display: flex;
+          flex-direction: column;">
+        <div th:replace="../layout/header :: html_nav"/>
+
+        <section class="container">
+            <div class="nav nav-pills" id="nav-tab" role="tablist">
+                <a class="nav-link active" id="nav-pos-tab" data-bs-toggle="tab" href="#nav-pos" role="tab" aria-controls="nav-pos" aria-selected="true" th:text="${'Positive' + '(' + sentiment.positive.rate + '%)'}"></a>
+                <a class="nav-link" id="nav-neu-tab" data-bs-toggle="tab" href="#nav-neu" role="tab" aria-controls="nav-neu" aria-selected="false" th:text="${'Neutral' + '(' + sentiment.neutral.rate + '%)'}"></a>
+                <a class="nav-link" id="nav-neg-tab" data-bs-toggle="tab" href="#nav-neg" role="tab" aria-controls="nav-neg" aria-selected="false" th:text="${'Negative' + '(' + sentiment.negative.rate + '%)'}"></a>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nội dung</th>
+                                <th>Đánh giá</th>
+                                <th>Ngày tạo</th>
+                                <th class="pc-toggle">Người đánh giá</th>
+                                <th class="pc-toggle">Món ăn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr th:each="pos : ${sentiment.positive.list_comment}">
+                                    <td th:text="${pos.id}"></td>
+                                    <td th:text="${pos.noi_dung}"></td>
+                                    <td th:text="${pos.danh_gia}"></td>
+                                    <td th:text="${pos.created_date}"></td>
+                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                    <td th:text="${pos.id_thuc_an.name}"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-neu" role="tabpanel" aria-labelledby="nav-neu-tab">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nội dung</th>
+                                <th>Đánh giá</th>
+                                <th>Ngày tạo</th>
+                                <th class="pc-toggle">Người đánh giá</th>
+                                <th class="pc-toggle">Món ăn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr th:each="pos : ${sentiment.neutral.list_comment}">
+                                    <td th:text="${pos.id}"></td>
+                                    <td th:text="${pos.noi_dung}"></td>
+                                    <td th:text="${pos.danh_gia}"></td>
+                                    <td th:text="${pos.created_date}"></td>
+                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                    <td th:text="${pos.id_thuc_an.name}"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-neg" role="tabpanel" aria-labelledby="nav-neg-tab">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nội dung</th>
+                                <th>Đánh giá</th>
+                                <th>Ngày tạo</th>
+                                <th class="pc-toggle">Người đánh giá</th>
+                                <th class="pc-toggle">Món ăn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr th:each="pos : ${sentiment.negative.list_comment}">
+                                    <td th:text="${pos.id}"></td>
+                                    <td th:text="${pos.noi_dung}"></td>
+                                    <td th:text="${pos.danh_gia}"></td>
+                                    <td th:text="${pos.created_date}"></td>
+                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                    <td th:text="${pos.id_thuc_an.name}"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+
+        <style>
+            @media screen and (max-width: 1400px) {
+                /*                .mobile-toggle {
+                                    display: block;
+                                }*/
+                .pc-toggle{
+                    display: none;
+                }
+            }
+            @media screen and (min-width: 1401px) {
+                .mobile-toggle {
+                    display: none;
+                }
+            }
+        </style>
+
+        <script type="text/javascript" th:src="@{/js/del.js}"></script>
+    </body>
+</html>

@@ -20,6 +20,7 @@ public interface NguoiDungService extends UserDetailsService{
     void save(NguoiDung nd);
     void delete(Long id);
     NguoiDung getNguoiDungById(Long id);
+    NguoiDung getNguoiDungById2(Long id);
     NguoiDung getNguoiDungByUsername(String username);
     boolean authNguoiDung(String taiKhoan, String matKhau);
     List<NguoiDung> getNDCus(Map<String, String> params);
