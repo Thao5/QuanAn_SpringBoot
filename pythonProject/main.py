@@ -214,10 +214,12 @@ class Sentiment(object):
         df2 = self.df.copy()
         df2 = df2.loc[9:]
         df3 = df2.copy()
+        df3 = df3[df3['idComment'] > 0]
         df2 = df2[df2['Sentiment'].__eq__(pos_neg_neutral)]
+        df2 = df2[df2['idComment'] > 0]
         list_comment = []
         for index, row in df2.iterrows():
-            if row['Sentiment'].__eq__(pos_neg_neutral) and row['idComment'] > 0:
+            if row['Sentiment'].__eq__(pos_neg_neutral):
                 c = self.find_comment_id(row['idComment'])
                 if c not in list_comment:
                     list_comment.append(c)

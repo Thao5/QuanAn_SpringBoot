@@ -392,7 +392,7 @@ public class JwtSecurityConfig {
 
         http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
             rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                    .hasAnyAuthority("ADMIN").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
+                    .hasAnyAuthority("ADMIN", "OWNER").requestMatchers(new AntPathRequestMatcher("/js/**")).hasAnyAuthority("ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/")).authenticated();
         })
                 //                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN")
