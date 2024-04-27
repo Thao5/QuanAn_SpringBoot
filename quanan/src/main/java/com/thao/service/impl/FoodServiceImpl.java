@@ -148,6 +148,11 @@ public class FoodServiceImpl implements FoodService {
     public List<ThucAn> getThucAns(Map<String, String> params) {
         return this.cfoodRepo.getThucAns(params);
     }
+    
+    @Override
+    public List<ThucAn> getThucAnsAll(Map<String, String> params) {
+        return this.cfoodRepo.getThucAnsAll(params);
+    }
 
     @Override
     public ThucAn addFood(Map<String, String> params, MultipartFile avatar) {

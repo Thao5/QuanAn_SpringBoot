@@ -26,6 +26,7 @@ public interface FoodService {
     ThucAn getThucAnById(Long id);
     List<ThucAn> getThucAnByChiNhanh(int cnId);
     List<ThucAn> getThucAns(Map<String, String> params);
+    List<ThucAn> getThucAnsAll(Map<String, String> params);
     ThucAn getThucAnById2(Long id);
     ThucAn addFood(Map<String, String> params, MultipartFile avatar);
     ThucAn updateFood(Long id, Map<String, String> params);

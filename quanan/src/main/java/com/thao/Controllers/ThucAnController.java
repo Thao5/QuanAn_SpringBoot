@@ -14,8 +14,10 @@ import com.thao.service.NguoiDungService;
 import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -45,10 +48,17 @@ public class ThucAnController {
     private EmailService emailSer;
     @Autowired
     private NguoiDungService ndSer;
+    @Autowired
+    private Environment env;
 
     @RequestMapping("/food")
-    public String list(Model model) {
-        model.addAttribute("foods", this.foodService.getThucAns());
+    public String list(Model model, @RequestParam Map<String, String> params) {
+        Map<String,String> tmp = new HashMap<>();
+        List<ThucAn> listFoodPages = this.foodService.getThucAnsAll(tmp);
+        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+        List<ThucAn> lf = this.foodService.getThucAnsAll(params);
+        model.addAttribute("foods", lf);
+        model.addAttribute("pages", Math.ceil(listFoodPages.size()*1.0/pageSize));
         return "food";
     }
 

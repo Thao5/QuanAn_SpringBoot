@@ -74,7 +74,7 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         Root root = q.from(NguoiDung.class);
         q.select(root);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(b.isTrue(root.<Boolean>get("active")));
+//        predicates.add(b.isTrue(root.<Boolean>get("active")));
 
         if (params != null) {
 

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
-
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body style="min-height: 100vh;
@@ -73,8 +70,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <th>Nội dung</th>
                                 <th>Đánh giá</th>
                                 <th>Ngày tạo</th>
-                                <th class="pc-toggle">Người đánh giá</th>
-                                <th class="pc-toggle">Món ăn</th>
+                                <th>Người đánh giá</th>
+                                <th>Món ăn</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,21 +90,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
 
-        <style>
-            @media screen and (max-width: 1400px) {
-                /*                .mobile-toggle {
-                                    display: block;
-                                }*/
-                .pc-toggle{
-                    display: none;
-                }
-            }
-            @media screen and (min-width: 1401px) {
-                .mobile-toggle {
-                    display: none;
-                }
-            }
-        </style>
+        
 
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
     </body>
