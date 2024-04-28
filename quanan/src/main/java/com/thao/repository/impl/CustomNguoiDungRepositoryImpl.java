@@ -44,18 +44,23 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
 
     @Override
     public NguoiDung getNDByUsername(String username) {
-        CriteriaBuilder b = entityManager.getCriteriaBuilder();
-        CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
-        Root root = q.from(NguoiDung.class);
-        q.select(root);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(b.isTrue(root.<Boolean>get("active")));
-        predicates.add(b.equal(root.get("taiKhoan"), username));
-        q.where(predicates.toArray(Predicate[]::new));
+        try {
+            CriteriaBuilder b = entityManager.getCriteriaBuilder();
+            CriteriaQuery<NguoiDung> q = b.createQuery(NguoiDung.class);
+            Root root = q.from(NguoiDung.class);
+            q.select(root);
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(b.isTrue(root.<Boolean>get("active")));
+            predicates.add(b.equal(root.get("taiKhoan"), username));
+            q.where(predicates.toArray(Predicate[]::new));
 
-        Query query = entityManager.createQuery(q);
+            Query query = entityManager.createQuery(q);
 
-        return (NguoiDung) query.getSingleResult();
+            return (NguoiDung) query.getSingleResult();
+        }catch(NoResultException ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -90,7 +95,7 @@ public class CustomNguoiDungRepositoryImpl implements CustomNguoiDungRepository 
         }
 
         Query query = entityManager.createQuery(q);
-        
+
         if (params != null) {
             String page = params.get("page");
             if (page != null) {
