@@ -54,6 +54,12 @@ public class DanhGiaController {
         int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         model.addAttribute("dgs", this.dgSer.getCommentsByUser(params));
         model.addAttribute("pages", Math.ceil(listCommentPages.size()*1.0/pageSize));
+        if (params != null) {
+            if(params.get("page") != null && !params.get("page").isEmpty())
+                model.addAttribute("currentPage", Integer.parseInt(params.get("page")));
+            else 
+                model.addAttribute("currentPage", 0);
+        }
         return "danhgia";
     }
     

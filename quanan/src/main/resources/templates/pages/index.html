@@ -6,14 +6,107 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body style="min-height: 100vh;
-    display: flex;
-    flex-direction: column;">
+          display: flex;
+          flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
-        <section class="container">
-            <h1 th:text="${'Chào mừng ' + #authentication.principal.username} + ' đã đến với trang quản trị'"></h1>
-        </section>
-        <footer th:replace="../layout/footer :: html_footer"/>
-    </body>
-    
-</html>
+        <section class='welcome-cus-1'>
+            <div><h1>Chào mừng<h1></div> 
+                        <br/>
+                        <div> 
+                            <h1 th:text="${#authentication.principal.username} + ' đã đến với trang quản trị'"></h1>
+                        </div>
+                        </section>
+
+
+                        <footer th:replace="../layout/footer :: html_footer"/>
+                        </body>
+
+                        <style>
+                            @import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
+                            body{
+                                overflow: hidden;
+                            }
+
+                            .welcome-cus-1{
+                                width: 100%;
+                                margin: auto;
+                                text-align: center;
+                            }
+
+                            .welcome-cus-1 div {
+                                display:inline-block;
+                                overflow:hidden;
+                                white-space:nowrap;
+                            }
+
+                            .welcome-cus-1 div:first-of-type {    /* For increasing performance 
+                                                   ID/Class should've been used. 
+                                                   For a small demo 
+                                                   it's okaish for now */
+                                animation: showup 7s infinite;
+                            }
+
+                            .welcome-cus-1 div:last-of-type {
+                                width:0px;
+                                animation: reveal 7s infinite;
+                            }
+
+                            .welcome-cus-1 div:last-of-type h1 {
+                                margin-left:-50%;
+                                animation: slidein 7s infinite;
+                            }
+
+                            @keyframes showup {
+                                0% {
+                                    opacity:0;
+                                }
+                                20% {
+                                    opacity:1;
+                                }
+                                80% {
+                                    opacity:1;
+                                }
+                                100% {
+                                    opacity:0;
+                                }
+                            }
+
+                            @keyframes slidein {
+                                0% {
+                                    margin-left:-100px;
+                                }
+                                20% {
+                                    margin-left:-100px;
+                                }
+                                35% {
+                                    margin-left:0px;
+                                }
+                                100% {
+                                    margin-left:0px;
+                                }
+                            }
+
+                            @keyframes reveal {
+                                0% {
+                                    opacity:0;
+                                    width:0px;
+                                }
+                                20% {
+                                    opacity:1;
+                                    width:0px;
+                                }
+                                30% {
+                                    width:100%;
+                                }
+                                80% {
+                                    opacity:1;
+                                }
+                                100% {
+                                    opacity:0;
+                                    width:100%;
+                                }
+                            }
+                        </style>
+                        </html>

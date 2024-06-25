@@ -56,7 +56,7 @@ public class CustomDanhGiaRepositoryImpl implements CustomDanhGiaRepository {
         if (params != null) {
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                predicates.add(b.equal(root.get("idNguoiDung").get("firstName"), String.format("%%%s%%", kw)));
+                predicates.add(b.like(root.get("idNguoiDung").get("firstName"), String.format("%%%s%%", kw)));
             }
             q.where(predicates.toArray(Predicate[]::new));
         }

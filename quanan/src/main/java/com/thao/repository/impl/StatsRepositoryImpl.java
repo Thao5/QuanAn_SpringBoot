@@ -54,7 +54,7 @@ public class StatsRepositoryImpl implements StatsRepository {
             if (y == null && y.isEmpty() && m == null && m.isEmpty() && c != null && !c.isEmpty()) {
                 q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
             }
-            if (y != null && !y.isEmpty() && m != null && !m.isEmpty()) {
+            if (y != null && !y.isEmpty() && !y.toLowerCase().equals("tất cả") && m != null && !m.isEmpty() && !m.toLowerCase().equals("tất cả")) {
                 q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate")));
@@ -62,13 +62,13 @@ public class StatsRepositoryImpl implements StatsRepository {
                 predicates.add(b.equal(b.function("MONTH", Integer.class, root.get("createdDate")), Integer.parseInt(m)));
 //                predicates.add(b.equal(b.function("YEAR", Integer.class, root2.get("createdDate")), Integer.parseInt(y)));
 //                predicates.add(b.equal(b.function("MONTH", Integer.class, root2.get("createdDate")), Integer.parseInt(m)));
-            } else if (y != null && !y.isEmpty()) {
+            } else if (y != null && !y.isEmpty() && !y.toLowerCase().equals("tất cả")) {
                 q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));
                 predicates.add(b.equal(b.function("YEAR", Integer.class, root.get("createdDate")), Integer.parseInt(y)));
 //                predicates.add(b.equal(b.function("YEAR", Integer.class, root2.get("createdDate")), Integer.parseInt(y)));
-            } else if (m != null && !m.isEmpty()) {
+            } else if (m != null && !m.isEmpty() && !m.toLowerCase().equals("tất cả")) {
                 q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("MONTH", Integer.class, root2.get("createdDate")));
@@ -110,7 +110,7 @@ public class StatsRepositoryImpl implements StatsRepository {
             if (y == null && y.isEmpty() && m == null && m.isEmpty() && c != null && !c.isEmpty()) {
                 q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));
             }
-            if (y != null && !y.isEmpty() && m != null && !m.isEmpty()) {
+            if (y != null && !y.isEmpty() && !y.toLowerCase().equals("tất cả") && m != null && !m.isEmpty() && !m.toLowerCase().equals("tất cả")) {
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate")));
 //                predicates.add(b.equal(b.function("YEAR", Integer.class, root.get("createdDate")), Integer.parseInt(y)));
@@ -118,13 +118,13 @@ public class StatsRepositoryImpl implements StatsRepository {
                 q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate")));
                 predicates.add(b.equal(b.function("YEAR", Integer.class, root2.get("createdDate")), Integer.parseInt(y)));
                 predicates.add(b.equal(b.function("MONTH", Integer.class, root2.get("createdDate")), Integer.parseInt(m)));
-            } else if (y != null && !y.isEmpty()) {
+            } else if (y != null && !y.isEmpty() && !y.toLowerCase().equals("tất cả")) {
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("YEAR", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("YEAR", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")));
 //                predicates.add(b.equal(b.function("YEAR", Integer.class, root.get("createdDate")), Integer.parseInt(y)));
                 q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("YEAR", Integer.class, root2.get("createdDate")), b.function("MONTH", Integer.class, root2.get("createdDate")));
                 predicates.add(b.equal(b.function("YEAR", Integer.class, root2.get("createdDate")), Integer.parseInt(y)));
-            } else if (m != null && !m.isEmpty()) {
+            } else if (m != null && !m.isEmpty() && !m.toLowerCase().equals("tất cả")) {
 //                q.multiselect(root.get("idThucAn").get("name"), b.sum(root.get("tongTien")), b.function("MONTH", Integer.class, root.get("createdDate"))).groupBy(root.get("idThucAn"), b.function("MONTH", Integer.class, root.get("createdDate")));
 //                q.multiselect(root2.get("idThucAn").get("name"), b.sum(root2.get("tongTien")), b.function("MONTH", Integer.class, root2.get("createdDate"))).groupBy(root2.get("idThucAn"), b.function("MONTH", Integer.class, root2.get("createdDate")));
 //                predicates.add(b.equal(b.function("MONTH", Integer.class, root.get("createdDate")), Integer.parseInt(m)));

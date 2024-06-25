@@ -44,6 +44,12 @@ public class CategoryController {
         int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
         model.addAttribute("cates", this.cateSer.getCates(params));
         model.addAttribute("pages", Math.ceil(listPages.size()*1.0/pageSize));
+        if (params != null) {
+            if(params.get("page") != null && !params.get("page").isEmpty())
+                model.addAttribute("currentPage", Integer.parseInt(params.get("page")));
+            else 
+                model.addAttribute("currentPage", 0);
+        }
         return "cate";
     }
 

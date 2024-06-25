@@ -10,6 +10,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel='stylesheet' th:href="@{/css/searchbar.css}" />
+        <link rel='stylesheet' th:href="@{/css/dropdown.css}" />
+        <link rel='stylesheet' th:href="@{/css/footer.css}" />
         <title>Hệ thống quản lý đặt món tại chỗ và đặt món online Nhoằm Nhoằm</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,14 +27,57 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </button>
                 </div>
 
+                <!--                <div>
+                                    <ul class='navbar-cus1'>
+                                        <li>
+                                            <a th:href="${action}">Trang chủ</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/chinhanh}">Chi nhánh</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/nguoidung}">Người dùng</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/food}">Thức ăn</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/cate}">Loại</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/ban}">Bàn</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/danhgia}">Đánh giá</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/hoadon}">Hóa đơn</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/hoadontaicho}">Hóa đơn tại chỗ</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/bandatchinhanh/4}">Bàn đặt</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/stats}">Thống kê online</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/stats/offline}">Thống kê offline</a>
+                                        </li>
+                                        <li >
+                                            <a  th:href="@{/admin/sentiment}">Sentiment</a>
+                                        </li>
+                                    </ul>
+                                </div>-->
                 <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" th:href="${action}">Trang chủ</a>
                         </li>
-<!--                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/chinhanh}">Chi nhánh</a>
-                        </li>-->
+                        <!--                        <li class="nav-item">
+                                                    <a class="nav-link" th:href="@{/admin/chinhanh}">Chi nhánh</a>
+                                                </li>-->
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/nguoidung}">Người dùng</a>
                         </li>
@@ -53,9 +99,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/hoadontaicho}">Hóa đơn tại chỗ</a>
                         </li>
-<!--                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/bandatchinhanh/4}">Bàn đặt</a>
-                        </li>-->
+                        <!--                        <li class="nav-item">
+                                                    <a class="nav-link" th:href="@{/bandatchinhanh/4}">Bàn đặt</a>
+                                                </li>-->
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/admin/stats}">Thống kê online</a>
                         </li>
@@ -70,12 +116,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                 <div class="d-flex p-2 align-items-center">
                     <div class="dropdown" th:if="${#authentication.principal.username != null}">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" th:text="${#authentication.principal.username}" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </a>
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded" width="30" th:src="@{/image/user_img.png}" alt="user image"/>
+                        </a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                        <div class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-title">
+                                <h3 th:text="${#authentication.principal.username}"></h3>
                             </div>
+                            <hr/>
+                            <div class="dropdown-item" >
+                                <a th:href="@{/logout}">
+                                    <button class="Btn">
+
+                                        <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+
+                                        <div class="text">Logout</div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                     <!--                    <div th:if="${#authentication.principal.username != null}">
@@ -92,13 +152,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </li>
 
                     </div>
-                    <div>
-
-                        <form class="d-flex p-2">
-                            <input type="text" name="kw" class="form-control" placeholder="Tìm từ khóa..." />
-                            <button type="submit" class="btn btn-info">Tìm</button>
-                        </form>
-                    </div>
+                    <!--                    <div>
+                    
+                                            <form class="d-flex p-2">
+                                                <input type="text" name="kw" class="form-control" placeholder="Tìm từ khóa..." />
+                                                <button type="submit" class="btn btn-info">Tìm</button>
+                                            </form>
+                                        </div>-->
                 </div>
                 <!--                <div>
                                     
@@ -136,5 +196,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </div>
         </nav>
+        <form class="input-wrapper" th:fragment="html_search_bar">
+            <button class="icon-cus-1"> 
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="25px" width="25px">
+                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"></path>
+                <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
+                </svg>
+            </button>
+            <input placeholder="Tìm từ khóa.." class="input" name="kw" type="text">
+        </form>
     </body>
 </html>

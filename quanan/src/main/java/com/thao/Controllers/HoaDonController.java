@@ -52,6 +52,12 @@ public class HoaDonController {
         model.addAttribute("hds", this.hdSer.getHDs(params));
         model.addAttribute("hdcts", this.hdctSer.getHDs());
         model.addAttribute("pages", Math.ceil(listPages.size()*1.0/pageSize));
+        if (params != null) {
+            if(params.get("page") != null && !params.get("page").isEmpty())
+                model.addAttribute("currentPage", Integer.parseInt(params.get("page")));
+            else 
+                model.addAttribute("currentPage", 0);
+        }
         return "hoadon";
     }
 

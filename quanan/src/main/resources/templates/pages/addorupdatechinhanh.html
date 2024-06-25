@@ -41,5 +41,64 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </section>
 
         <footer th:replace="../layout/footer :: html_footer"/>
+        <style>
+            .btn-cus-1 {
+                font-family: inherit;
+                font-size: 18px;
+                background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
+                color: white;
+                padding: 0.8em 1.2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                border-radius: 25px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover {
+                transform: translateY(-3px);
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-cus-1:active {
+                transform: scale(0.95);
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-cus-1 span {
+                display: block;
+                margin-left: 0.4em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 svg {
+                width: 18px;
+                height: 18px;
+                fill: white;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 .svg-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-right: 0.5em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover .svg-wrapper {
+                background-color: rgba(255, 255, 255, 0.5);
+            }
+
+            .btn-cus-1:hover svg {
+                transform: rotate(45deg);
+            }
+        </style>
     </body>
 </html>

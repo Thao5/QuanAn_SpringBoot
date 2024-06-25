@@ -6,8 +6,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body style="min-height: 100vh;
-    display: flex;
-    flex-direction: column;">
+          display: flex;
+          flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container">
@@ -16,17 +16,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Thống kê doanh thu online</h1>
                         <div class="form-floating mb-3 mt-3">
-                            <form method="get" th:action="@{/admin/stats}">
-                                <select id="year" name="y" class="form-select">
-                                    <option value="">Tất cả</option>
-                                    <option th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:value="${i}" th:text="${i}"></option>
-                                </select>
-                                <select id="month" name="m" class="form-select">
-                                    <option value="">Tất cả</option>
-                                    <option th:each="i : ${#numbers.sequence( 1, 12, 1)}" th:value="${i}" th:text="${i}"></option>
-                                </select>
+                            <form id="app-cover" method="get" th:action="@{/admin/stats}">
+                                <input class="chosen-value" type="text" name="y" value="" placeholder="Chọn năm cần thống kê">
+                                <ul class="value-list">
+                                    <li>Tất cả</li>
+                                    <li th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:text="${i}"></li>
+                                </ul>
+                                <input class="chosen-value2" type="text" name="m" value="" placeholder="Chọn tháng cần thống kê">
+                                <ul class="value-list2">
+                                    <li>Tất cả</li>
+                                    <li th:each="i : ${#numbers.sequence( 1, 12, 1)}" th:text="${i}"></li>
+                                </ul>
+                                <!--                                <select id="year" name="y" class="form-select">
+                                                                    <option value="">Tất cả</option>
+                                                                    <option th:each="i : ${#numbers.sequence( 2000, 2030, 1)}" th:value="${i}" th:text="${i}"></option>
+                                                                </select>-->
+                                <!--                                <select id="month" name="m" class="form-select">
+                                                                    <option value="">Tất cả</option>
+                                                                    <option th:each="i : ${#numbers.sequence( 1, 12, 1)}" th:value="${i}" th:text="${i}"></option>
+                                                                </select>-->
                                 <div class="form-floating mb-3 mt-3">
-                                    <input type="submit" value="Thống kê" class="btn btn-info" />
+                                    <button type="submit" class="btn-cus-1"> <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Thống kê</span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -60,138 +79,494 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </main>
             </div>
-        </div>
-    </section>
-    <footer th:replace="../layout/footer :: html_footer"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script th:inline="javascript">// Set new default font family and font color to mimic Bootstrap's default styling
-        /*<![CDATA[*/
-        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-        Chart.defaults.global.defaultFontColor = '#292b2c';
+        </section>
+        <footer th:replace="../layout/footer :: html_footer"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script th:inline="javascript">// Set new default font family and font color to mimic Bootstrap's default styling
+            /*<![CDATA[*/
+            Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+            Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Area Chart Example
+            // Area Chart Example
 
-        var chartData = /*[[${stats}]]*/[];
-        var k = [];
-        var v = [];
-        for (var i = 0; i < chartData.length; i++) {
-            k.push(chartData[i][0]);
-            v.push(chartData[i][1]);
-        }
-        ;
-        var ctx = document.getElementById("myAreaChart");
-        var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: k,
-                datasets: [{
-                        label: "Sessions",
-                        lineTension: 0.3,
-                        backgroundColor: "rgba(2,117,216,0.2)",
-                        borderColor: "rgba(2,117,216,1)",
-                        pointRadius: 5,
-                        pointBackgroundColor: "rgba(2,117,216,1)",
-                        pointBorderColor: "rgba(255,255,255,0.8)",
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                        pointHitRadius: 50,
-                        pointBorderWidth: 2,
-                        data: v
-                    }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                            time: {
-                                unit: 'date'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 7
-                            }
-                        }],
-                    yAxes: [{
-                            ticks: {
-                                min: 0,
-                                max: 1000000,
-                                maxTicksLimit: 5
-                            },
-                            gridLines: {
-                                color: "rgba(0, 0, 0, .125)",
-                            }
+            var chartData = /*[[${stats}]]*/[];
+            var k = [];
+            var v = [];
+            for (var i = 0; i < chartData.length; i++) {
+                k.push(chartData[i][0]);
+                v.push(chartData[i][1]);
+            }
+            ;
+            var ctx = document.getElementById("myAreaChart");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: k,
+                    datasets: [{
+                            label: "Sessions",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(2,117,216,0.2)",
+                            borderColor: "rgba(2,117,216,1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(2,117,216,1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                            pointHitRadius: 50,
+                            pointBorderWidth: 2,
+                            data: v
                         }],
                 },
-                legend: {
-                    display: false
+                options: {
+                    scales: {
+                        xAxes: [{
+                                time: {
+                                    unit: 'date'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
+                            }],
+                        yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 1000000,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    color: "rgba(0, 0, 0, .125)",
+                                }
+                            }],
+                    },
+                    legend: {
+                        display: false
+                    }
                 }
-            }
-        });
-        /*]]>*/
+            });
+            /*]]>*/
 
-        var ctx1 = document.getElementById("myBarChart");
-        var myLineChart1 = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: k,
-                datasets: [{
-                        label: "Revenue",
-                        backgroundColor: "rgba(2,117,216,1)",
-                        borderColor: "rgba(2,117,216,1)",
-                        data: v,
-                    }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                            time: {
-                                unit: 'month'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 6
-                            }
-                        }],
-                    yAxes: [{
-                            ticks: {
-                                min: 0,
-                                max: 1000000,
-                                maxTicksLimit: 5
-                            },
-                            gridLines: {
-                                display: true
-                            }
+            var ctx1 = document.getElementById("myBarChart");
+            var myLineChart1 = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: k,
+                    datasets: [{
+                            label: "Revenue",
+                            backgroundColor: "rgba(2,117,216,1)",
+                            borderColor: "rgba(2,117,216,1)",
+                            data: v,
                         }],
                 },
-                legend: {
-                    display: false
+                options: {
+                    scales: {
+                        xAxes: [{
+                                time: {
+                                    unit: 'month'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 6
+                                }
+                            }],
+                        yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 1000000,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+
+            var chartData2 = /*[[${stats}]]*/[];
+            var k2 = [];
+            var v2 = [];
+            for (var i = 0; i < chartData2.length; i++) {
+                k2.push(chartData2[i][0]);
+                v2.push(chartData2[i][1]);
+            }
+            ;
+            var ctx2 = document.getElementById("myPieChart");
+            var myPieChart = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: k2,
+                    datasets: [{
+                            data: v2,
+                            backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+                        }],
+                },
+            });
+            /*]]>*/
+        </script>
+        <style>
+            .chosen-value,
+            .value-list {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            .chosen-value {
+                font-family: 'Ek Mukta';
+                text-transform: uppercase;
+                font-weight: 600;
+                letter-spacing: 4px;
+                height: 4rem;
+                font-size: 1.1rem;
+                padding: 1rem;
+                background-color: #FAFCFD;
+                border: 3px solid transparent;
+                transition: .3s ease-in-out;
+
+                &::-webkit-input-placeholder {
+                    color: #333;
+                }
+
+                &:hover {
+                    background-color: #FF908B;
+                    cursor: pointer;
+
+                    &::-webkit-input-placeholder {
+                        color: #333;
+                    }
+                }
+
+                &:focus,
+                    &.open {
+                    box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                    outline: 0;
+                    background-color: #FF908B;
+                    color: #000;
+
+                    &::-webkit-input-placeholder {
+                        color: #000;
+                    }
                 }
             }
-        });
 
-        var chartData2 = /*[[${stats}]]*/[];
-        var k2 = [];
-        var v2 = [];
-        for (var i = 0; i < chartData2.length; i++) {
-            k2.push(chartData2[i][0]);
-            v2.push(chartData2[i][1]);
-        }
-        ;
-        var ctx2 = document.getElementById("myPieChart");
-        var myPieChart = new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: k2,
-                datasets: [{
-                        data: v2,
-                        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-                    }],
-            },
-        });
-        /*]]>*/
-    </script>
-</body>
+            .value-list {
+                list-style: none;
+                margin-top: 4rem;
+                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                overflow: hidden;
+                max-height: 0;
+                transition: .3s ease-in-out;
+
+                &.open {
+                    max-height: 320px;
+                    overflow: auto;
+                }
+
+                li {
+                    position: relative;
+                    height: 4rem;
+                    background-color: #FAFCFD;
+                    padding: 1rem;
+                    font-size: 1.1rem;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    transition: background-color .3s;
+                    opacity: 1;
+
+                    &:hover {
+                        background-color: #FF908B;
+                    }
+
+                    &.closed {
+                        max-height: 0;
+                        overflow: hidden;
+                        padding: 0;
+                        opacity: 0;
+                    }
+                }
+            }
+        </style>
+        <style>
+            .chosen-value2,
+            .value-list2 {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            .chosen-value2 {
+                font-family: 'Ek Mukta';
+                text-transform: uppercase;
+                font-weight: 600;
+                letter-spacing: 4px;
+                height: 4rem;
+                font-size: 1.1rem;
+                padding: 1rem;
+                background-color: #FAFCFD;
+                border: 3px solid transparent;
+                transition: .3s ease-in-out;
+
+                &::-webkit-input-placeholder {
+                    color: #333;
+                }
+
+                &:hover {
+                    background-color: #FF908B;
+                    cursor: pointer;
+
+                    &::-webkit-input-placeholder {
+                        color: #333;
+                    }
+                }
+
+                &:focus,
+                    &.open {
+                    box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                    outline: 0;
+                    background-color: #FF908B;
+                    color: #000;
+
+                    &::-webkit-input-placeholder {
+                        color: #000;
+                    }
+                }
+            }
+
+            .value-list2 {
+                list-style: none;
+                margin-top: 4rem;
+                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                overflow: hidden;
+                max-height: 0;
+                transition: .3s ease-in-out;
+
+                &.open {
+                    max-height: 320px;
+                    overflow: auto;
+                }
+
+                li {
+                    position: relative;
+                    height: 4rem;
+                    background-color: #FAFCFD;
+                    padding: 1rem;
+                    font-size: 1.1rem;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    transition: background-color .3s;
+                    opacity: 1;
+
+                    &:hover {
+                        background-color: #FF908B;
+                    }
+
+                    &.closed {
+                        max-height: 0;
+                        overflow: hidden;
+                        padding: 0;
+                        opacity: 0;
+                    }
+                }
+            }
+        </style>
+        <style>
+            .btn-cus-1 {
+                font-family: inherit;
+                font-size: 18px;
+                background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
+                color: white;
+                padding: 0.8em 1.2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                border-radius: 25px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover {
+                transform: translateY(-3px);
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-cus-1:active {
+                transform: scale(0.95);
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-cus-1 span {
+                display: block;
+                margin-left: 0.4em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 svg {
+                width: 18px;
+                height: 18px;
+                fill: white;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 .svg-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-right: 0.5em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover .svg-wrapper {
+                background-color: rgba(255, 255, 255, 0.5);
+            }
+
+            .btn-cus-1:hover svg {
+                transform: rotate(45deg);
+            }
+        </style>
+        <script>
+            const inputField = document.querySelector('.chosen-value');
+            const dropdown = document.querySelector('.value-list');
+            const dropdownArray = [... document.querySelectorAll('.value-list li')];
+            console.log(typeof dropdownArray)
+            dropdown.classList.add('open');
+            inputField.focus(); // Demo purposes only
+            let valueArray = [];
+            dropdownArray.forEach(item => {
+                valueArray.push(item.textContent);
+            });
+
+            const closeDropdown = () => {
+                dropdown.classList.remove('open');
+            }
+
+            inputField.addEventListener('input', () => {
+                dropdown.classList.add('open');
+                let inputValue = inputField.value.toLowerCase();
+                let valueSubstring;
+                if (inputValue.length > 0) {
+                    for (let j = 0; j < valueArray.length; j++) {
+                        if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
+                            dropdownArray[j].classList.add('closed');
+                        } else {
+                            dropdownArray[j].classList.remove('closed');
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < dropdownArray.length; i++) {
+                        dropdownArray[i].classList.remove('closed');
+                    }
+                }
+            });
+
+            dropdownArray.forEach(item => {
+                item.addEventListener('click', (evt) => {
+                    inputField.value = item.textContent;
+                    dropdownArray.forEach(dropdown => {
+                        dropdown.classList.add('closed');
+                    });
+                });
+            })
+
+            inputField.addEventListener('focus', () => {
+                inputField.placeholder = 'Ghi để tìm';
+                dropdown.classList.add('open');
+                dropdownArray.forEach(dropdown => {
+                    dropdown.classList.remove('closed');
+                });
+            });
+
+            inputField.addEventListener('blur', () => {
+                inputField.placeholder = 'Chọn năm cần thống kê';
+                dropdown.classList.remove('open');
+            });
+
+            document.addEventListener('click', (evt) => {
+                const isDropdown = dropdown.contains(evt.target);
+                const isInput = inputField.contains(evt.target);
+                if (!isDropdown && !isInput) {
+                    dropdown.classList.remove('open');
+                }
+            });
+        </script>
+        <script>
+            const inputField2 = document.querySelector('.chosen-value2');
+            const dropdown2 = document.querySelector('.value-list2');
+            const dropdownArray2 = [... document.querySelectorAll('.value-list2 li')];
+            console.log(typeof dropdownArray2)
+            dropdown2.classList.add('open');
+            inputField2.focus(); // Demo purposes only
+            let valueArray2 = [];
+            dropdownArray2.forEach(item => {
+                valueArray2.push(item.textContent);
+            });
+
+            const closeDropdown2 = () => {
+                dropdown2.classList.remove('open');
+            }
+
+            inputField2.addEventListener('input', () => {
+                dropdown2.classList.add('open');
+                let inputValue2 = inputField2.value.toLowerCase();
+                let valueSubstring2;
+                if (inputValue2.length > 0) {
+                    for (let j = 0; j < valueArray2.length; j++) {
+                        if (!(inputValue2.substring(0, inputValue2.length) === valueArray2[j].substring(0, inputValue2.length).toLowerCase())) {
+                            dropdownArray2[j].classList.add('closed');
+                        } else {
+                            dropdownArray2[j].classList.remove('closed');
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < dropdownArray2.length; i++) {
+                        dropdownArray2[i].classList.remove('closed');
+                    }
+                }
+            });
+
+            dropdownArray2.forEach(item => {
+                item.addEventListener('click', (evt) => {
+                    inputField2.value = item.textContent;
+                    dropdownArray2.forEach(dropdown => {
+                        dropdown2.classList.add('closed');
+                    });
+                });
+            })
+
+            inputField2.addEventListener('focus', () => {
+                inputField2.placeholder = 'Ghi để tìm';
+                dropdown2.classList.add('open');
+                dropdownArray2.forEach(dropdown => {
+                    dropdown2.classList.remove('closed');
+                });
+            });
+
+            inputField2.addEventListener('blur', () => {
+                inputField2.placeholder = 'Chọn tháng cần thống kê';
+                dropdown2.classList.remove('open');
+            });
+
+            document.addEventListener('click', (evt) => {
+                const isDropdown2 = dropdown2.contains(evt.target);
+                const isInput2 = inputField2.contains(evt.target);
+                if (!isDropdown2 && !isInput2) {
+                    dropdown2.classList.remove('open');
+                }
+            });
+        </script>
+    </body>
 </html>

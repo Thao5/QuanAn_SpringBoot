@@ -57,7 +57,7 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         predicates.add(b.isTrue(root.<Boolean>get("active")));
         if (params != null) {
             
-            String kw = params.get("tenMon");
+            String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
                 predicates.add(b.like(root.get("name"), String.format("%%%s%%", kw)));
             }
@@ -90,7 +90,7 @@ public class CustomThucAnRepositoryImpl implements CustomThucAnRepository{
         List<Predicate> predicates = new ArrayList<>();
         if (params != null) {
             
-            String kw = params.get("tenMon");
+            String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
                 predicates.add(b.like(root.get("name"), String.format("%%%s%%", kw)));
             }

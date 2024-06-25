@@ -15,23 +15,148 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="hidden" name="id" th:value="*{id}"/>
                 <input type="hidden" name="createdDate" th:value="*{createdDate}"/>
                 <div class="form-floating mb-3 mt-3">
-                    <select id="idBan" name="idBan" th:field="*{idBan}" class="form-select">
+                    <div class="radio">
+                        <th:block th:each="ban : ${bans}">
+                            <input th:checked="${ban.id == bans[0].id or hd.idBan != null && ban.id == hd.idBan.id}" th:value="${ban.id}" name="idBan" type="radio" th:label="${ban.moTa}">
+                        </th:block>
+                    </div>
+<!--                    <select id="idBan" name="idBan" th:field="*{idBan}" class="form-select">
                         <th:block th:each="ban : ${bans}">
                             <option th:if="${hd.idBan != null && ban.id == hd.idBan.id}" th:value="${ban.id}" th:text="${ban.moTa}" selected></option>
                             <option th:if="${hd.idBan != null && ban.id != hd.idBan.id}" th:value="${ban.id}" th:text="${ban.moTa}"></option>
                             <option th:if="${hd.idBan == null}" th:value="${ban.id}" th:text="${ban.moTa}"></option>
                         </th:block>
                     </select>
-                    <label for="idBan">Bàn</label>
+                    <label for="idBan">Bàn</label>-->
                     <p th:if="${#fields.hasErrors('idBan')}" th:errorclass="text-danger" th:errors="*{idBan}" />
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <button type="submit" class="btn btn-info" th:if="${hd.id != null}"> Cập nhật</button>
-                    <button type="submit" class="btn btn-info" th:if="${hd.id == null}"> Thêm</button>
+                    <button type="submit" class="btn-cus-1" th:if="${hd.id != null}"> <div class="svg-wrapper-1">
+                            <div class="svg-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span>Cập nhật</span>
+                        </button>
+                    <button type="submit" class="btn-cus-1" th:if="${hd.id == null}"> <div class="svg-wrapper-1">
+                            <div class="svg-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span>Thêm</span></button>
                 </div>
             </form>
         </section>
 
         <footer th:replace="../layout/footer :: html_footer"/>
+        
+        <style>
+            .btn-cus-1 {
+                font-family: inherit;
+                font-size: 18px;
+                background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
+                color: white;
+                padding: 0.8em 1.2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                border-radius: 25px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover {
+                transform: translateY(-3px);
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-cus-1:active {
+                transform: scale(0.95);
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-cus-1 span {
+                display: block;
+                margin-left: 0.4em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 svg {
+                width: 18px;
+                height: 18px;
+                fill: white;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 .svg-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-right: 0.5em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover .svg-wrapper {
+                background-color: rgba(255, 255, 255, 0.5);
+            }
+
+            .btn-cus-1:hover svg {
+                transform: rotate(45deg);
+            }
+            
+            .radio {
+                background: #454857;
+                padding: 4px;
+                border-radius: 3px;
+                box-shadow: inset 0 0 0 3px rgba(35, 33, 45, 0.3),
+                    0 0 0 3px rgba(185, 185, 185, 0.3);
+                position: relative;
+            }
+
+            .radio input {
+                width: auto;
+                height: 100%;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                outline: none;
+                cursor: pointer;
+                border-radius: 2px;
+                padding: 4px 8px;
+                background: #454857;
+                color: #bdbdbdbd;
+                font-size: 14px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+                    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                transition: all 100ms linear;
+            }
+
+            .radio input:checked {
+                background-image: linear-gradient(180deg, #95d891, #74bbad);
+                color: #fff;
+                box-shadow: 0 1px 1px #0000002e;
+                text-shadow: 0 1px 0px #79485f7a;
+            }
+
+            .radio input:before {
+                content: attr(label);
+                display: inline-block;
+                text-align: center;
+                width: 100%;
+            }
+
+        </style>
     </body>
 </html>

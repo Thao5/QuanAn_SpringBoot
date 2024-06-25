@@ -6,6 +6,7 @@ package com.thao.repository;
 
 import com.thao.pojo.Ban;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +14,5 @@ import java.util.List;
  */
 public interface CustomBanRepository {
     List<Ban> getBanTheoChiNhanh(int cnId);
+    List<Ban> getBanCus(Map<String, String> params);
 }

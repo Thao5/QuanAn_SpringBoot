@@ -6,8 +6,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body style="min-height: 100vh;
-    display: flex;
-    flex-direction: column;">
+          display: flex;
+          flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container" th:with="action='/quanan/admin/addorupdatefood'">
@@ -19,55 +19,522 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input th:if="${food.idChiNhanh != null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh.id}"/>
                 <input th:if="${food.idChiNhanh == null}" type="hidden" name="idChiNhanh" th:value="*{idChiNhanh}"/>
                 <p th:if="${#fields.hasErrors('*')}" th:errorclass="text-danger" th:errors="*{*}" />
-                <div class="form-floating mb-3 mt-3">
-                    <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn" required/>
-                    <label for="name">Tên món ăn</label>
-                    <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}" />
+                <div class="form-floating mb-3 mt-5">
+                    <div class="brutalist-container">
+                        <input
+                            placeholder="Nhập tên món ăn"
+                            class="brutalist-input smooth-type"
+                            type="text"
+                            id="name"
+                            name="name" th:value="*{name}" required
+                            />
+                        <label class="brutalist-label">TÊN MÓN ĂN</label>
+                        <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}" />
+                    </div>
+                    <!--                    <input type="text" id="name" class="form-control" name="name" th:value="*{name}" placeholder="Nhập tên món ăn" required/>
+                                        <label for="name">Tên món ăn</label>
+                                        <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}" />-->
                 </div>
-                <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="soLuong" class="form-control" name="soLuong" th:value="*{soLuong}" placeholder="Nhập số lượng" required/>
-                    <label for="soLuong">Số lượng</label>
-                    <p th:if="${#fields.hasErrors('soLuong')}" th:errorclass="text-danger" th:errors="*{soLuong}" />
+                <div class="form-floating mb-3 mt-5">
+                    <div class="brutalist-container">
+                        <input
+                            placeholder="Nhập số lượng"
+                            class="brutalist-input smooth-type"
+                            type="number" id="soLuong"
+                            name="soLuong" th:value="*{soLuong}" required
+                            />
+                        <label class="brutalist-label">SỐ LƯỢNG</label>
+                        <p th:if="${#fields.hasErrors('soLuong')}" th:errorclass="text-danger" th:errors="*{soLuong}" />
+                    </div>
+                    <!--                    <input type="number" id="soLuong" class="form-control" name="soLuong" th:value="*{soLuong}" placeholder="Nhập số lượng" required/>
+                                        <label for="soLuong">Số lượng</label>
+                                        <p th:if="${#fields.hasErrors('soLuong')}" th:errorclass="text-danger" th:errors="*{soLuong}" />-->
                 </div>
-                <div class="form-floating mb-3 mt-3">
-                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá" required/>
-                    <label for="price">Giá</label>
-                    <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
+                <div class="form-floating mb-3 mt-5">
+                    <div class="brutalist-container">
+                        <input
+                            placeholder="Nhập giá"
+                            class="brutalist-input smooth-type"
+                            type="number" id="price"
+                            name="price" th:value="*{price}" required
+                            />
+                        <label class="brutalist-label">GIÁ</label>
+                        <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />
+                    </div>
+                    <!--                    <input type="number" id="price" class="form-control" name="price" th:value="*{price}" placeholder="Nhập giá" required/>
+                                        <label for="price">Giá</label>
+                                        <p th:if="${#fields.hasErrors('price')}" th:errorclass="text-danger" th:errors="*{price}" />-->
                 </div>
-<!--                <div class="form-floating mb-3 mt-3">
-                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
-                        <th:block th:each="cn : ${cns}">
-                            <option th:if="${food.idChiNhanh != null && cn.id == food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" selected></option>
-                            <option th:if="${food.idChiNhanh != null && cn.id != food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" ></option>
-                            <option th:if="${food.idChiNhanh == null}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                <!--                <div class="form-floating mb-3 mt-3">
+                                    <select id="idChiNhanh" name="idChiNhanh" th:field="*{idChiNhanh}" class="form-select">
+                                        <th:block th:each="cn : ${cns}">
+                                            <option th:if="${food.idChiNhanh != null && cn.id == food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" selected></option>
+                                            <option th:if="${food.idChiNhanh != null && cn.id != food.idChiNhanh.id}" th:value="${cn.id}" th:text="${cn.diaChi}" ></option>
+                                            <option th:if="${food.idChiNhanh == null}" th:value="${cn.id}" th:text="${cn.diaChi}"></option>
+                                        </th:block>
+                                    </select>
+                                    <label for="idChiNhanh">Chi nhánh</label>
+                                    <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
+                                </div>-->
+                <div class="form-floating mb-3 mt-5">
+                    <div class="radio">
+                        <th:block th:each="c : ${cates}">
+                            <input th:checked="${c.id == cates[0].id or food.idLoai != null && food.idLoai.id == c.id}" th:value="${c.id}" name="idLoai" type="radio" th:label="${c.name}">
                         </th:block>
-                    </select>
-                    <label for="idChiNhanh">Chi nhánh</label>
-                    <p th:if="${#fields.hasErrors('idChiNhanh')}" th:errorclass="text-danger" th:errors="*{idChiNhanh}" />
-                </div>-->
-                <div class="form-floating mb-3 mt-3">
-                    <select id="idLoai" name="idLoai" th:field="*{idLoai}" class="form-select">
+                    </div>
+<!--                    <select id="idLoai" name="idLoai" th:field="*{idLoai}" class="form-select">
                         <th:block th:each="c : ${cates}">
                             <option th:if="${food.idLoai != null && c.id == food.idLoai.id}" th:value="${c.id}" th:text="${c.name}" selected></option>
                             <option th:if="${food.idLoai != null && c.id != food.idLoai.id}" th:value="${c.id}" th:text="${c.name}" ></option>
                             <option th:if="${food.idLoai == null}" th:value="${c.id}" th:text="${c.name}"></option>
                         </th:block>
                     </select>
-                    <label for="idLoai">Loại đồ ăn</label>
+                    <label for="idLoai">Loại đồ ăn</label>-->
                     <p th:if="${#fields.hasErrors('idLoai')}" th:errorclass="text-danger" th:errors="*{idLoai}" />
                 </div>
+                <!--                <div class="form-floating mb-3 mt-3">
+                                    <input type="file" id="file" class="form-control" name="file" th:value="*{file}" placeholder="Nhập ảnh"/>
+                                    <label for="file">Ảnh</label>
+                                    <img th:if="${food.image != null}" th:src="${food.image}" width="120" />
+                                </div>-->
+                <label for="file" class="custum-file-upload">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" fill=""></path> </g></svg>
+                    </div>
+                    <div class="text">
+                        <span>Đăng ảnh</span>
+                    </div>
+                    <input type="file" id="file" name="file" th:value="*{file}"/>
+
+                </label>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="file" id="file" class="form-control" name="file" th:value="*{file}" placeholder="Nhập ảnh"/>
-                    <label for="file">Ảnh</label>
-                    <img th:if="${food.image != null}" th:src="${food.image}" width="120" />
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img id="blah" width="100%" height="100%" />
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="title">HÌNH COI TRƯỚC</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <img th:if="${food.image != null}" th:src="${food.image}" width="120" />
                 <div class="form-floating mb-3 mt-3">
-                    <button type="submit" class="btn btn-info" th:if="${food.id != null}"> Cập nhật</button>
-                    <button type="submit" class="btn btn-info" th:if="${food.id == null}"> Thêm</button>
+                    <button type="submit" class="btn-cus-1" th:if="${food.id != null}"> <div class="svg-wrapper-1">
+                            <div class="svg-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span>Cập nhật</span></button>
+                    <button type="submit" class="btn-cus-1" th:if="${food.id == null}"> <div class="svg-wrapper-1">
+                            <div class="svg-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span>Thêm</span></button>
                 </div>
             </form>
         </section>
 
         <footer th:replace="../layout/footer :: html_footer"/>
+        <style>
+            .btn-cus-1 {
+                font-family: inherit;
+                font-size: 18px;
+                background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
+                color: white;
+                padding: 0.8em 1.2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                border-radius: 25px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover {
+                transform: translateY(-3px);
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-cus-1:active {
+                transform: scale(0.95);
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-cus-1 span {
+                display: block;
+                margin-left: 0.4em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 svg {
+                width: 18px;
+                height: 18px;
+                fill: white;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1 .svg-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-right: 0.5em;
+                transition: all 0.3s;
+            }
+
+            .btn-cus-1:hover .svg-wrapper {
+                background-color: rgba(255, 255, 255, 0.5);
+            }
+
+            .btn-cus-1:hover svg {
+                transform: rotate(45deg);
+            }
+
+            .custum-file-upload {
+                height: 200px;
+                width: 300px;
+                display: flex;
+                flex-direction: column;
+                align-items: space-between;
+                gap: 20px;
+                cursor: pointer;
+                align-items: center;
+                justify-content: center;
+                border: 2px dashed #e8e8e8;
+                background-color: #212121;
+                padding: 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0px 48px 35px -48px #e8e8e8;
+            }
+
+            .custum-file-upload .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .custum-file-upload .icon svg {
+                height: 80px;
+                fill: #e8e8e8;
+            }
+
+            .custum-file-upload .text {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .custum-file-upload .text span {
+                font-weight: 400;
+                color: #e8e8e8;
+            }
+
+            .custum-file-upload input {
+                display: none;
+            }
+            .flip-card {
+                background-color: transparent;
+                width: 190px;
+                height: 254px;
+                perspective: 1000px;
+                font-family: sans-serif;
+            }
+
+            .flip-card .title {
+                font-size: 1.5em;
+                font-weight: 900;
+                text-align: center;
+                margin: 0;
+            }
+
+            .flip-card-inner {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                transition: transform 0.8s;
+                transform-style: preserve-3d;
+            }
+
+            .flip-card:hover .flip-card-inner {
+                transform: rotateY(180deg);
+            }
+
+            .flip-card-front, .flip-card-back {
+                box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                border: 1px solid coral;
+                border-radius: 1rem;
+            }
+
+            .flip-card-front {
+                background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+                    rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+                color: coral;
+            }
+
+            .flip-card-back {
+                background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
+                    bisque 40%, rgb(255, 185, 160) 78%);
+                color: white;
+                transform: rotateY(180deg);
+            }
+
+            .brutalist-container {
+                position: relative;
+                width: 100%;
+                font-family: monospace;
+            }
+
+            .brutalist-input {
+                width: 100%;
+                padding: 15px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #000;
+                background-color: #fff;
+                border: 4px solid #000;
+                position: relative;
+                overflow: hidden;
+                border-radius: 0;
+                outline: none;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                box-shadow: 5px 5px 0 #000, 10px 10px 0 #4a90e2;
+            }
+
+            @keyframes glitch {
+                0% {
+                    transform: translate(0);
+                }
+                20% {
+                    transform: translate(-2px, 2px);
+                }
+                40% {
+                    transform: translate(-2px, -2px);
+                }
+                60% {
+                    transform: translate(2px, 2px);
+                }
+                80% {
+                    transform: translate(2px, -2px);
+                }
+                100% {
+                    transform: translate(0);
+                }
+            }
+
+            .brutalist-input:focus {
+                animation: focus-pulse 4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite,
+                    glitch 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+            }
+
+            .brutalist-input:focus::after {
+                content: "";
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: white;
+                z-index: -1;
+            }
+
+            .brutalist-input:focus::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: black;
+                z-index: -2;
+                clip-path: inset(0 100% 0 0);
+                animation: glitch-slice 4s steps(2, end) infinite;
+            }
+
+            @keyframes glitch-slice {
+                0% {
+                    clip-path: inset(0 100% 0 0);
+                }
+                10% {
+                    clip-path: inset(0 5% 0 0);
+                }
+                20% {
+                    clip-path: inset(0 80% 0 0);
+                }
+                30% {
+                    clip-path: inset(0 10% 0 0);
+                }
+                40% {
+                    clip-path: inset(0 50% 0 0);
+                }
+                50% {
+                    clip-path: inset(0 30% 0 0);
+                }
+                60% {
+                    clip-path: inset(0 70% 0 0);
+                }
+                70% {
+                    clip-path: inset(0 15% 0 0);
+                }
+                80% {
+                    clip-path: inset(0 90% 0 0);
+                }
+                90% {
+                    clip-path: inset(0 5% 0 0);
+                }
+                100% {
+                    clip-path: inset(0 100% 0 0);
+                }
+            }
+
+            .brutalist-label {
+                position: absolute;
+                left: -3px;
+                top: -35px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #fff;
+                background-color: #000;
+                padding: 5px 10px;
+                transform: rotate(-1deg);
+                z-index: 1;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            }
+
+            .brutalist-input:focus + .brutalist-label {
+                transform: rotate(0deg) scale(1.05);
+                background-color: #4a90e2;
+            }
+
+            .smooth-type {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .smooth-type::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+                z-index: 1;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .smooth-type:focus::before {
+                opacity: 1;
+                animation: type-gradient 2s linear infinite;
+            }
+
+            @keyframes type-gradient {
+                0% {
+                    background-position: 300px 0;
+                }
+                100% {
+                    background-position: 0 0;
+                }
+            }
+
+            .brutalist-input::placeholder {
+                color: #888;
+                transition: color 0.3s ease;
+            }
+
+            .brutalist-input:focus::placeholder {
+                color: transparent;
+            }
+
+            .brutalist-input:focus {
+                animation: focus-pulse 4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+            }
+
+            @keyframes focus-pulse {
+                0%,
+                100% {
+                    border-color: #000;
+                }
+                50% {
+                    border-color: #4a90e2;
+                }
+            }
+
+            .radio {
+                background: #454857;
+                padding: 4px;
+                border-radius: 3px;
+                box-shadow: inset 0 0 0 3px rgba(35, 33, 45, 0.3),
+                    0 0 0 3px rgba(185, 185, 185, 0.3);
+                position: relative;
+            }
+
+            .radio input {
+                width: auto;
+                height: 100%;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                outline: none;
+                cursor: pointer;
+                border-radius: 2px;
+                padding: 4px 8px;
+                background: #454857;
+                color: #bdbdbdbd;
+                font-size: 14px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+                    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                transition: all 100ms linear;
+            }
+
+            .radio input:checked {
+                background-image: linear-gradient(180deg, #95d891, #74bbad);
+                color: #fff;
+                box-shadow: 0 1px 1px #0000002e;
+                text-shadow: 0 1px 0px #79485f7a;
+            }
+
+            .radio input:before {
+                content: attr(label);
+                display: inline-block;
+                text-align: center;
+                width: 100%;
+            }
+
+        </style>
+
+        <script>
+            imgInp = document.querySelector('#file');
+            blah = document.querySelector('#blah');
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                }
+            }
+        </script>
     </body>
 </html>

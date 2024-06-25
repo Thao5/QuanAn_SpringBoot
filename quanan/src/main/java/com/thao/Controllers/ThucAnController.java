@@ -59,6 +59,12 @@ public class ThucAnController {
         List<ThucAn> lf = this.foodService.getThucAnsAll(params);
         model.addAttribute("foods", lf);
         model.addAttribute("pages", Math.ceil(listFoodPages.size()*1.0/pageSize));
+        if (params != null) {
+            if(params.get("page") != null && !params.get("page").isEmpty())
+                model.addAttribute("currentPage", Integer.parseInt(params.get("page")));
+            else 
+                model.addAttribute("currentPage", 0);
+        }
         return "food";
     }
 

@@ -6,6 +6,7 @@ package com.thao.service;
 
 import com.thao.pojo.Ban;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface BanService {
     void delete(Long id);
     Ban getBanById(Long id);
     List<Ban> getBanTheoChiNhanh(int cnId);
+    List<Ban> getBanCus(Map<String, String> params);
 }
