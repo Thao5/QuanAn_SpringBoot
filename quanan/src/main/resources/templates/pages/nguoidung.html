@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           display: flex;
           flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
-        
+
         <div th:replace="../layout/header :: html_search_bar"/>
 
         <section class="container">
@@ -24,12 +24,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th:block th:if="${currentPage > 1}">
                         <li><a th:href="${urlND + '?page=' + (currentPage-1)}"><</a></li>
                     </th:block>
-                    
+
                     <th:block th:if="${currentPage == 1}">
                         <li><a th:href="${urlND}"><</a></li>
                     </th:block>
                     <li id="item-0" class="index"><a th:href="${urlND}">Tất cả</a></li>
-                    
+
                     <li th:id="${'item-' + i}" class="index" th:each="i : ${#numbers.sequence(1, pages)}"><a th:href="${urlND + '?page=' + i}" th:text="${i}"></a></li>
                     <li th:if="${param.page == null}"><a th:href="${urlND + '?page=' + (currentPage+1)}">></a></li>
                     <th:block th:if="${currentPage < pages and currentPage > 0}">
@@ -119,7 +119,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 <span class="IconContainer">
                                                     <svg class="svgIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>
                                                 </span>
-                                                <p class="text">Đóng</p>
+                                                <p class="text-cus-1">Đóng</p>
                                             </button>
                                         </div>
 
@@ -398,7 +398,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     left: 100%;
                 }
             }
-            
+
             .pagination{
                 padding: 30px 0;
                 display: flex;
@@ -420,7 +420,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
 
             .pagination li{
-                display: inline-block; 
+                display: inline-block;
                 color: #222;
             }
 
@@ -463,7 +463,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 stroke-dasharray: 150 150;
                 stroke-width:15;
             }
-            
+
             .bookmarkBtn {
                 width: 100px;
                 height: 40px;
@@ -495,7 +495,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 border-radius: 1px;
             }
 
-            .text {
+            .text-cus-1 {
                 height: 100%;
                 width: 60px;
                 display: flex;
@@ -513,7 +513,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 transition-duration: 0.3s;
             }
 
-            .bookmarkBtn:hover .text {
+            .bookmarkBtn:hover .text-cus-1 {
                 transform: translate(10px);
                 width: 0;
                 font-size: 0;
@@ -542,18 +542,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 }
             }
 
-            
+/*            thead tr th:first-child,
+            tbody tr td:first-child {
+                width: 8em;
+                min-width: 8em;
+                max-width: 8em;
+                word-break: break-all;
+            }*/
         </style>
 
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
             const page = urlParams.get('page');
-            
-            if(page === null){
+
+            if (page === null) {
                 item = document.getElementById("item-0");
                 item.classList.add("is-active");
-            } else{
+            } else {
                 item = document.getElementById("item-" + page);
                 item.classList.add("is-active");
             }

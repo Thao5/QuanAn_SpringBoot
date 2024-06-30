@@ -6,8 +6,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="../layout/header :: html_head"/>
     <body style="min-height: 100vh;
-    display: flex;
-    flex-direction: column;">
+          display: flex;
+          flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
         <section class="container">
@@ -79,6 +79,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </main>
             </div>
+        </div>
+        <div class='div-cus-1 mb-5' th:with='y=${param.y}, m=${param.m}'>
+            <a th:if='${param.y != null && param.m == null}' th:href="${'/quanan/admin/stats/offline/export/pdf' + '?y=' + y}" type="button" class="btn-cus-2">
+                <span class="button__text">Download</span>
+                <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
+            </a>
+            <a th:if='${param.m != null && param.y == null}' th:href="${'/quanan/admin/stats/offline/export/pdf' + '?m=' + m}" type="button" class="btn-cus-2">
+                <span class="button__text">Download</span>
+                <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
+            </a>
+            <a th:if='${y != null && m != null}' th:href="${'/quanan/admin/stats/offline/export/pdf?y=' + y + '&m=' + m}" type="button" class="btn-cus-2">
+                <span class="button__text">Download</span>
+                <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
+            </a>
+            <a th:if='${param.y == null && param.m == null}' th:href="${'/quanan/admin/stats/offline/export/pdf'}" type="button" class="btn-cus-2">
+                <span class="button__text">Download</span>
+                <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
+            </a>
         </div>
     </section>
     <footer th:replace="../layout/footer :: html_footer"/>
@@ -213,361 +231,434 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         /*]]>*/
     </script>
     <style>
-            .chosen-value,
-            .value-list {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: 100%;
+        .chosen-value,
+        .value-list {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .chosen-value {
+            font-family: 'Ek Mukta';
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 4px;
+            height: 4rem;
+            font-size: 1.1rem;
+            padding: 1rem;
+            background-color: #FAFCFD;
+            border: 3px solid transparent;
+            transition: .3s ease-in-out;
+
+            &::-webkit-input-placeholder {
+                color: #333;
             }
-            .chosen-value {
-                font-family: 'Ek Mukta';
-                text-transform: uppercase;
-                font-weight: 600;
-                letter-spacing: 4px;
-                height: 4rem;
-                font-size: 1.1rem;
-                padding: 1rem;
-                background-color: #FAFCFD;
-                border: 3px solid transparent;
-                transition: .3s ease-in-out;
+
+            &:hover {
+                background-color: #FF908B;
+                cursor: pointer;
 
                 &::-webkit-input-placeholder {
                     color: #333;
                 }
+            }
+
+            &:focus,
+                &.open {
+                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                outline: 0;
+                background-color: #FF908B;
+                color: #000;
+
+                &::-webkit-input-placeholder {
+                    color: #000;
+                }
+            }
+        }
+
+        .value-list {
+            list-style: none;
+            margin-top: 4rem;
+            box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+            overflow: hidden;
+            max-height: 0;
+            transition: .3s ease-in-out;
+
+            &.open {
+                max-height: 320px;
+                overflow: auto;
+            }
+
+            li {
+                position: relative;
+                height: 4rem;
+                background-color: #FAFCFD;
+                padding: 1rem;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color .3s;
+                opacity: 1;
 
                 &:hover {
                     background-color: #FF908B;
-                    cursor: pointer;
-
-                    &::-webkit-input-placeholder {
-                        color: #333;
-                    }
                 }
 
-                &:focus,
-                    &.open {
-                    box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
-                    outline: 0;
-                    background-color: #FF908B;
-                    color: #000;
-
-                    &::-webkit-input-placeholder {
-                        color: #000;
-                    }
+                &.closed {
+                    max-height: 0;
+                    overflow: hidden;
+                    padding: 0;
+                    opacity: 0;
                 }
             }
+        }
+    </style>
+    <style>
+        .chosen-value2,
+        .value-list2 {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .chosen-value2 {
+            font-family: 'Ek Mukta';
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 4px;
+            height: 4rem;
+            font-size: 1.1rem;
+            padding: 1rem;
+            background-color: #FAFCFD;
+            border: 3px solid transparent;
+            transition: .3s ease-in-out;
 
-            .value-list {
-                list-style: none;
-                margin-top: 4rem;
-                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
-                overflow: hidden;
-                max-height: 0;
-                transition: .3s ease-in-out;
-
-                &.open {
-                    max-height: 320px;
-                    overflow: auto;
-                }
-
-                li {
-                    position: relative;
-                    height: 4rem;
-                    background-color: #FAFCFD;
-                    padding: 1rem;
-                    font-size: 1.1rem;
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    transition: background-color .3s;
-                    opacity: 1;
-
-                    &:hover {
-                        background-color: #FF908B;
-                    }
-
-                    &.closed {
-                        max-height: 0;
-                        overflow: hidden;
-                        padding: 0;
-                        opacity: 0;
-                    }
-                }
+            &::-webkit-input-placeholder {
+                color: #333;
             }
-        </style>
-        <style>
-            .chosen-value2,
-            .value-list2 {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: 100%;
-            }
-            .chosen-value2 {
-                font-family: 'Ek Mukta';
-                text-transform: uppercase;
-                font-weight: 600;
-                letter-spacing: 4px;
-                height: 4rem;
-                font-size: 1.1rem;
-                padding: 1rem;
-                background-color: #FAFCFD;
-                border: 3px solid transparent;
-                transition: .3s ease-in-out;
+
+            &:hover {
+                background-color: #FF908B;
+                cursor: pointer;
 
                 &::-webkit-input-placeholder {
                     color: #333;
                 }
+            }
+
+            &:focus,
+                &.open {
+                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+                outline: 0;
+                background-color: #FF908B;
+                color: #000;
+
+                &::-webkit-input-placeholder {
+                    color: #000;
+                }
+            }
+        }
+
+        .value-list2 {
+            list-style: none;
+            margin-top: 4rem;
+            box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+            overflow: hidden;
+            max-height: 0;
+            transition: .3s ease-in-out;
+
+            &.open {
+                max-height: 320px;
+                overflow: auto;
+            }
+
+            li {
+                position: relative;
+                height: 4rem;
+                background-color: #FAFCFD;
+                padding: 1rem;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color .3s;
+                opacity: 1;
 
                 &:hover {
                     background-color: #FF908B;
-                    cursor: pointer;
-
-                    &::-webkit-input-placeholder {
-                        color: #333;
-                    }
                 }
 
-                &:focus,
-                    &.open {
-                    box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
-                    outline: 0;
-                    background-color: #FF908B;
-                    color: #000;
-
-                    &::-webkit-input-placeholder {
-                        color: #000;
-                    }
+                &.closed {
+                    max-height: 0;
+                    overflow: hidden;
+                    padding: 0;
+                    opacity: 0;
                 }
             }
+        }
+    </style>
+    <style>
+        .btn-cus-1 {
+            font-family: inherit;
+            font-size: 18px;
+            background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
+            color: white;
+            padding: 0.8em 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
 
-            .value-list2 {
-                list-style: none;
-                margin-top: 4rem;
-                box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
-                overflow: hidden;
-                max-height: 0;
-                transition: .3s ease-in-out;
+        .btn-cus-1:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+        }
 
-                &.open {
-                    max-height: 320px;
-                    overflow: auto;
-                }
+        .btn-cus-1:active {
+            transform: scale(0.95);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
-                li {
-                    position: relative;
-                    height: 4rem;
-                    background-color: #FAFCFD;
-                    padding: 1rem;
-                    font-size: 1.1rem;
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    transition: background-color .3s;
-                    opacity: 1;
+        .btn-cus-1 span {
+            display: block;
+            margin-left: 0.4em;
+            transition: all 0.3s;
+        }
 
-                    &:hover {
-                        background-color: #FF908B;
-                    }
+        .btn-cus-1 svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+            transition: all 0.3s;
+        }
 
-                    &.closed {
-                        max-height: 0;
-                        overflow: hidden;
-                        padding: 0;
-                        opacity: 0;
-                    }
-                }
-            }
-        </style>
-        <style>
-            .btn-cus-1 {
-                font-family: inherit;
-                font-size: 18px;
-                background: linear-gradient(to bottom, #4dc7d9 0%,#66a6ff 100%);
-                color: white;
-                padding: 0.8em 1.2em;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: none;
-                border-radius: 25px;
-                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-                transition: all 0.3s;
-            }
+        .btn-cus-1 .svg-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-right: 0.5em;
+            transition: all 0.3s;
+        }
 
-            .btn-cus-1:hover {
-                transform: translateY(-3px);
-                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-            }
+        .btn-cus-1:hover .svg-wrapper {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
 
-            .btn-cus-1:active {
-                transform: scale(0.95);
-                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-            }
+        .btn-cus-1:hover svg {
+            transform: rotate(45deg);
+        }
 
-            .btn-cus-1 span {
-                display: block;
-                margin-left: 0.4em;
-                transition: all 0.3s;
-            }
+        .btn-cus-2 {
+            --main-focus: #2d8cf0;
+            --font-color: #dedede;
+            --bg-color-sub: #222;
+            --bg-color: #323232;
+            --main-color: #dedede;
+            position: relative;
+            width: 160px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--main-color);
+            box-shadow: 4px 4px var(--main-color);
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-            .btn-cus-1 svg {
-                width: 18px;
-                height: 18px;
-                fill: white;
-                transition: all 0.3s;
-            }
+        .btn-cus-2, .button__icon, .button__text {
+            transition: all 0.3s;
+        }
 
-            .btn-cus-1 .svg-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                background-color: rgba(255, 255, 255, 0.2);
-                margin-right: 0.5em;
-                transition: all 0.3s;
-            }
+        .btn-cus-2 .button__text {
+            transform: translateX(21px);
+            color: var(--font-color);
+            font-weight: 600;
+        }
 
-            .btn-cus-1:hover .svg-wrapper {
-                background-color: rgba(255, 255, 255, 0.5);
-            }
+        .btn-cus-2 .button__icon {
+            position: absolute;
+            transform: translateX(109px);
+            height: 100%;
+            width: 42px;
+            background-color: var(--bg-color-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .btn-cus-1:hover svg {
-                transform: rotate(45deg);
-            }
-        </style>
-        <script>
-            const inputField = document.querySelector('.chosen-value');
-            const dropdown = document.querySelector('.value-list');
-            const dropdownArray = [... document.querySelectorAll('.value-list li')];
-            console.log(typeof dropdownArray)
+        .btn-cus-2 .svg {
+            width: 20px;
+            fill: var(--main-color);
+        }
+
+        .btn-cus-2:hover {
+            background: var(--bg-color);
+        }
+
+        .btn-cus-2:hover .button__text {
+            color: transparent;
+        }
+
+        .btn-cus-2:hover .button__icon {
+            width: 160px;
+            transform: translateX(0);
+        }
+
+        .btn-cus-2:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px var(--main-color);
+        }
+
+        .div-cus-1{
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        a{
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        const inputField = document.querySelector('.chosen-value');
+        const dropdown = document.querySelector('.value-list');
+        const dropdownArray = [... document.querySelectorAll('.value-list li')];
+        console.log(typeof dropdownArray)
+        dropdown.classList.add('open');
+        inputField.focus(); // Demo purposes only
+        let valueArray = [];
+        dropdownArray.forEach(item => {
+            valueArray.push(item.textContent);
+        });
+
+        const closeDropdown = () => {
+            dropdown.classList.remove('open');
+        }
+
+        inputField.addEventListener('input', () => {
             dropdown.classList.add('open');
-            inputField.focus(); // Demo purposes only
-            let valueArray = [];
-            dropdownArray.forEach(item => {
-                valueArray.push(item.textContent);
-            });
-
-            const closeDropdown = () => {
-                dropdown.classList.remove('open');
-            }
-
-            inputField.addEventListener('input', () => {
-                dropdown.classList.add('open');
-                let inputValue = inputField.value.toLowerCase();
-                let valueSubstring;
-                if (inputValue.length > 0) {
-                    for (let j = 0; j < valueArray.length; j++) {
-                        if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
-                            dropdownArray[j].classList.add('closed');
-                        } else {
-                            dropdownArray[j].classList.remove('closed');
-                        }
-                    }
-                } else {
-                    for (let i = 0; i < dropdownArray.length; i++) {
-                        dropdownArray[i].classList.remove('closed');
+            let inputValue = inputField.value.toLowerCase();
+            let valueSubstring;
+            if (inputValue.length > 0) {
+                for (let j = 0; j < valueArray.length; j++) {
+                    if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
+                        dropdownArray[j].classList.add('closed');
+                    } else {
+                        dropdownArray[j].classList.remove('closed');
                     }
                 }
-            });
+            } else {
+                for (let i = 0; i < dropdownArray.length; i++) {
+                    dropdownArray[i].classList.remove('closed');
+                }
+            }
+        });
 
-            dropdownArray.forEach(item => {
-                item.addEventListener('click', (evt) => {
-                    inputField.value = item.textContent;
-                    dropdownArray.forEach(dropdown => {
-                        dropdown.classList.add('closed');
-                    });
-                });
-            })
-
-            inputField.addEventListener('focus', () => {
-                inputField.placeholder = 'Ghi để tìm';
-                dropdown.classList.add('open');
+        dropdownArray.forEach(item => {
+            item.addEventListener('click', (evt) => {
+                inputField.value = item.textContent;
                 dropdownArray.forEach(dropdown => {
-                    dropdown.classList.remove('closed');
+                    dropdown.classList.add('closed');
                 });
             });
+        })
 
-            inputField.addEventListener('blur', () => {
-                inputField.placeholder = 'Chọn năm cần thống kê';
+        inputField.addEventListener('focus', () => {
+            inputField.placeholder = 'Ghi để tìm';
+            dropdown.classList.add('open');
+            dropdownArray.forEach(dropdown => {
+                dropdown.classList.remove('closed');
+            });
+        });
+
+        inputField.addEventListener('blur', () => {
+            inputField.placeholder = 'Chọn năm cần thống kê';
+            dropdown.classList.remove('open');
+        });
+
+        document.addEventListener('click', (evt) => {
+            const isDropdown = dropdown.contains(evt.target);
+            const isInput = inputField.contains(evt.target);
+            if (!isDropdown && !isInput) {
                 dropdown.classList.remove('open');
-            });
+            }
+        });
+    </script>
+    <script>
+        const inputField2 = document.querySelector('.chosen-value2');
+        const dropdown2 = document.querySelector('.value-list2');
+        const dropdownArray2 = [... document.querySelectorAll('.value-list2 li')];
+        console.log(typeof dropdownArray2)
+        dropdown2.classList.add('open');
+        inputField2.focus(); // Demo purposes only
+        let valueArray2 = [];
+        dropdownArray2.forEach(item => {
+            valueArray2.push(item.textContent);
+        });
 
-            document.addEventListener('click', (evt) => {
-                const isDropdown = dropdown.contains(evt.target);
-                const isInput = inputField.contains(evt.target);
-                if (!isDropdown && !isInput) {
-                    dropdown.classList.remove('open');
-                }
-            });
-        </script>
-        <script>
-            const inputField2 = document.querySelector('.chosen-value2');
-            const dropdown2 = document.querySelector('.value-list2');
-            const dropdownArray2 = [... document.querySelectorAll('.value-list2 li')];
-            console.log(typeof dropdownArray2)
+        const closeDropdown2 = () => {
+            dropdown2.classList.remove('open');
+        }
+
+        inputField2.addEventListener('input', () => {
             dropdown2.classList.add('open');
-            inputField2.focus(); // Demo purposes only
-            let valueArray2 = [];
-            dropdownArray2.forEach(item => {
-                valueArray2.push(item.textContent);
-            });
+            let inputValue2 = inputField2.value.toLowerCase();
+            let valueSubstring2;
+            if (inputValue2.length > 0) {
+                for (let j = 0; j < valueArray2.length; j++) {
+                    if (!(inputValue2.substring(0, inputValue2.length) === valueArray2[j].substring(0, inputValue2.length).toLowerCase())) {
+                        dropdownArray2[j].classList.add('closed');
+                    } else {
+                        dropdownArray2[j].classList.remove('closed');
+                    }
+                }
+            } else {
+                for (let i = 0; i < dropdownArray2.length; i++) {
+                    dropdownArray2[i].classList.remove('closed');
+                }
+            }
+        });
 
-            const closeDropdown2 = () => {
+        dropdownArray2.forEach(item => {
+            item.addEventListener('click', (evt) => {
+                inputField2.value = item.textContent;
+                dropdownArray2.forEach(dropdown => {
+                    dropdown2.classList.add('closed');
+                });
+            });
+        })
+
+        inputField2.addEventListener('focus', () => {
+            inputField2.placeholder = 'Ghi để tìm';
+            dropdown2.classList.add('open');
+            dropdownArray2.forEach(dropdown => {
+                dropdown2.classList.remove('closed');
+            });
+        });
+
+        inputField2.addEventListener('blur', () => {
+            inputField2.placeholder = 'Chọn tháng cần thống kê';
+            dropdown2.classList.remove('open');
+        });
+
+        document.addEventListener('click', (evt) => {
+            const isDropdown2 = dropdown2.contains(evt.target);
+            const isInput2 = inputField2.contains(evt.target);
+            if (!isDropdown2 && !isInput2) {
                 dropdown2.classList.remove('open');
             }
-
-            inputField2.addEventListener('input', () => {
-                dropdown2.classList.add('open');
-                let inputValue2 = inputField2.value.toLowerCase();
-                let valueSubstring2;
-                if (inputValue2.length > 0) {
-                    for (let j = 0; j < valueArray2.length; j++) {
-                        if (!(inputValue2.substring(0, inputValue2.length) === valueArray2[j].substring(0, inputValue2.length).toLowerCase())) {
-                            dropdownArray2[j].classList.add('closed');
-                        } else {
-                            dropdownArray2[j].classList.remove('closed');
-                        }
-                    }
-                } else {
-                    for (let i = 0; i < dropdownArray2.length; i++) {
-                        dropdownArray2[i].classList.remove('closed');
-                    }
-                }
-            });
-
-            dropdownArray2.forEach(item => {
-                item.addEventListener('click', (evt) => {
-                    inputField2.value = item.textContent;
-                    dropdownArray2.forEach(dropdown => {
-                        dropdown2.classList.add('closed');
-                    });
-                });
-            })
-
-            inputField2.addEventListener('focus', () => {
-                inputField2.placeholder = 'Ghi để tìm';
-                dropdown2.classList.add('open');
-                dropdownArray2.forEach(dropdown => {
-                    dropdown2.classList.remove('closed');
-                });
-            });
-
-            inputField2.addEventListener('blur', () => {
-                inputField2.placeholder = 'Chọn tháng cần thống kê';
-                dropdown2.classList.remove('open');
-            });
-
-            document.addEventListener('click', (evt) => {
-                const isDropdown2 = dropdown2.contains(evt.target);
-                const isInput2 = inputField2.contains(evt.target);
-                if (!isDropdown2 && !isInput2) {
-                    dropdown2.classList.remove('open');
-                }
-            });
-        </script>
+        });
+    </script>
 </body>
 </html>

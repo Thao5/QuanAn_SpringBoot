@@ -7,13 +7,13 @@
           flex-direction: column;">
         <div th:replace="../layout/header :: html_nav"/>
 
-        <section class="container">
+        <section class="container mt-4">
             <div class="nav nav-pills" id="nav-tab" role="tablist">
                 <a class="nav-link active" id="nav-pos-tab" data-bs-toggle="tab" href="#nav-pos" role="tab" aria-controls="nav-pos" aria-selected="true" th:text="${'Positive' + '(' + sentiment.positive.rate + '%)'}"></a>
                 <a class="nav-link" id="nav-neu-tab" data-bs-toggle="tab" href="#nav-neu" role="tab" aria-controls="nav-neu" aria-selected="false" th:text="${'Neutral' + '(' + sentiment.neutral.rate + '%)'}"></a>
                 <a class="nav-link" id="nav-neg-tab" data-bs-toggle="tab" href="#nav-neg" role="tab" aria-controls="nav-neg" aria-selected="false" th:text="${'Negative' + '(' + sentiment.negative.rate + '%)'}"></a>
             </div>
-            <div class="tab-content" id="nav-tabContent">
+            <div class="tab-content mt-4" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
                     <table class="table table-hover">
                         <thead>
@@ -27,14 +27,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr th:each="pos : ${sentiment.positive.list_comment}">
-                                    <td th:text="${pos.id}"></td>
-                                    <td th:text="${pos.noi_dung}"></td>
-                                    <td th:text="${pos.danh_gia}"></td>
-                                    <td th:text="${pos.created_date}"></td>
-                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
-                                    <td th:text="${pos.id_thuc_an.name}"></td>
-                                </tr>
+                            <tr th:each="pos : ${sentiment.positive.list_comment}">
+                                <td th:text="${pos.id}"></td>
+                                <td th:text="${pos.noi_dung}"></td>
+                                <td th:text="${pos.danh_gia}"></td>
+                                <td th:text="${pos.created_date}"></td>
+                                <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                <td th:text="${pos.id_thuc_an.name}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -51,14 +51,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr th:each="pos : ${sentiment.neutral.list_comment}">
-                                    <td th:text="${pos.id}"></td>
-                                    <td th:text="${pos.noi_dung}"></td>
-                                    <td th:text="${pos.danh_gia}"></td>
-                                    <td th:text="${pos.created_date}"></td>
-                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
-                                    <td th:text="${pos.id_thuc_an.name}"></td>
-                                </tr>
+                            <tr th:each="pos : ${sentiment.neutral.list_comment}">
+                                <td th:text="${pos.id}"></td>
+                                <td th:text="${pos.noi_dung}"></td>
+                                <td th:text="${pos.danh_gia}"></td>
+                                <td th:text="${pos.created_date}"></td>
+                                <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                <td th:text="${pos.id_thuc_an.name}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -75,14 +75,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr th:each="pos : ${sentiment.negative.list_comment}">
-                                    <td th:text="${pos.id}"></td>
-                                    <td th:text="${pos.noi_dung}"></td>
-                                    <td th:text="${pos.danh_gia}"></td>
-                                    <td th:text="${pos.created_date}"></td>
-                                    <td th:text="${pos.id_nguoi_dung.firstName}"></td>
-                                    <td th:text="${pos.id_thuc_an.name}"></td>
-                                </tr>
+                            <tr th:each="pos : ${sentiment.negative.list_comment}">
+                                <td th:text="${pos.id}"></td>
+                                <td th:text="${pos.noi_dung}"></td>
+                                <td th:text="${pos.danh_gia}"></td>
+                                <td th:text="${pos.created_date}"></td>
+                                <td th:text="${pos.id_nguoi_dung.firstName}"></td>
+                                <td th:text="${pos.id_thuc_an.name}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -90,8 +90,17 @@
         </section>
         <footer th:replace="../layout/footer :: html_footer"/>
 
-        
+
 
         <script type="text/javascript" th:src="@{/js/del.js}"></script>
+
+        <style>
+            #nav-tabContent{
+                box-shadow: 1px 1px 10px 10px #888888;
+            }
+            .table thead{
+                background-color: #6495ed;
+            }
+        </style>
     </body>
 </html>

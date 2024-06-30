@@ -34,7 +34,7 @@
   color: #8f8f8f;
 }
 
-.icon-cus-1 {
+.icon-cus-sb {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +51,7 @@
   transition: 0.2s linear;
 }
 
-.icon-cus-1:focus ~ .input,
+.icon-cus-sb:focus ~ .input,
 .input:focus {
   /*right: 0px;*/
   box-shadow: none;
@@ -62,7 +62,7 @@
   transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 
-.icon-cus-1:focus{
+.icon-cus-sb:focus{
     right: 0;
     background-color: #7e4fd4;
     transition: 0.2s linear;

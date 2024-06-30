@@ -56,6 +56,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 
 /**
  *
@@ -347,7 +349,7 @@ public class JwtSecurityConfig {
             //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "POST")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER")
             //                        .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE")).hasAnyAuthority("ADMIN", "OWNER", "CUSTOMER");
         }).httpBasic(b -> b.authenticationEntryPoint(restServicesEntryPoint()))
-//                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()))
                 .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))).cors(Customizer.withDefaults());
@@ -392,9 +394,9 @@ public class JwtSecurityConfig {
 
         http.userDetailsService(userDetailsService).authorizeHttpRequests(rmr -> {
             rmr.requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                    .hasAnyAuthority("ADMIN", "OWNER").requestMatchers(new AntPathRequestMatcher("/js/**"), 
-                            new AntPathRequestMatcher("/css/**"),
-                            new AntPathRequestMatcher("/image/**")).hasAnyAuthority("ADMIN")
+                    .hasAnyAuthority("ADMIN", "OWNER").requestMatchers(new AntPathRequestMatcher("/js/**"),
+                    new AntPathRequestMatcher("/css/**"),
+                    new AntPathRequestMatcher("/image/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/")).authenticated();
         })
                 //                        .requestMatchers(new AntPathRequestMatcher("/bandatchinhanh/**")).hasAnyAuthority("ADMIN")
